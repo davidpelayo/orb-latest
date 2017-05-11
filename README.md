@@ -3,7 +3,7 @@ Pivot grid javascript library.
 
 **Website:** WIP.
 
-**Latest version:** 2.0.0
+**Latest version:** 2.0.1
 
 ### Demo:
 
@@ -24,10 +24,10 @@ Pivot grid javascript library.
 
 #### Customization
 - Via code and/or toolbar
-- Data headers location 
+- Data headers location
 - Grand totals visibility
-- Sub totals visibility &amp; collapsed state 
-- Data cells aggregate &amp; format functions 
+- Sub totals visibility &amp; collapsed state
+- Data cells aggregate &amp; format functions
 - Theming: built-in & Bootstrap
 
 #### Data query
@@ -47,7 +47,7 @@ var q = pgrid.query()
 ```javascript
 q.Amount()
 
-=> 1185.17 
+=> 1185.17
 ```
 
 **List of fields**
