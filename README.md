@@ -1,11 +1,9 @@
-# [orb](http://orbjs.net/)[<img align="right" src="https://nodei.co/npm/orb.png?compact=true"/>](https://www.npmjs.com/package/orb)
+# [orb](http://orbjs.net/)[<img align="right" src="https://nodei.co/npm/orb-latest.png?compact=true"/>](https://www.npmjs.com/package/orb-latest)
 Pivot grid javascript library.
 
-**Website:** *[orbjs.net](http://orbjs.net/)*
+**Website:** WIP.
 
-**Latest version:** 1.0.9 ([Release notes](http://orbjs.net/downloads.html#rl))
-
-**cdnjs:** https://cdnjs.com/libraries/orb
+**Latest version:** 2.0.0
 
 ### Demo:
 
@@ -62,7 +60,7 @@ q.val('Amount', 'Q')
    }
 ```
 
-       
+
 **Aggregation func**
 
 **builtin**
