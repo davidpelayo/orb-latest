@@ -4,10 +4,13 @@
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 var pivotId = 1;
 var themeChangeCallbacks = {};
 
-module.exports.PivotTable = react.createClass({
+module.exports.PivotTable = React.createClass({
   id: pivotId++,
   pgrid: null,
   pgridwidget: null,

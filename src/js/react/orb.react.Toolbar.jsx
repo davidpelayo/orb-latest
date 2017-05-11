@@ -5,18 +5,21 @@
 
 'use strict';
 
-module.exports.Toolbar = react.createClass({
+var React = require('react');
+var ReactDOM = require('react-dom');
+
+module.exports.Toolbar = React.createClass({
   _toInit: [],
   componentDidMount: function() {
     for(var i = 0; i < this._toInit.length; i++){
       var btn = this._toInit[i];
-      btn.init(this.props.pivotTableComp, ReactDOM.findDOMNode(this.refs[btn.ref]));      
+      btn.init(this.props.pivotTableComp, ReactDOM.findDOMNode(this.refs[btn.ref]));
     }
   },
   componentDidUpdate: function() {
     for(var i = 0; i < this._toInit.length; i++){
       var btn = this._toInit[i];
-      btn.init(this.props.pivotTableComp, ReactDOM.findDOMNode(this.refs[btn.ref]));      
+      btn.init(this.props.pivotTableComp, ReactDOM.findDOMNode(this.refs[btn.ref]));
     }
   },
   createCallback: function(action) {

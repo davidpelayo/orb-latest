@@ -5,7 +5,10 @@
 
 'use strict';
 
-module.exports.FilterPanel = react.createClass({
+var React = require('react');
+var ReactDOM = require('react-dom');
+
+module.exports.FilterPanel = React.createClass({
 	pgridwidget: null,
 	values: null,
 	filterManager: null,

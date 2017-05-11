@@ -5,6 +5,9 @@
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 var scrollBarMixin = {
   scrollEvent: null,
   scrollClient: null,
@@ -172,7 +175,7 @@ function ScrollEvent(scrollBarComp) {
   };
 }
 
-module.exports.HorizontalScrollBar = react.createClass({
+module.exports.HorizontalScrollBar = React.createClass({
   mixins: [scrollBarMixin],
   posProp: 'x',
   mousePosProp: 'pageX',
@@ -181,7 +184,7 @@ module.exports.HorizontalScrollBar = react.createClass({
   cssClass: 'orb-h-scrollbar'
 });
 
-module.exports.VerticalScrollBar = react.createClass({
+module.exports.VerticalScrollBar = React.createClass({
   mixins: [scrollBarMixin],
   posProp: 'y',
   mousePosProp: 'pageY',

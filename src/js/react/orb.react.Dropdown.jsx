@@ -5,7 +5,10 @@
 
 'use strict';
 
-module.exports.Dropdown = react.createClass({
+var React = require('react');
+var ReactDOM = require('react-dom');
+
+module.exports.Dropdown = React.createClass({
 	openOrClose: function(e) {
 		var valueNode = ReactDOM.findDOMNode(this.refs.valueElement);
 		var valuesListNode = ReactDOM.findDOMNode(this.refs.valuesList);

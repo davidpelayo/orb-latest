@@ -5,10 +5,13 @@
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 var _paddingLeft = null;
 var _borderLeft = null;
 
-module.exports.PivotCell = react.createClass({
+module.exports.PivotCell = React.createClass({
   expand: function() {
     this.props.pivotTableComp.expandRow(this.props.cell);
   },

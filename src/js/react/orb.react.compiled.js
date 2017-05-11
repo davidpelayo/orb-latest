@@ -5,8 +5,8 @@
 
 'use strict';
 
-var react = typeof window === 'undefined' ? require('react') : window.React;
-var reactDOM = typeof window === 'undefined' ? require('react-dom') : window.ReactDOM;
+var React = require('react');
+var ReactDOM = require('react-dom');
 var utils = require('../orb.utils');
 var axe = require('../orb.axe');
 var uiheaders = require('../orb.ui.header');
@@ -25,7 +25,7 @@ var comps = module.exports;
 var pivotId = 1;
 var themeChangeCallbacks = {};
 
-module.exports.PivotTable = react.createClass({
+module.exports.PivotTable = React.createClass({
     id: pivotId++,
     pgrid: null,
     pgridwidget: null,
@@ -629,7 +629,7 @@ function clearTableWidths(tbl) {
 'use strict';
 
 
-module.exports.PivotRow = react.createClass({
+module.exports.PivotRow = React.createClass({
     render: function() {
         var self = this;
         var PivotCell = comps.PivotCell;
@@ -649,7 +649,7 @@ module.exports.PivotRow = react.createClass({
             var isleftmost = false;
 
             // If current cells are column/data headers and left most cell is not found yet
-            // and last row left most cell does not span vertically over the current one and current one is visible 
+            // and last row left most cell does not span vertically over the current one and current one is visible
             // then mark IT as the left most cell
             if (cell.visible() && layoutInfos) {
                 if (cell.dim) {
@@ -702,7 +702,7 @@ module.exports.PivotRow = react.createClass({
 var _paddingLeft = null;
 var _borderLeft = null;
 
-module.exports.PivotCell = react.createClass({
+module.exports.PivotCell = React.createClass({
     expand: function() {
         this.props.pivotTableComp.expandRow(this.props.cell);
     },
@@ -1102,7 +1102,7 @@ var dragManager = module.exports.DragManager = (function() {
 'use strict';
 
 
-module.exports.DropIndicator = react.createClass({
+module.exports.DropIndicator = React.createClass({
     displayName: 'DropIndicator',
     getInitialState: function() {
         dragManager.registerIndicator(this, this.props.axetype, this.props.position, this.onDragOver, this.onDragEnd);
@@ -1162,7 +1162,7 @@ module.exports.DropIndicator = react.createClass({
 
 var dtid = 0;
 
-module.exports.DropTarget = react.createClass({
+module.exports.DropTarget = React.createClass({
     getInitialState: function() {
         this.dtid = ++dtid;
         return {
@@ -1253,7 +1253,7 @@ module.exports.DropTarget = react.createClass({
 
 var pbid = 0;
 
-module.exports.PivotButton = react.createClass({
+module.exports.PivotButton = React.createClass({
     displayName: 'PivotButton',
     getInitialState: function() {
         this.pbid = ++pbid;
@@ -1458,7 +1458,7 @@ module.exports.PivotButton = react.createClass({
 
 'use strict';
 
-module.exports.PivotTableUpperButtons = react.createClass({
+module.exports.PivotTableUpperButtons = React.createClass({
     render: function() {
         var self = this;
         var PivotButton = comps.PivotButton;
@@ -1538,7 +1538,7 @@ module.exports.PivotTableUpperButtons = react.createClass({
 
 'use strict';
 
-module.exports.PivotTableColumnButtons = react.createClass({
+module.exports.PivotTableColumnButtons = React.createClass({
     render: function() {
         var self = this;
         var PivotButton = comps.PivotButton;
@@ -1568,7 +1568,7 @@ module.exports.PivotTableColumnButtons = react.createClass({
 
 'use strict';
 
-module.exports.PivotTableRowButtons = react.createClass({
+module.exports.PivotTableRowButtons = React.createClass({
     render: function() {
         var self = this;
         var PivotButton = comps.PivotButton;
@@ -1598,7 +1598,7 @@ module.exports.PivotTableRowButtons = react.createClass({
 
 'use strict';
 
-module.exports.PivotTableColumnHeaders = react.createClass({
+module.exports.PivotTableColumnHeaders = React.createClass({
     render: function() {
         var self = this;
         var PivotRow = comps.PivotRow;
@@ -1642,7 +1642,7 @@ module.exports.PivotTableColumnHeaders = react.createClass({
 
 'use strict';
 
-module.exports.PivotTableRowHeaders = react.createClass({
+module.exports.PivotTableRowHeaders = React.createClass({
     setColGroup: function(widths) {
         var node = ReactDOM.findDOMNode(this);
         var colGroupNode = ReactDOM.findDOMNode(this.refs.colgroup);
@@ -1702,7 +1702,7 @@ module.exports.PivotTableRowHeaders = react.createClass({
 
 'use strict';
 
-module.exports.PivotTableDataCells = react.createClass({
+module.exports.PivotTableDataCells = React.createClass({
     render: function() {
         var self = this;
         var PivotRow = comps.PivotRow;
@@ -1915,7 +1915,7 @@ function ScrollEvent(scrollBarComp) {
     };
 }
 
-module.exports.HorizontalScrollBar = react.createClass({
+module.exports.HorizontalScrollBar = React.createClass({
     mixins: [scrollBarMixin],
     posProp: 'x',
     mousePosProp: 'pageX',
@@ -1924,7 +1924,7 @@ module.exports.HorizontalScrollBar = react.createClass({
     cssClass: 'orb-h-scrollbar'
 });
 
-module.exports.VerticalScrollBar = react.createClass({
+module.exports.VerticalScrollBar = React.createClass({
     mixins: [scrollBarMixin],
     posProp: 'y',
     mousePosProp: 'pageY',
@@ -1940,7 +1940,7 @@ module.exports.VerticalScrollBar = react.createClass({
 
 'use strict';
 
-module.exports.FilterPanel = react.createClass({
+module.exports.FilterPanel = React.createClass({
     pgridwidget: null,
     values: null,
     filterManager: null,
@@ -2528,7 +2528,7 @@ function FilterManager(reactComp, initialFilterObject) {
 
 'use strict';
 
-module.exports.Dropdown = react.createClass({
+module.exports.Dropdown = React.createClass({
     openOrClose: function(e) {
         var valueNode = ReactDOM.findDOMNode(this.refs.valueElement);
         var valuesListNode = ReactDOM.findDOMNode(this.refs.valuesList);
@@ -2622,7 +2622,7 @@ module.exports.Dropdown = react.createClass({
 
 'use strict';
 
-module.exports.Grid = react.createClass({
+module.exports.Grid = React.createClass({
     render: function() {
         var data = this.props.data;
         var headers = this.props.headers;
@@ -2688,7 +2688,7 @@ function createOverlay() {
     return overlayElement;
 }
 
-var Dialog = module.exports.Dialog = react.createClass({
+var Dialog = module.exports.Dialog = React.createClass({
     statics: {
         create: function() {
             var dialogFactory = React.createFactory(Dialog);
@@ -2771,7 +2771,7 @@ var Dialog = module.exports.Dialog = react.createClass({
 
 'use strict';
 
-module.exports.Toolbar = react.createClass({
+module.exports.Toolbar = React.createClass({
     _toInit: [],
     componentDidMount: function() {
         for (var i = 0; i < this._toInit.length; i++) {

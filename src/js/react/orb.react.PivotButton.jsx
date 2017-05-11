@@ -5,9 +5,12 @@
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 var pbid = 0;
 
-module.exports.PivotButton = react.createClass({
+module.exports.PivotButton = React.createClass({
 	displayName: 'PivotButton',
 	getInitialState: function () {
 		this.pbid = ++pbid;

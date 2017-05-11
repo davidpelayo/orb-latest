@@ -5,9 +5,12 @@
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 var dtid = 0;
 
-module.exports.DropTarget = react.createClass({
+module.exports.DropTarget = React.createClass({
 	getInitialState: function () {
 		this.dtid = ++dtid;
 		return {
@@ -38,11 +41,11 @@ module.exports.DropTarget = react.createClass({
 			callback();
 		}
 	},
-	render: function() {	
+	render: function() {
 		var self = this;
 		var DropIndicator = module.exports.DropIndicator;
 
-		var buttons = this.props.buttons.map(function(button, index) {			
+		var buttons = this.props.buttons.map(function(button, index) {
 			if(index < self.props.buttons.length - 1) {
 				return [
 					<td><DropIndicator isFirst={index === 0} position={index} axetype={self.props.axetype}></DropIndicator></td>,

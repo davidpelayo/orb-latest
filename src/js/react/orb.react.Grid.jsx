@@ -4,7 +4,10 @@
 
 'use strict';
 
-module.exports.Grid = react.createClass({
+var React = require('react');
+var ReactDOM = require('react-dom');
+
+module.exports.Grid = React.createClass({
   render: function() {
     var data = this.props.data;
     var headers = this.props.headers;
@@ -19,7 +22,7 @@ module.exports.Grid = react.createClass({
       }
       rows.push(<tr key={'h'}>{ headerRow }</tr>);
     }
-    
+
     if(data && data.length > 0) {
       for(var i = 0; i < data.length; i++) {
         var row = [];

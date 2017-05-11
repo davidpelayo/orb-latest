@@ -4,6 +4,9 @@
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 function createOverlay() {
   var overlayElement = document.createElement('div');
   overlayElement.className = 'orb-overlay orb-overlay-hidden';
@@ -11,7 +14,7 @@ function createOverlay() {
   return overlayElement;
 }
 
-var Dialog = module.exports.Dialog = react.createClass({
+var Dialog = module.exports.Dialog = React.createClass({
   statics: {
     create: function() {
         var dialogFactory = React.createFactory(Dialog);

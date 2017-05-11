@@ -5,8 +5,11 @@
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
 
-module.exports.DropIndicator = react.createClass({
+
+module.exports.DropIndicator = React.createClass({
 	displayName: 'DropIndicator',
 	getInitialState: function () {
 		dragManager.registerIndicator(this, this.props.axetype, this.props.position, this.onDragOver, this.onDragEnd);

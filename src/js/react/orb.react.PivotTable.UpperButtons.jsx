@@ -4,14 +4,17 @@
 
 'use strict';
 
-module.exports.PivotTableUpperButtons = react.createClass({
+var React = require('react');
+var ReactDOM = require('react-dom');
+
+module.exports.PivotTableUpperButtons = React.createClass({
   render: function() {
     var self = this;
     var PivotButton = comps.PivotButton;
     var DropTarget = comps.DropTarget;
 
     var config = this.props.pivotTableComp.pgridwidget.pgrid.config;
-    
+
     var fieldsDropTarget;
     if(config.canMoveFields) {
       var fieldsButtons = config.availablefields().map(function(field, index) {

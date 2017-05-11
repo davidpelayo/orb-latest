@@ -4,13 +4,16 @@
 
 'use strict';
 
-module.exports.PivotTableDataCells = react.createClass({
+var React = require('react');
+var ReactDOM = require('react-dom');
+
+module.exports.PivotTableDataCells = React.createClass({
   render: function() {
     var self = this;
     var PivotRow = comps.PivotRow;
 
     var pgridwidget = this.props.pivotTableComp.pgridwidget;
-    var layoutInfos = { 
+    var layoutInfos = {
       lastLeftMostCellVSpan: 0,
       topMostCells: {}
     };
