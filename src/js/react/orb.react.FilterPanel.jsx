@@ -18,7 +18,7 @@ module.exports.FilterPanel = React.createClass({
 	},
 	destroy: function() {
 		var container = ReactDOM.findDOMNode(this).parentNode;
-		React.unmountComponentAtNode(container);
+		ReactDOM.unmountComponentAtNode(container);
 		container.parentNode.removeChild(container);
 	},
 	onFilter: function(operator, term, staticValue, excludeStatic) {

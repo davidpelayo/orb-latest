@@ -7,6 +7,9 @@
 
 var React = require('react');
 var ReactDOM = require('react-dom');
+
+var react = typeof window === 'undefined' ? require('react') : window.React;
+var reactDOM = typeof window === 'undefined' ? require('react-dom') : window.ReactDOM;
 var utils = require('../orb.utils');
 var axe = require('../orb.axe');
 var uiheaders = require('../orb.ui.header');
@@ -22,10 +25,14 @@ var comps = module.exports;
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 var pivotId = 1;
 var themeChangeCallbacks = {};
 
 module.exports.PivotTable = React.createClass({
+    displayName: "PivotTable",
     id: pivotId++,
     pgrid: null,
     pgridwidget: null,
@@ -628,8 +635,11 @@ function clearTableWidths(tbl) {
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
 
 module.exports.PivotRow = React.createClass({
+    displayName: "PivotRow",
     render: function() {
         var self = this;
         var PivotCell = comps.PivotCell;
@@ -692,6 +702,7 @@ module.exports.PivotRow = React.createClass({
         );
     }
 });
+
 /** @jsx React.DOM */
 
 /* global module, require, React */
@@ -699,10 +710,14 @@ module.exports.PivotRow = React.createClass({
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 var _paddingLeft = null;
 var _borderLeft = null;
 
 module.exports.PivotCell = React.createClass({
+    displayName: "PivotCell",
     expand: function() {
         this.props.pivotTableComp.expandRow(this.props.cell);
     },
@@ -896,6 +911,9 @@ function getClassname(compProps) {
 /*jshint eqnull: true*/
 
 'use strict';
+
+var React = require('react');
+var ReactDOM = require('react-dom');
 
 var dragManager = module.exports.DragManager = (function() {
 
@@ -1101,6 +1119,9 @@ var dragManager = module.exports.DragManager = (function() {
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 
 module.exports.DropIndicator = React.createClass({
     displayName: 'DropIndicator',
@@ -1153,6 +1174,7 @@ module.exports.DropIndicator = React.createClass({
         });
     }
 });
+
 /** @jsx React.DOM */
 
 /* global module, require, react */
@@ -1160,9 +1182,13 @@ module.exports.DropIndicator = React.createClass({
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 var dtid = 0;
 
 module.exports.DropTarget = React.createClass({
+    displayName: "DropTarget",
     getInitialState: function() {
         this.dtid = ++dtid;
         return {
@@ -1244,12 +1270,16 @@ module.exports.DropTarget = React.createClass({
         );
     }
 });
+
 /** @jsx React.DOM */
 
 /* global module, require, react */
 /*jshint eqnull: true*/
 
 'use strict';
+
+var React = require('react');
+var ReactDOM = require('react-dom');
 
 var pbid = 0;
 
@@ -1458,7 +1488,11 @@ module.exports.PivotButton = React.createClass({
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 module.exports.PivotTableUpperButtons = React.createClass({
+    displayName: "PivotTableUpperButtons",
     render: function() {
         var self = this;
         var PivotButton = comps.PivotButton;
@@ -1532,13 +1566,18 @@ module.exports.PivotTableUpperButtons = React.createClass({
         );
     }
 });
+
 /** @jsx React.DOM */
 
 /* global module, require, React */
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 module.exports.PivotTableColumnButtons = React.createClass({
+    displayName: "PivotTableColumnButtons",
     render: function() {
         var self = this;
         var PivotButton = comps.PivotButton;
@@ -1562,13 +1601,18 @@ module.exports.PivotTableColumnButtons = React.createClass({
         });
     }
 });
+
 /** @jsx React.DOM */
 
 /* global module, require, React */
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 module.exports.PivotTableRowButtons = React.createClass({
+    displayName: "PivotTableRowButtons",
     render: function() {
         var self = this;
         var PivotButton = comps.PivotButton;
@@ -1592,13 +1636,18 @@ module.exports.PivotTableRowButtons = React.createClass({
         });
     }
 });
+
 /** @jsx React.DOM */
 
 /* global module, require, React */
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 module.exports.PivotTableColumnHeaders = React.createClass({
+    displayName: "PivotTableColumnHeaders",
     render: function() {
         var self = this;
         var PivotRow = comps.PivotRow;
@@ -1636,13 +1685,18 @@ module.exports.PivotTableColumnHeaders = React.createClass({
         );
     }
 });
+
 /** @jsx React.DOM */
 
 /* global module, require, React */
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 module.exports.PivotTableRowHeaders = React.createClass({
+    displayName: "PivotTableRowHeaders",
     setColGroup: function(widths) {
         var node = ReactDOM.findDOMNode(this);
         var colGroupNode = ReactDOM.findDOMNode(this.refs.colgroup);
@@ -1702,7 +1756,11 @@ module.exports.PivotTableRowHeaders = React.createClass({
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 module.exports.PivotTableDataCells = React.createClass({
+    displayName: "PivotTableDataCells",
     render: function() {
         var self = this;
         var PivotRow = comps.PivotRow;
@@ -1733,12 +1791,16 @@ module.exports.PivotTableDataCells = React.createClass({
         );
     }
 });
+
 /** @jsx React.DOM */
 
 /* global module, require, React, react, reactUtils, document */
 /*jshint eqnull: true*/
 
 'use strict';
+
+var React = require('react');
+var ReactDOM = require('react-dom');
 
 var scrollBarMixin = {
     scrollEvent: null,
@@ -1916,6 +1978,7 @@ function ScrollEvent(scrollBarComp) {
 }
 
 module.exports.HorizontalScrollBar = React.createClass({
+    displayName: "HorizontalScrollBar",
     mixins: [scrollBarMixin],
     posProp: 'x',
     mousePosProp: 'pageX',
@@ -1925,6 +1988,7 @@ module.exports.HorizontalScrollBar = React.createClass({
 });
 
 module.exports.VerticalScrollBar = React.createClass({
+    displayName: "VerticalScrollBar",
     mixins: [scrollBarMixin],
     posProp: 'y',
     mousePosProp: 'pageY',
@@ -1940,7 +2004,11 @@ module.exports.VerticalScrollBar = React.createClass({
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 module.exports.FilterPanel = React.createClass({
+    displayName: "FilterPanel",
     pgridwidget: null,
     values: null,
     filterManager: null,
@@ -1950,7 +2018,7 @@ module.exports.FilterPanel = React.createClass({
     },
     destroy: function() {
         var container = ReactDOM.findDOMNode(this).parentNode;
-        React.unmountComponentAtNode(container);
+        ReactDOM.unmountComponentAtNode(container);
         container.parentNode.removeChild(container);
     },
     onFilter: function(operator, term, staticValue, excludeStatic) {
@@ -2528,7 +2596,11 @@ function FilterManager(reactComp, initialFilterObject) {
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 module.exports.Dropdown = React.createClass({
+    displayName: "Dropdown",
     openOrClose: function(e) {
         var valueNode = ReactDOM.findDOMNode(this.refs.valueElement);
         var valuesListNode = ReactDOM.findDOMNode(this.refs.valuesList);
@@ -2622,7 +2694,11 @@ module.exports.Dropdown = React.createClass({
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 module.exports.Grid = React.createClass({
+    displayName: "Grid",
     render: function() {
         var data = this.props.data;
         var headers = this.props.headers;
@@ -2675,11 +2751,15 @@ module.exports.Grid = React.createClass({
         );
     }
 });
+
 /** @jsx React.DOM */
 
 /* global module, require, React */
 
 'use strict';
+
+var React = require('react');
+var ReactDOM = require('react-dom');
 
 function createOverlay() {
     var overlayElement = document.createElement('div');
@@ -2689,6 +2769,7 @@ function createOverlay() {
 }
 
 var Dialog = module.exports.Dialog = React.createClass({
+    displayName: "Dialog",
     statics: {
         create: function() {
             var dialogFactory = React.createFactory(Dialog);
@@ -2729,7 +2810,7 @@ var Dialog = module.exports.Dialog = React.createClass({
     close: function(e) {
         if (e.target == this.overlayElement || e.target.className === 'button-close') {
             this.overlayElement.removeEventListener('click', this.close);
-            React.unmountComponentAtNode(this.overlayElement);
+            ReactDOM.unmountComponentAtNode(this.overlayElement);
             this.setOverlayClass(false);
         }
     },
@@ -2771,7 +2852,11 @@ var Dialog = module.exports.Dialog = React.createClass({
 
 'use strict';
 
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 module.exports.Toolbar = React.createClass({
+    displayName: "Toolbar",
     _toInit: [],
     componentDidMount: function() {
         for (var i = 0; i < this._toInit.length; i++) {
