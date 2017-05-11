@@ -166,7 +166,7 @@ module.exports = function(config) {
                 pgridwidget: self
             });
 
-            pivotComponent = React.render(pivottable, element);
+            pivotComponent = ReactDOM.render(pivottable, element);
         }
     };
 

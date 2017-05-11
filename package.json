@@ -1,6 +1,6 @@
 {
   "name": "orb-latest",
-  "version": "1.0.11-fork",
+  "version": "1.0.12-fork",
   "license": "MIT",
   "description": "Pivot table javascript library",
   "author": "David Pelayo <hi@davidpelayo.com>",
