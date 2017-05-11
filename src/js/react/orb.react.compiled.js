@@ -186,7 +186,6 @@ module.exports.PivotTable = react.createClass({
         nodes.rowHeadersTable.size = reactUtils.getSize(nodes.rowHeadersTable.node);
 
         // get row buttons container width
-        //nodes.rowButtonsContainer.node.style.width = '';
         var rowButtonsContainerWidth = reactUtils.getSize(nodes.rowButtonsContainer.node.children[0]).width;
 
         // get array of dataCellsTable column widths
@@ -212,9 +211,6 @@ module.exports.PivotTable = react.createClass({
             nodes.rowHeadersTable.size.width += rowDiff;
             nodes.rowHeadersTable.widthArray[nodes.rowHeadersTable.widthArray.length - 1] += rowDiff;
         }
-
-        //nodes.rowButtonsContainer.node.style.width = (rowHeadersTableWidth + 1) + 'px';
-        //nodes.rowButtonsContainer.node.style.paddingRight = (rowHeadersTableWidth + 1 - rowButtonsContainerWidth + 17) + 'px';
 
         // Set dataCellsTable cells widths according to the computed dataCellsTableMaxWidthArray
         reactUtils.updateTableColGroup(nodes.dataCellsTable.node, dataCellsTableMaxWidthArray);
@@ -598,17 +594,17 @@ function setTableWidths(tblObject, newWidthArray) {
 }
 
 function clearTableWidths(tbl) {
-        if (tbl) {
-            for (var rowIndex = 0; rowIndex < tbl.rows.length; rowIndex++) {
-                var row = tbl.rows[rowIndex];
-                for (var cellIndex = 0; cellIndex < row.cells.length; cellIndex++) {
-                    row.cells[cellIndex].children[0].style.width = '';
-                }
+    if (tbl) {
+        for (var rowIndex = 0; rowIndex < tbl.rows.length; rowIndex++) {
+            var row = tbl.rows[rowIndex];
+            for (var cellIndex = 0; cellIndex < row.cells.length; cellIndex++) {
+                row.cells[cellIndex].children[0].style.width = '';
             }
-            tbl.style.width = '';
         }
+        tbl.style.width = '';
     }
-    /** @jsx React.DOM */
+}
+/** @jsx React.DOM */
 
 /* global module, require, React */
 
@@ -847,38 +843,38 @@ module.exports.PivotCell = react.createClass({
 });
 
 function getClassname(compProps) {
-        var cell = compProps.cell;
-        var classname = cell.cssclass;
-        var isEmpty = cell.template === 'cell-template-empty';
+    var cell = compProps.cell;
+    var classname = cell.cssclass;
+    var isEmpty = cell.template === 'cell-template-empty';
 
-        if (!cell.visible()) {
-            classname += ' cell-hidden';
-        }
-
-        if (cell.type === uiheaders.HeaderType.SUB_TOTAL && cell.expanded) {
-            classname += ' header-st-exp';
-        }
-
-        if (cell.type === uiheaders.HeaderType.GRAND_TOTAL) {
-            if (cell.dim.depth === 1) {
-                classname += ' header-nofields';
-            } else if (cell.dim.depth > 2) {
-                classname += ' header-gt-exp';
-            }
-        }
-
-        if (compProps.leftmost) {
-            classname += ' ' + (cell.template === 'cell-template-datavalue' ? 'cell' : 'header') + '-leftmost';
-        }
-
-        if (compProps.topmost) {
-            classname += ' cell-topmost';
-        }
-
-        return classname;
+    if (!cell.visible()) {
+        classname += ' cell-hidden';
     }
-    /* global module, require, react, reactUtils */
-    /*jshint eqnull: true*/
+
+    if (cell.type === uiheaders.HeaderType.SUB_TOTAL && cell.expanded) {
+        classname += ' header-st-exp';
+    }
+
+    if (cell.type === uiheaders.HeaderType.GRAND_TOTAL) {
+        if (cell.dim.depth === 1) {
+            classname += ' header-nofields';
+        } else if (cell.dim.depth > 2) {
+            classname += ' header-gt-exp';
+        }
+    }
+
+    if (compProps.leftmost) {
+        classname += ' ' + (cell.template === 'cell-template-datavalue' ? 'cell' : 'header') + '-leftmost';
+    }
+
+    if (compProps.topmost) {
+        classname += ' cell-topmost';
+    }
+
+    return classname;
+}
+/* global module, require, react, reactUtils */
+/*jshint eqnull: true*/
 
 'use strict';
 

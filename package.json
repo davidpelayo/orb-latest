@@ -1,13 +1,13 @@
 {
   "name": "orb-latest",
-  "version": "1.0.9-fork",
+  "version": "1.0.10-fork",
   "license": "MIT",
   "description": "Pivot table javascript library",
   "author": "David Pelayo <hi@davidpelayo.com>",
   "homepage": "http://orbjs.net/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/davidpelayo/orb.git"
+    "url": "https://github.com/davidpelayo/orb-latest.git"
   },
   "keywords": [
     "pivot table",
@@ -35,25 +35,25 @@
     "react": "~15.4.2"
   },
   "devDependencies": {
-    "gulp": "~3.8.10",
     "browserify": "~8.1.1",
-    "vinyl-source-stream": "~1.0.0",
-    "vinyl-buffer": "~1.0.0",
-    "gulp-uglify": "~1.1.0",
-    "gulp-sourcemaps": "~1.3.0",
-    "gulp-replace": "~0.5.1",
-    "gulp-rename": "~1.2.0",
+    "del": "~1.1.1",
+    "gulp": "~3.8.10",
+    "gulp-concat": "~2.4.3",
     "gulp-derequire": "~2.0.0",
     "gulp-header": "~1.2.2",
-    "gulp-concat": "~2.4.3",
-    "gulp-react": "~2.0.0",
-    "gulp-less": "~2.0.1",
-    "gulp-minify-css": "~0.3.13",
-    "gulp-jsbeautifier": "0.0.4",
-    "jasmine": "~2.1.1",
     "gulp-jasmine": "~2.0.0",
+    "gulp-jsbeautifier": "0.0.4",
+    "gulp-less": "^3.3.0",
+    "gulp-minify-css": "~0.3.13",
+    "gulp-react": "~2.0.0",
+    "gulp-rename": "~1.2.0",
+    "gulp-replace": "~0.5.1",
+    "gulp-sourcemaps": "~1.3.0",
     "gulp-tap": "~0.1.3",
+    "gulp-uglify": "~1.1.0",
+    "jasmine": "~2.1.1",
     "less": "~2.2.0",
-    "del": "~1.1.1"
+    "vinyl-buffer": "~1.0.0",
+    "vinyl-source-stream": "~1.0.0"
   }
 }
