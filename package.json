@@ -1,13 +1,13 @@
 {
-  "name": "orb",
-  "version": "1.0.9",
+  "name": "orb-latest",
+  "version": "1.0.9-fork",
   "license": "MIT",
   "description": "Pivot table javascript library",
-  "author": "Najmeddine Nouri <devnajm@gmail.com>",
+  "author": "David Pelayo <hi@davidpelayo.com>",
   "homepage": "http://orbjs.net/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nnajm/orb.git"
+    "url": "https://github.com/davidpelayo/orb.git"
   },
   "keywords": [
     "pivot table",
@@ -32,7 +32,7 @@
     "node": ">=0.10.25"
   },
   "dependencies": {
-    "react": "~0.12.2"
+    "react": "~15.4.2"
   },
   "devDependencies": {
     "gulp": "~3.8.10",
