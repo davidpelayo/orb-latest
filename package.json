@@ -1,6 +1,6 @@
 {
   "name": "orb-latest",
-  "version": "1.0.10-fork",
+  "version": "1.0.11-fork",
   "license": "MIT",
   "description": "Pivot table javascript library",
   "author": "David Pelayo <hi@davidpelayo.com>",
@@ -32,12 +32,13 @@
     "node": ">=0.10.25"
   },
   "dependencies": {
-    "react": "~15.4.2"
+    "react": "~15.5.4",
+    "react-dom": "^15.5.4"
   },
   "devDependencies": {
     "browserify": "~8.1.1",
     "del": "~1.1.1",
-    "gulp": "~3.8.10",
+    "gulp": "~3.9.1",
     "gulp-concat": "~2.4.3",
     "gulp-derequire": "~2.0.0",
     "gulp-header": "~1.2.2",

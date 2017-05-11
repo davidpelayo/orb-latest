@@ -39,7 +39,7 @@ module.exports.PivotButton = react.createClass({
         filterContainer.style.left = filterButtonPos.x + 'px';
         document.body.appendChild(filterContainer);
 
-        React.render(filterPanel, filterContainer);
+        ReactDOM.render(filterPanel, filterContainer);
 
 		// prevent event bubbling (to prevent text selection while dragging for example)
 		e.stopPropagation();
@@ -74,7 +74,7 @@ module.exports.PivotButton = react.createClass({
 		} else {
 
 			var thispos = reactUtils.getOffset(this.getDOMNode());
-			
+
 			// inform mousedown, save start pos
 			this.setState({
 				mousedown: true,
@@ -88,13 +88,13 @@ module.exports.PivotButton = react.createClass({
 				}
 			});
 		}
-		
+
 		// prevent event bubbling (to prevent text selection while dragging for example)
 		e.stopPropagation();
 		e.preventDefault();
 	},
 	onMouseUp: function(e) {
-		
+
 		var isdragged = this.state.dragging;
 
 		this.setState({
@@ -106,7 +106,7 @@ module.exports.PivotButton = react.createClass({
 				y: 0
 			}
 		});
-		
+
 		if(!e.ctrlKey && !isdragged) {
 			// if button was not dragged, proceed as a click
 			this.props.pivotTableComp.sort(this.props.axetype, this.props.field);
@@ -155,7 +155,7 @@ module.exports.PivotButton = react.createClass({
 			divstyle.width = self.state.size.width + 'px';
 		}
 
-		var sortDirectionClass = self.props.field.sort.order === 'asc' ? 
+		var sortDirectionClass = self.props.field.sort.order === 'asc' ?
 			'sort-asc' :
 			//' \u2191' :
 			(self.props.field.sort.order === 'desc' ?
@@ -168,7 +168,7 @@ module.exports.PivotButton = react.createClass({
 			fieldAggFunc = <small>{' (' + self.props.field.aggregateFuncName + ')' }</small>;
 		}
 
-		return <div key={self.props.field.name} 
+		return <div key={self.props.field.name}
 		            className={this.props.pivotTableComp.pgrid.config.theme.getButtonClasses().pivotButton}
 		            onMouseDown={this.onMouseDown}
 		            onMouseUp={this.onMouseUp}

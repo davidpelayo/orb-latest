@@ -7,7 +7,7 @@
 function createOverlay() {
   var overlayElement = document.createElement('div');
   overlayElement.className = 'orb-overlay orb-overlay-hidden';
-  document.body.appendChild(overlayElement);  
+  document.body.appendChild(overlayElement);
   return overlayElement;
 }
 
@@ -19,7 +19,7 @@ var Dialog = module.exports.Dialog = react.createClass({
 
         return {
           show: function(props) {
-            React.render(dialogFactory(props), overlay);
+            ReactDOM.render(dialogFactory(props), overlay);
           }
         };
     }
@@ -61,7 +61,7 @@ var Dialog = module.exports.Dialog = react.createClass({
       var comp = React.createElement(this.props.comp.type, this.props.comp.props);
       var classes = this.props.theme.getDialogClasses();
 
-      return <div className={classes.dialog} style={ this.props.style || {} }> 
+      return <div className={classes.dialog} style={ this.props.style || {} }>
       <div className={classes.content}>
           <div className={classes.header}><div className="button-close" onClick={ this.close }></div><div className={classes.title}>{ this.props.title }</div></div>
           <div className={classes.body}>

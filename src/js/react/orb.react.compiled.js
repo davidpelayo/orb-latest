@@ -6,6 +6,7 @@
 'use strict';
 
 var react = typeof window === 'undefined' ? require('react') : window.React;
+var reactDOM = typeof window === 'undefined' ? require('react-dom') : window.ReactDOM;
 var utils = require('../orb.utils');
 var axe = require('../orb.axe');
 var uiheaders = require('../orb.ui.header');
@@ -1271,7 +1272,7 @@ module.exports.PivotButton = react.createClass({
         filterContainer.style.left = filterButtonPos.x + 'px';
         document.body.appendChild(filterContainer);
 
-        React.render(filterPanel, filterContainer);
+        ReactDOM.render(filterPanel, filterContainer);
 
         // prevent event bubbling (to prevent text selection while dragging for example)
         e.stopPropagation();
@@ -1431,6 +1432,7 @@ module.exports.PivotButton = react.createClass({
         );
     }
 });
+
 /** @jsx React.DOM */
 
 /* global module, require, React */
@@ -2672,7 +2674,7 @@ var Dialog = module.exports.Dialog = react.createClass({
 
             return {
                 show: function(props) {
-                    React.render(dialogFactory(props), overlay);
+                    ReactDOM.render(dialogFactory(props), overlay);
                 }
             };
         }
@@ -2739,6 +2741,7 @@ var Dialog = module.exports.Dialog = react.createClass({
         }
     }
 });
+
 /** @jsx React.DOM */
 
 /* global module, require, react */
