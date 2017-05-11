@@ -7,8 +7,8 @@
 
 module.exports.Dropdown = react.createClass({
 	openOrClose: function(e) {
-		var valueNode = this.refs.valueElement.getDOMNode();
-		var valuesListNode = this.refs.valuesList.getDOMNode();
+		var valueNode = ReactDOM.findDOMNode(this.refs.valueElement);
+		var valuesListNode = ReactDOM.findDOMNode(this.refs.valuesList);
 		if(e.target === valueNode && valuesListNode.style.display === 'none') {
 			valuesListNode.style.display = 'block';
 		} else {
@@ -16,12 +16,12 @@ module.exports.Dropdown = react.createClass({
 		}
 	},
 	onMouseEnter: function() {
-		var valueNode = this.refs.valueElement.getDOMNode();
+		var valueNode = ReactDOM.findDOMNode(this.refs.valueElement);
 		valueNode.className = "orb-tgl-btn-down";
 		valueNode.style.backgroundPosition = 'right center';
 	},
 	onMouseLeave: function() {
-		this.refs.valueElement.getDOMNode().className = "";
+		ReactDOM.findDOMNode(this.refs.valueElement).className = "";
 	},
 	componentDidMount: function() {
 		document.addEventListener('click', this.openOrClose);
@@ -30,7 +30,7 @@ module.exports.Dropdown = react.createClass({
 		document.removeEventListener('click', this.openOrClose);
 	},
 	selectValue: function(e) {
-		var listNode = this.refs.valuesList.getDOMNode();
+		var listNode = ReactDOM.findDOMNode(this.refs.valuesList);
 		var target = e.target;
 		var isli = false;
 		while(!isli && target != null) {
@@ -43,7 +43,7 @@ module.exports.Dropdown = react.createClass({
 
 		if(isli) {
 			var value = target.textContent;
-			var valueElement = this.refs.valueElement.getDOMNode();
+			var valueElement = ReactDOM.findDOMNode(this.refs.valueElement);
 			if(valueElement.textContent != value) {
 				valueElement.textContent = value;
 				if(this.props.onValueChanged) {

@@ -29,7 +29,7 @@ var Dialog = module.exports.Dialog = react.createClass({
     this.overlayElement.className = this.props.theme.getDialogClasses(visible).overlay;
   },
   componentDidMount: function() {
-    this.overlayElement = this.getDOMNode().parentNode;
+    this.overlayElement = ReactDOM.findDOMNode(this).parentNode;
     this.setOverlayClass(true);
     this.overlayElement.addEventListener('click', this.close);
 

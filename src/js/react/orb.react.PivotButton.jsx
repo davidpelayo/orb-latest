@@ -24,7 +24,7 @@ module.exports.PivotButton = react.createClass({
 		// left mouse button only
 		if (e.button !== 0) return;
 
-		var filterButton = this.refs.filterButton.getDOMNode();
+		var filterButton = ReactDOM.findDOMNode(this.refs.filterButton);
 		var filterButtonPos = reactUtils.getOffset(filterButton);
 		var filterContainer = document.createElement('div');
 
@@ -73,7 +73,7 @@ module.exports.PivotButton = react.createClass({
 			this.props.pivotTableComp.toggleFieldExpansion(this.props.axetype, this.props.field);
 		} else {
 
-			var thispos = reactUtils.getOffset(this.getDOMNode());
+			var thispos = reactUtils.getOffset(ReactDOM.findDOMNode(this));
 
 			// inform mousedown, save start pos
 			this.setState({
@@ -118,7 +118,7 @@ module.exports.PivotButton = react.createClass({
 
 		var size = null;
 		if(!this.state.dragging) {
-			size = reactUtils.getSize(this.getDOMNode());
+			size = reactUtils.getSize(ReactDOM.findDOMNode(this));
 		} else {
 			size = this.state.size;
 		}
@@ -140,7 +140,7 @@ module.exports.PivotButton = react.createClass({
 		e.preventDefault();
 	},
 	updateClasses: function() {
-		this.getDOMNode().className = this.props.pivotTableComp.pgrid.config.theme.getButtonClasses().pivotButton;
+		ReactDOM.findDOMNode(this).className = this.props.pivotTableComp.pgrid.config.theme.getButtonClasses().pivotButton;
 	},
 	render: function() {
 		var self = this;

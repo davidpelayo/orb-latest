@@ -14,7 +14,7 @@ module.exports.FilterPanel = react.createClass({
 		return {};
 	},
 	destroy: function() {
-		var container = this.getDOMNode().parentNode;
+		var container = ReactDOM.findDOMNode(this).parentNode;
 		React.unmountComponentAtNode(container);
 		container.parentNode.removeChild(container);
 	},
@@ -23,7 +23,7 @@ module.exports.FilterPanel = react.createClass({
 		this.destroy();
 	},
 	onMouseDown: function(e) {
-		var container = this.getDOMNode().parentNode;
+		var container = ReactDOM.findDOMNode(this).parentNode;
 		var target = e.target;
 		while(target != null) {
 			if(target == container) {
@@ -35,7 +35,7 @@ module.exports.FilterPanel = react.createClass({
 		this.destroy();
 	},
 	onMouseWheel: function(e) {
-		var valuesTable = this.refs.valuesTable.getDOMNode();		
+		var valuesTable = ReactDOM.findDOMNode(this.refs.valuesTable);
 		var target = e.target;
 		while(target != null) {
 			if(target == valuesTable) {
@@ -56,7 +56,7 @@ module.exports.FilterPanel = react.createClass({
 		window.addEventListener('resize', this.destroy);
 	},
 	componentDidMount: function() {
-		this.filterManager.init(this.getDOMNode());
+		this.filterManager.init(ReactDOM.findDOMNode(this));
 	},
 	componentWillUnmount : function() {
 		document.removeEventListener('mousedown', this.onMouseDown);
@@ -89,7 +89,7 @@ module.exports.FilterPanel = react.createClass({
 		}
 
 		var buttonClass = this.props.pivotTableComp.pgrid.config.theme.getButtonClasses().orbButton;
-		var pivotStyle = window.getComputedStyle(this.props.pivotTableComp.getDOMNode(), null );
+		var pivotStyle = window.getComputedStyle(ReactDOM.findDOMNode(this.props.pivotTableComp), null );
 		var style = {
 			fontFamily: pivotStyle.getPropertyValue('font-family'),
             fontSize: pivotStyle.getPropertyValue('font-size')
@@ -122,7 +122,7 @@ module.exports.FilterPanel = react.createClass({
 								<td><div className="srchclear-btn" onClick={this.clearFilter}>x</div></td>
 							</tr>
 						</tbody>
-					</table>					
+					</table>
 				</td>
 			</tr>
 			<tr>
@@ -225,9 +225,9 @@ function FilterManager(reactComp, initialFilterObject) {
 				toExclude: initialFilterObject.excludeStatic
 			};
 
-			if(initialFilterObject.term) {				
+			if(initialFilterObject.term) {
 				isSearchMode = true;
-				
+
 				operator = initialFilterObject.operator;
 				self.toggleRegexpButtonVisibility();
 
@@ -258,12 +258,12 @@ function FilterManager(reactComp, initialFilterObject) {
 		elems.searchBox.addEventListener('keyup', self.searchChanged);
 
 		elems.clearSearchButton.addEventListener('click', self.clearSearchBox);
-		
-		elems.okButton.addEventListener('click', function() { 
+
+		elems.okButton.addEventListener('click', function() {
 			var checkedObj = self.getCheckedValues();
-			reactComp.onFilter(operator.name, operator.regexpSupported && isSearchMode && isRegexMode ? new RegExp(lastSearchTerm, 'i') : lastSearchTerm, checkedObj.values, checkedObj.toExclude); 
+			reactComp.onFilter(operator.name, operator.regexpSupported && isSearchMode && isRegexMode ? new RegExp(lastSearchTerm, 'i') : lastSearchTerm, checkedObj.values, checkedObj.toExclude);
 		});
-		elems.cancelButton.addEventListener('click', function() { reactComp.destroy(); });		
+		elems.cancelButton.addEventListener('click', function() { reactComp.destroy(); });
 	}
 
 	function ResizeManager(outerContainerElem, valuesTableElem, resizeGripElem) {
@@ -346,7 +346,7 @@ function FilterManager(reactComp, initialFilterObject) {
 		if(operator.regexpSupported) {
 			elems.enableRegexButton.addEventListener('click', self.regexpActiveChanged);
 			reactUtils.removeClass(elems.enableRegexButton, 'srchtyp-col-hidden');
-			
+
 		} else {
 			elems.enableRegexButton.removeEventListener('click', self.regexpActiveChanged);
 			reactUtils.addClass(elems.enableRegexButton, 'srchtyp-col-hidden');
@@ -362,7 +362,7 @@ function FilterManager(reactComp, initialFilterObject) {
 		}
 	};
 
-	this.regexpActiveChanged = function() { 
+	this.regexpActiveChanged = function() {
 		isRegexMode = !isRegexMode;
 		self.toggleRegexpButtonState();
 		self.searchChanged('regexModeChanged');
@@ -379,7 +379,7 @@ function FilterManager(reactComp, initialFilterObject) {
 		}
 	};
 
-	this.applyFilterTerm = function(operator, term) {		
+	this.applyFilterTerm = function(operator, term) {
 		var defaultVisible = term ? false : true;
 		var opterm = operator.regexpSupported && isSearchMode ? (isRegexMode ? term : utils.escapeRegex(term)) : term;
 		checkboxVisible(elems.allCheckbox, defaultVisible);
@@ -396,7 +396,7 @@ function FilterManager(reactComp, initialFilterObject) {
 		var search = (elems.searchBox.value || '').trim();
 		if(e === 'operatorChanged' || (e === 'regexModeChanged' && search) || search != lastSearchTerm) {
 			lastSearchTerm = search;
-			
+
 			var previousIsSearchMode = isSearchMode;
 			isSearchMode = search !== '';
 
@@ -427,7 +427,7 @@ function FilterManager(reactComp, initialFilterObject) {
 			var staticValue;
 			var i,
 				val,
-				checkbox;				
+				checkbox;
 			var valuesCount = 0,
 				checkedCount = 0;
 
@@ -475,7 +475,7 @@ function FilterManager(reactComp, initialFilterObject) {
 			null :
 			(values == null || values === filtering.ALL ?
 				true :
-				(values === filtering.NONE ? 
+				(values === filtering.NONE ?
 					false :
 					!!values
 				)

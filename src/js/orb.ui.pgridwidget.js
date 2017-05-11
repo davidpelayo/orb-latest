@@ -105,7 +105,7 @@ module.exports = function(config) {
     this.refreshData = function(data) {
         self.pgrid.refreshData(data);
         buildUi();
-        pivotComponent.setProps({});
+        pivotComponent.setState({ dirty: !this.state.dirty }); // TODO quick fix to deprecated this.setProps()
     };
 
     this.applyFilter = function(fieldname, operator, term, staticValue, excludeStatic) {
@@ -192,7 +192,7 @@ module.exports = function(config) {
                 }
             }
 
-            var pivotStyle = window.getComputedStyle( pivotComponent.getDOMNode(), null );
+            var pivotStyle = window.getComputedStyle( ReactDOM.findDOMNode(pivotComponent), null );
 
             dialog.show({
                 title: title,

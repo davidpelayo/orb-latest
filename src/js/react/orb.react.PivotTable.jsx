@@ -13,7 +13,7 @@ module.exports.PivotTable = react.createClass({
   pgridwidget: null,
   getInitialState: function() {
     comps.DragManager.init(this);
-    
+
     themeChangeCallbacks[this.id] = [];
     this.registerThemeChanged(this.updateClasses);
 
@@ -23,39 +23,39 @@ module.exports.PivotTable = react.createClass({
   },
   sort: function(axetype, field) {
     this.pgridwidget.sort(axetype, field);
-    this.setProps({});
+    this.setState({ dirty: !this.state.dirty }); // TODO quick fix to deprecated this.setProps()
   },
   moveButton: function(button, newAxeType, position) {
     if(this.pgridwidget.moveField(button.props.field.name, button.props.axetype, newAxeType, position)) {
-      this.setProps({});
+      this.setState({ dirty: !this.state.dirty }); // TODO quick fix to deprecated this.setProps()
     }
   },
   toggleFieldExpansion: function(axetype, field, newState) {
     if(this.pgridwidget.toggleFieldExpansion(axetype, field, newState)) {
-      this.setProps({});
+      this.setState({ dirty: !this.state.dirty }); // TODO quick fix to deprecated this.setProps()
     }
   },
   toggleSubtotals: function(axetype) {
     if(this.pgridwidget.toggleSubtotals(axetype)) {
-      this.setProps({});
+      this.setState({ dirty: !this.state.dirty }); // TODO quick fix to deprecated this.setProps()
     }
   },
   toggleGrandtotal: function(axetype) {
     if(this.pgridwidget.toggleGrandtotal(axetype)) {
-      this.setProps({});
+      this.setState({ dirty: !this.state.dirty }); // TODO quick fix to deprecated this.setProps()
     }
   },
   expandRow: function(cell) {
     cell.expand();
-    this.setProps({});
+    this.setState({ dirty: !this.state.dirty }); // TODO quick fix to deprecated this.setProps()
   },
   collapseRow: function(cell) {
     cell.subtotalHeader.collapse();
-    this.setProps({});
+    this.setState({ dirty: !this.state.dirty }); // TODO quick fix to deprecated this.setProps()
   },
   applyFilter: function(fieldname, operator, term, staticValue, excludeStatic) {
     this.pgridwidget.applyFilter(fieldname, operator, term, staticValue, excludeStatic);
-    this.setProps({});
+    this.setState({ dirty: !this.state.dirty }); // TODO quick fix to deprecated this.setProps()
   },
   registerThemeChanged: function(compCallback) {
     if(compCallback) {
@@ -77,8 +77,8 @@ module.exports.PivotTable = react.createClass({
     }
   },
   updateClasses: function() {
-      var thisnode = this.getDOMNode();
-      var classes = this.pgridwidget.pgrid.config.theme.getPivotClasses();    
+      var thisnode = ReactDOM.findDOMNode(this);
+      var classes = this.pgridwidget.pgrid.config.theme.getPivotClasses();
       thisnode.className = classes.container;
       thisnode.children[1].className = classes.table;
   },
@@ -86,15 +86,15 @@ module.exports.PivotTable = react.createClass({
     this.synchronizeCompsWidths();
   },
   componentDidMount: function() {
-    var dataCellsContainerNode = this.refs.dataCellsContainer.getDOMNode();
-    var dataCellsTableNode = this.refs.dataCellsTable.getDOMNode();
-    var colHeadersContainerNode = this.refs.colHeadersContainer.getDOMNode();
-    var rowHeadersContainerNode = this.refs.rowHeadersContainer.getDOMNode();
+    var dataCellsContainerNode = ReactDOM.findDOMNode(this.refs.dataCellsContainer);
+    var dataCellsTableNode = ReactDOM.findDOMNode(this.refs.dataCellsTable);
+    var colHeadersContainerNode = ReactDOM.findDOMNode(this.refs.colHeadersContainer);
+    var rowHeadersContainerNode = ReactDOM.findDOMNode(this.refs.rowHeadersContainer);
 
     this.refs.horizontalScrollBar.setScrollClient(dataCellsContainerNode, function(scrollPercent) {
       var scrollAmount = Math.ceil(
         scrollPercent * (
-          reactUtils.getSize(dataCellsTableNode).width - 
+          reactUtils.getSize(dataCellsTableNode).width -
           reactUtils.getSize(dataCellsContainerNode).width
         )
       );
@@ -105,7 +105,7 @@ module.exports.PivotTable = react.createClass({
     this.refs.verticalScrollBar.setScrollClient(dataCellsContainerNode, function(scrollPercent) {
       var scrollAmount = Math.ceil(
         scrollPercent * (
-          reactUtils.getSize(dataCellsTableNode).height - 
+          reactUtils.getSize(dataCellsTableNode).height -
           reactUtils.getSize(dataCellsContainerNode).height
         )
       );
@@ -120,11 +120,11 @@ module.exports.PivotTable = react.createClass({
     var scrollbar;
     var amount;
 
-    if(e.currentTarget == (elem = this.refs.colHeadersContainer.getDOMNode())) {
+    if(e.currentTarget == (elem = ReactDOM.findDOMNode(this.refs.colHeadersContainer))) {
       scrollbar = this.refs.horizontalScrollBar;
       amount = e.deltaX || e.deltaY;
-    } else if((e.currentTarget == (elem = this.refs.rowHeadersContainer.getDOMNode())) ||
-              (e.currentTarget == (elem = this.refs.dataCellsContainer.getDOMNode())) ) {
+    } else if((e.currentTarget == (elem = ReactDOM.findDOMNode(this.refs.rowHeadersContainer))) ||
+              (e.currentTarget == (elem = ReactDOM.findDOMNode(this.refs.dataCellsContainer))) ) {
       scrollbar = this.refs.verticalScrollBar;
       amount = e.deltaY;
     }
@@ -137,7 +137,7 @@ module.exports.PivotTable = react.createClass({
   synchronizeCompsWidths: function() {
       var self = this;
 
-      var pivotWrapperTable = self.refs.pivotWrapperTable.getDOMNode();
+      var pivotWrapperTable = ReactDOM.findDOMNode(self.refs.pivotWrapperTable);
 
       var nodes = (function() {
         var nds = {};
@@ -146,7 +146,7 @@ module.exports.PivotTable = react.createClass({
          'toolbar', 'horizontalScrollBar', 'verticalScrollBar'].forEach(function(refname) {
           if(self.refs[refname]) {
             nds[refname] = {
-              node: self.refs[refname].getDOMNode()
+              node: ReactDOM.findDOMNode(self.refs[refname])
             };
             nds[refname].size = reactUtils.getSize(nds[refname].node);
           }
@@ -207,7 +207,7 @@ module.exports.PivotTable = react.createClass({
       nodes.rowHeadersTable.node.style.width = rowHeadersTableWidth + 'px';
 
       var dataCellsContainerWidth = Math.min(
-        dataCellsTableMaxWidth + 1, 
+        dataCellsTableMaxWidth + 1,
         nodes.pivotContainer.size.width - rowHeadersTableWidth - nodes.verticalScrollBar.size.width);
 
       // Adjust data cells container width
@@ -232,7 +232,7 @@ module.exports.PivotTable = react.createClass({
     }
 
     reactUtils.updateTableColGroup(
-      pivotWrapperTable, 
+      pivotWrapperTable,
       [
         rowHeadersTableWidth,
         dataCellsContainerWidth,
@@ -263,7 +263,7 @@ module.exports.PivotTable = react.createClass({
     var HorizontalScrollBar = comps.HorizontalScrollBar;
     var VerticalScrollBar = comps.VerticalScrollBar;
 
-    var classes = config.theme.getPivotClasses();    
+    var classes = config.theme.getPivotClasses();
 
     var tblStyle = {};
     if(config.width) { tblStyle.width = config.width; }
@@ -284,7 +284,7 @@ module.exports.PivotTable = react.createClass({
         <tbody>
           <tr ref="upperbuttonsRow">
             <td colSpan="4">
-              <PivotTableUpperButtons pivotTableComp={self}></PivotTableUpperButtons>              
+              <PivotTableUpperButtons pivotTableComp={self}></PivotTableUpperButtons>
             </td>
           </tr>
           <tr ref="columnbuttonsRow">
@@ -299,7 +299,7 @@ module.exports.PivotTable = react.createClass({
               <PivotTableRowButtons pivotTableComp={self} ref="rowButtonsContainer"></PivotTableRowButtons>
             </td>
             <td>
-              <PivotTableColumnHeaders pivotTableComp={self} ref="colHeadersContainer"></PivotTableColumnHeaders> 
+              <PivotTableColumnHeaders pivotTableComp={self} ref="colHeadersContainer"></PivotTableColumnHeaders>
             </td>
             <td colSpan="2"></td>
           </tr>
@@ -430,7 +430,7 @@ function setTableWidths(tblObject, newWidthArray) {
 
     // for each row, set its cells width
     for(var rowIndex = 0; rowIndex < tbl.rows.length; rowIndex++) {
-      
+
       // current row
       var currRow = tbl.rows[rowIndex];
       // index in newWidthArray
@@ -439,7 +439,7 @@ function setTableWidths(tblObject, newWidthArray) {
 
       // set width of each cell
       for(var cellIndex = 0; cellIndex < currRow.cells.length; cellIndex++) {
-        
+
         // current cell
         var currCell = currRow.cells[cellIndex];
         if(currCell.__orb._visible) {

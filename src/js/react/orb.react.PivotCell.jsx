@@ -16,7 +16,7 @@ module.exports.PivotCell = react.createClass({
     this.props.pivotTableComp.collapseRow(this.props.cell);
   },
   updateCellInfos: function() {
-    var node = this.getDOMNode();
+    var node = ReactDOM.findDOMNode(this);
     var cell = this.props.cell;
     node.__orb = node.__orb || {};
 
@@ -25,7 +25,7 @@ module.exports.PivotCell = react.createClass({
       node.__orb._visible = false;
 
     } else {
-      var cellContentNode = this.refs.cellContent.getDOMNode();
+      var cellContentNode = ReactDOM.findDOMNode(this.refs.cellContent);
 
       var text = node.textContent;
       var propList = [];
@@ -148,18 +148,18 @@ function getClassname(compProps) {
     var isEmpty = cell.template === 'cell-template-empty';
 
     if(!cell.visible()) {
-      classname += ' cell-hidden'; 
+      classname += ' cell-hidden';
     }
 
     if(cell.type === uiheaders.HeaderType.SUB_TOTAL && cell.expanded) {
-      classname += ' header-st-exp'; 
+      classname += ' header-st-exp';
     }
 
     if(cell.type === uiheaders.HeaderType.GRAND_TOTAL) {
       if(cell.dim.depth === 1) {
-        classname += ' header-nofields'; 
+        classname += ' header-nofields';
       } else if(cell.dim.depth > 2) {
-        classname += ' header-gt-exp'; 
+        classname += ' header-gt-exp';
       }
     }
 
