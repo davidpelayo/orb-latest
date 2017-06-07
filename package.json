@@ -56,5 +56,8 @@
     "less": "~2.2.0",
     "vinyl-buffer": "~1.0.0",
     "vinyl-source-stream": "~1.0.0"
+  },
+  "scripts": {
+    "test": "echo No tests yet ready for this repo"
   }
 }
