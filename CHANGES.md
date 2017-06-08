@@ -1,5 +1,5 @@
 ## [v2.0.4](https://github.com/davidpelayo/orb-latest/compare/v2.0.3...v2.0.4)
-> Jun 07, 2017
+> Jun 08, 2017
 
 - Added `CHANGES.md`.
 - Added `CONTRIBUTING.md`.
