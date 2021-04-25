@@ -174,7 +174,8 @@ module.exports = function(config) {
         if(dataCell) {
             var colIndexes = dataCell.columnDimension.getRowIndexes();
             var data = dataCell.rowDimension.getRowIndexes().filter(function(index) {
-                return colIndexes.indexOf(index) >= 0;
+                //return colIndexes.indexOf(index) >= 0;
+                return (colIndexes.length === 0 ) || (colIndexes.indexOf(index) >= 0);
             }).map(function(index) {
                 return self.pgrid.filteredDataSource[index];
             });
