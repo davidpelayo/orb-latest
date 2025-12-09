@@ -43,7 +43,7 @@
     "gulp-derequire": "~2.0.0",
     "gulp-header": "~1.2.2",
     "gulp-jasmine": "~2.0.0",
-    "gulp-jsbeautifier": "0.0.4",
+    "gulp-jsbeautifier": "3.0.1",
     "gulp-less": "^3.3.0",
     "gulp-minify-css": "~0.3.13",
     "gulp-react": "~2.0.0",
