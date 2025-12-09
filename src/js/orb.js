@@ -22,7 +22,7 @@
  */
 
 /* global module, require */
-/*jshint eqnull: true*/
+/* jshint eqnull: true */
 
 'use strict';
 

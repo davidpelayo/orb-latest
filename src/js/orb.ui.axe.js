@@ -17,63 +17,66 @@ var uiheaders = require('./orb.ui.header');
  * @memberOf orb.ui
  * @param  {orb.axe} axe - axe containing all dimensions.
  */
-module.exports = function(axeModel) {
+module.exports = function (axeModel) {
+  var self = this;
 
-    var self = this;
+  /**
+   * Dimensions axe
+   * @type {orb.axe}
+   */
+  this.axe = axeModel;
 
-    /**
-     * Dimensions axe
-     * @type {orb.axe}
-     */
-    this.axe = axeModel;
+  /**
+   * Headers render properties
+   * @type {Array}
+   */
+  this.headers = [];
 
-    /**
-     * Headers render properties
-     * @type {Array}
-     */
-    this.headers = [];
+  this.dataFieldsCount = function () {
+    return (self.axe.pgrid.config.dataHeadersLocation === 'columns' &&
+      self.axe.type === axe.Type.COLUMNS) ||
+      (self.axe.pgrid.config.dataHeadersLocation === 'rows' && self.axe.type === axe.Type.ROWS)
+      ? self.axe.pgrid.config.dataFieldsCount
+      : 1;
+  };
 
-    this.dataFieldsCount = function() {
-        return (self.axe.pgrid.config.dataHeadersLocation === 'columns' && self.axe.type === axe.Type.COLUMNS) ||
-               (self.axe.pgrid.config.dataHeadersLocation === 'rows' && self.axe.type === axe.Type.ROWS) ?
-                     self.axe.pgrid.config.dataFieldsCount :
-                     1;
-    };
+  this.isMultiDataFields = function () {
+    return self.dataFieldsCount() > 1;
+  };
 
-    this.isMultiDataFields = function() {
-        return self.dataFieldsCount() > 1;
-    };
+  this.toggleFieldExpansion = function (field, newState) {
+    var toToggle = [];
+    var allExpanded = true;
+    var hIndex;
 
-    this.toggleFieldExpansion = function(field, newState) {
-        var toToggle = [];
-        var allExpanded = true;
-        var hIndex;
-
-        for(var i = 0; i < this.headers.length; i++) {
-            for(hIndex = 0; hIndex < this.headers[i].length; hIndex++) {
-                var header = this.headers[i][hIndex];
-                if(header.type === uiheaders.HeaderType.SUB_TOTAL && (field == null || header.dim.field.name == field.name)) {
-                    toToggle.push(header);
-                    allExpanded = allExpanded && header.expanded;
-                }
-            }
+    for (var i = 0; i < this.headers.length; i++) {
+      for (hIndex = 0; hIndex < this.headers[i].length; hIndex++) {
+        var header = this.headers[i][hIndex];
+        if (
+          header.type === uiheaders.HeaderType.SUB_TOTAL &&
+          (field == null || header.dim.field.name == field.name)
+        ) {
+          toToggle.push(header);
+          allExpanded = allExpanded && header.expanded;
         }
+      }
+    }
 
-        if(newState !== undefined) {
-            allExpanded = !newState;
+    if (newState !== undefined) {
+      allExpanded = !newState;
+    }
+
+    if (toToggle.length > 0) {
+      for (hIndex = 0; hIndex < toToggle.length; hIndex++) {
+        if (allExpanded) {
+          toToggle[hIndex].collapse();
+        } else {
+          toToggle[hIndex].expand();
         }
+      }
+      return true;
+    }
 
-        if(toToggle.length > 0) {
-            for(hIndex = 0; hIndex < toToggle.length; hIndex++) {
-                if(allExpanded) {
-                    toToggle[hIndex].collapse();
-                } else {
-                    toToggle[hIndex].expand();
-                }
-            }
-            return true;
-        }
-
-        return false;
-    };    
+    return false;
+  };
 };

@@ -12,21 +12,19 @@ var _paddingLeft = null;
 var _borderLeft = null;
 
 module.exports.PivotCell = React.createClass({
-  expand: function() {
+  expand: function () {
     this.props.pivotTableComp.expandRow(this.props.cell);
   },
-  collapse: function() {
+  collapse: function () {
     this.props.pivotTableComp.collapseRow(this.props.cell);
   },
-  updateCellInfos: function() {
+  updateCellInfos: function () {
     var node = ReactDOM.findDOMNode(this);
     var cell = this.props.cell;
     node.__orb = node.__orb || {};
 
-    if(!cell.visible()) {
-
+    if (!cell.visible()) {
       node.__orb._visible = false;
-
     } else {
       var cellContentNode = ReactDOM.findDOMNode(this.refs.cellContent);
 
@@ -35,22 +33,22 @@ module.exports.PivotCell = React.createClass({
       var retPaddingLeft = _paddingLeft == null;
       var retBorderLeft = !this.props.leftmost && _borderLeft == null;
 
-      if(retPaddingLeft) {
+      if (retPaddingLeft) {
         propList.push('padding-left');
       }
 
-      if(retBorderLeft) {
+      if (retBorderLeft) {
         propList.push('border-left-width');
       }
 
-      if(propList.length > 0) {
+      if (propList.length > 0) {
         var nodeStyle = reactUtils.getStyle(node, propList, true);
 
-        if(retPaddingLeft) {
+        if (retPaddingLeft) {
           _paddingLeft = parseFloat(nodeStyle[0]);
         }
 
-        if(retBorderLeft) {
+        if (retBorderLeft) {
           _borderLeft = parseFloat(nodeStyle[retPaddingLeft ? 1 : 0]);
         }
       }
@@ -67,20 +65,25 @@ module.exports.PivotCell = React.createClass({
       node.__orb._borderRightWidth = 0;
     }
   },
-  componentDidMount: function() {
+  componentDidMount: function () {
     this.updateCellInfos();
   },
-  componentDidUpdate: function() {
+  componentDidUpdate: function () {
     this.updateCellInfos();
   },
-  shouldComponentUpdate: function(nextProps, nextState) {
-    if(nextProps.cell && nextProps.cell == this.props.cell && !this._latestVisibleState && !nextProps.cell.visible()) {
+  shouldComponentUpdate: function (nextProps, nextState) {
+    if (
+      nextProps.cell &&
+      nextProps.cell == this.props.cell &&
+      !this._latestVisibleState &&
+      !nextProps.cell.visible()
+    ) {
       return false;
     }
     return true;
   },
   _latestVisibleState: false,
-  render: function() {
+  render: function () {
     var self = this;
     var cell = this.props.cell;
     var divcontent = [];
@@ -90,29 +93,49 @@ module.exports.PivotCell = React.createClass({
 
     this._latestVisibleState = cell.visible();
 
-    switch(cell.template) {
+    switch (cell.template) {
       case 'cell-template-row-header':
       case 'cell-template-column-header':
-        var isWrapper = cell.type === uiheaders.HeaderType.WRAPPER && cell.dim.field.subTotal.visible && cell.dim.field.subTotal.collapsible;
+        var isWrapper =
+          cell.type === uiheaders.HeaderType.WRAPPER &&
+          cell.dim.field.subTotal.visible &&
+          cell.dim.field.subTotal.collapsible;
         var isSubtotal = cell.type === uiheaders.HeaderType.SUB_TOTAL && !cell.expanded;
-        if(isWrapper || isSubtotal) {
+        if (isWrapper || isSubtotal) {
           headerPushed = true;
 
-          divcontent.push(<table key="header-value" ref="cellContent">
-            <tbody>
-            <tr><td className="orb-tgl-btn"><div className={'orb-tgl-btn-' + (isWrapper ? 'down' : 'right')} onClick={(isWrapper ? this.collapse : this.expand)}></div></td>
-            <td className="hdr-val"><div dangerouslySetInnerHTML={{__html: cell.value || '&#160;'}}></div></td></tr>
-            </tbody></table>);
+          divcontent.push(
+            <table key="header-value" ref="cellContent">
+              <tbody>
+                <tr>
+                  <td className="orb-tgl-btn">
+                    <div
+                      className={'orb-tgl-btn-' + (isWrapper ? 'down' : 'right')}
+                      onClick={isWrapper ? this.collapse : this.expand}
+                    ></div>
+                  </td>
+                  <td className="hdr-val">
+                    <div dangerouslySetInnerHTML={{ __html: cell.value || '&#160;' }}></div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          );
         } else {
-          value = (cell.value || '&#160;') + (cell.type === uiheaders.HeaderType.SUB_TOTAL ? ' Total' : '');
+          value =
+            (cell.value || '&#160;') +
+            (cell.type === uiheaders.HeaderType.SUB_TOTAL ? ' Total' : '');
         }
         break;
       case 'cell-template-dataheader':
         value = cell.value.caption;
         break;
       case 'cell-template-datavalue':
-        value = (cell.datafield && cell.datafield.formatFunc) ? cell.datafield.formatFunc()(cell.value) : cell.value;
-        cellClick = function() {
+        value =
+          cell.datafield && cell.datafield.formatFunc
+            ? cell.datafield.formatFunc()(cell.value)
+            : cell.value;
+        cellClick = function () {
           self.props.pivotTableComp.pgridwidget.drilldown(cell, self.props.pivotTableComp.id);
         };
         break;
@@ -120,59 +143,69 @@ module.exports.PivotCell = React.createClass({
         break;
     }
 
-    if(!headerPushed) {
+    if (!headerPushed) {
       var headerClassName;
-      switch(cell.template){
+      switch (cell.template) {
         case 'cell-template-datavalue':
           headerClassName = 'cell-data';
-        break;
+          break;
         default:
-        if(cell.template != 'cell-template-dataheader' && cell.type !== uiheaders.HeaderType.GRAND_TOTAL) {
-          headerClassName = 'hdr-val';
-        }
+          if (
+            cell.template != 'cell-template-dataheader' &&
+            cell.type !== uiheaders.HeaderType.GRAND_TOTAL
+          ) {
+            headerClassName = 'hdr-val';
+          }
       }
-      divcontent.push(<div key="cell-value" ref="cellContent" className={headerClassName}><div dangerouslySetInnerHTML={{__html: value || '&#160;'}}></div></div>);
+      divcontent.push(
+        <div key="cell-value" ref="cellContent" className={headerClassName}>
+          <div dangerouslySetInnerHTML={{ __html: value || '&#160;' }}></div>
+        </div>
+      );
     }
 
-    return <td className={getClassname(this.props)}
-               onDoubleClick={ cellClick }
-               colSpan={cell.hspan()}
-               rowSpan={cell.vspan()}>
-                <div>
-                  {divcontent}
-                </div>
-           </td>;
-  }
+    return (
+      <td
+        className={getClassname(this.props)}
+        onDoubleClick={cellClick}
+        colSpan={cell.hspan()}
+        rowSpan={cell.vspan()}
+      >
+        <div>{divcontent}</div>
+      </td>
+    );
+  },
 });
 
 function getClassname(compProps) {
-    var cell = compProps.cell;
-    var classname = cell.cssclass;
-    var isEmpty = cell.template === 'cell-template-empty';
+  var cell = compProps.cell;
+  var classname = cell.cssclass;
+  var isEmpty = cell.template === 'cell-template-empty';
 
-    if(!cell.visible()) {
-      classname += ' cell-hidden';
+  if (!cell.visible()) {
+    classname += ' cell-hidden';
+  }
+
+  if (cell.type === uiheaders.HeaderType.SUB_TOTAL && cell.expanded) {
+    classname += ' header-st-exp';
+  }
+
+  if (cell.type === uiheaders.HeaderType.GRAND_TOTAL) {
+    if (cell.dim.depth === 1) {
+      classname += ' header-nofields';
+    } else if (cell.dim.depth > 2) {
+      classname += ' header-gt-exp';
     }
+  }
 
-    if(cell.type === uiheaders.HeaderType.SUB_TOTAL && cell.expanded) {
-      classname += ' header-st-exp';
-    }
+  if (compProps.leftmost) {
+    classname +=
+      ' ' + (cell.template === 'cell-template-datavalue' ? 'cell' : 'header') + '-leftmost';
+  }
 
-    if(cell.type === uiheaders.HeaderType.GRAND_TOTAL) {
-      if(cell.dim.depth === 1) {
-        classname += ' header-nofields';
-      } else if(cell.dim.depth > 2) {
-        classname += ' header-gt-exp';
-      }
-    }
+  if (compProps.topmost) {
+    classname += ' cell-topmost';
+  }
 
-    if(compProps.leftmost) {
-      classname += ' ' + (cell.template === 'cell-template-datavalue' ? 'cell' : 'header') + '-leftmost';
-    }
-
-    if(compProps.topmost) {
-      classname += ' cell-topmost';
-    }
-
-    return classname;
+  return classname;
 }

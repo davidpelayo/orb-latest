@@ -8,7 +8,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 
 module.exports.PivotTableColumnHeaders = React.createClass({
-  render: function() {
+  render: function () {
     var self = this;
     var PivotRow = comps.PivotRow;
     var pgridwidget = this.props.pivotTableComp.pgridwidget;
@@ -16,26 +16,32 @@ module.exports.PivotTableColumnHeaders = React.createClass({
 
     var layoutInfos = {
       lastLeftMostCellVSpan: 0,
-      topMostCells: {}
+      topMostCells: {},
     };
 
-    var columnHeaders = pgridwidget.columns.headers.map(function(headerRow, index) {
-      return <PivotRow key={index}
-                       row={headerRow}
-                       axetype={axe.Type.COLUMNS}
-                       pivotTableComp={self.props.pivotTableComp}
-                       layoutInfos={layoutInfos}>
-      </PivotRow>;
+    var columnHeaders = pgridwidget.columns.headers.map(function (headerRow, index) {
+      return (
+        <PivotRow
+          key={index}
+          row={headerRow}
+          axetype={axe.Type.COLUMNS}
+          pivotTableComp={self.props.pivotTableComp}
+          layoutInfos={layoutInfos}
+        ></PivotRow>
+      );
     });
 
-    return  <div className={'inner-table-container' + cntrClass} ref="colHeadersContainer" onWheel={this.props.pivotTableComp.onWheel}>
-      <table className="inner-table">
-        <colgroup>
-        </colgroup>
-        <tbody>
-          {columnHeaders}
-        </tbody>
-      </table>
-    </div>;
-  }
+    return (
+      <div
+        className={'inner-table-container' + cntrClass}
+        ref="colHeadersContainer"
+        onWheel={this.props.pivotTableComp.onWheel}
+      >
+        <table className="inner-table">
+          <colgroup></colgroup>
+          <tbody>{columnHeaders}</tbody>
+        </table>
+      </div>
+    );
+  },
 });

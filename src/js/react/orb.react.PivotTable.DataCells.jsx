@@ -8,31 +8,33 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 
 module.exports.PivotTableDataCells = React.createClass({
-  render: function() {
+  render: function () {
     var self = this;
     var PivotRow = comps.PivotRow;
 
     var pgridwidget = this.props.pivotTableComp.pgridwidget;
     var layoutInfos = {
       lastLeftMostCellVSpan: 0,
-      topMostCells: {}
+      topMostCells: {},
     };
 
-    var dataCells = pgridwidget.dataRows.map(function(dataRow, index) {
-      return <PivotRow key={index}
-                       row={dataRow}
-                       axetype={axe.Type.DATA}
-                       layoutInfos={layoutInfos}
-                       pivotTableComp={self.props.pivotTableComp}>
-      </PivotRow>;
+    var dataCells = pgridwidget.dataRows.map(function (dataRow, index) {
+      return (
+        <PivotRow
+          key={index}
+          row={dataRow}
+          axetype={axe.Type.DATA}
+          layoutInfos={layoutInfos}
+          pivotTableComp={self.props.pivotTableComp}
+        ></PivotRow>
+      );
     });
 
-    return <table className="inner-table">
-        <colgroup>
-        </colgroup>
-        <tbody>
-          {dataCells}
-        </tbody>
-      </table>;
-  }
+    return (
+      <table className="inner-table">
+        <colgroup></colgroup>
+        <tbody>{dataCells}</tbody>
+      </table>
+    );
+  },
 });
