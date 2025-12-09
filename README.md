@@ -1,9 +1,7 @@
 # [orb](http://orbjs.net/)[<img align="right" src="https://nodei.co/npm/orb-latest.png?compact=true"/>](https://www.npmjs.com/package/orb-latest)
 Pivot grid javascript library.
 
-**Website:** WIP.
-
-**Latest version:** 2.0.1
+**Latest version:** 3.0.0
 
 ### Demo:
 
