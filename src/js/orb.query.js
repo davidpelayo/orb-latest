@@ -8,12 +8,12 @@
 /* global module, require */
 /*jshint eqnull: true*/
 
-var utils = require('./orb.utils');
-var axe = require('./orb.axe');
-var aggregation = require('./orb.aggregation');
+const utils = require('./orb.utils');
+const axe = require('./orb.axe');
+const aggregation = require('./orb.aggregation');
 
-var queryBase = function (source, query, filters) {
-  var self = this;
+const queryBase = function (source, query, filters) {
+  const self = this;
 
   this.source = source;
   this.query = query;
@@ -21,8 +21,8 @@ var queryBase = function (source, query, filters) {
 
   this.extractResult = function (aggs, options, outerArgs) {
     if (outerArgs.multi === true) {
-      var res = {};
-      for (var ai = 0; ai < options.multiFieldNames.length; ai++) {
+      const res = {};
+      for (let ai = 0; ai < options.multiFieldNames.length; ai++) {
         res[options.multiFieldNames[ai]] = aggs[self.getCaptionName(options.multiFieldNames[ai])];
       }
       return res;
@@ -32,7 +32,7 @@ var queryBase = function (source, query, filters) {
   };
 
   this.measureFunc = function (datafieldname, multi, aggregateFunc, fieldsConfig) {
-    var outerArgs = {
+    const outerArgs = {
       datafieldname: self.getCaptionName(datafieldname),
       multi: multi,
       aggregateFunc: aggregateFunc,
@@ -40,7 +40,7 @@ var queryBase = function (source, query, filters) {
 
     return function (options) {
       options = self.cleanOptions(options, arguments, outerArgs);
-      var aggs = self.compute(options, fieldsConfig, multi);
+      const aggs = self.compute(options, fieldsConfig, multi);
       return self.extractResult(aggs, options, outerArgs);
     };
   };
@@ -50,15 +50,15 @@ var queryBase = function (source, query, filters) {
      * val() function    *
      *********************/
     // if there is a registered field with a name or caption 'val', use 'val_'
-    var valname = self.query.val ? 'val_' : 'val';
+    const valname = self.query.val ? 'val_' : 'val';
     self.query[valname] = self.measureFunc(undefined, true, undefined, param);
 
     /*********************
      * sum(), avg(), ... *
      *********************/
-    var aggFunctions = utils.ownProperties(aggregation);
-    for (var funcIndex = 0; funcIndex < aggFunctions.length; funcIndex++) {
-      var funcName = aggFunctions[funcIndex];
+    const aggFunctions = utils.ownProperties(aggregation);
+    for (let funcIndex = 0; funcIndex < aggFunctions.length; funcIndex++) {
+      const funcName = aggFunctions[funcIndex];
       if (funcName !== 'toAggregateFunc') {
         self.query[funcName] = self.measureFunc(undefined, true, aggregation[funcName], param);
       }
@@ -66,17 +66,17 @@ var queryBase = function (source, query, filters) {
   };
 };
 
-var pgridQuery = function (pgrid) {
+const pgridQuery = function (pgrid) {
   queryBase.call(this, pgrid, {}, {});
 
-  var self = this;
+  const self = this;
 
   this.getCaptionName = function (caption) {
     return self.source.config.captionToName(caption);
   };
 
   this.cleanOptions = function (options, innerArgs, outerArgs) {
-    var opts = {
+    const opts = {
       fieldNames: [],
     };
 
@@ -89,7 +89,7 @@ var pgridQuery = function (pgrid) {
         opts.multiFieldNames = innerArgs;
       }
 
-      for (var ai = 0; ai < opts.multiFieldNames.length; ai++) {
+      for (let ai = 0; ai < opts.multiFieldNames.length; ai++) {
         opts.fieldNames.push(self.getCaptionName(opts.multiFieldNames[ai]));
       }
     } else {
@@ -105,10 +105,10 @@ var pgridQuery = function (pgrid) {
   };
 
   this.setup = function (parameters) {
-    var rowFields = self.source.config.rowFields;
-    var colFields = self.source.config.columnFields;
-    var datafields = self.source.config.dataFields;
-    var fIndex;
+    const rowFields = self.source.config.rowFields;
+    const colFields = self.source.config.columnFields;
+    const datafields = self.source.config.dataFields;
+    let fIndex;
 
     // row fields setup
     for (fIndex = 0; fIndex < rowFields.length; fIndex++) {
@@ -122,15 +122,15 @@ var pgridQuery = function (pgrid) {
 
     // data fields setup
     for (fIndex = 0; fIndex < datafields.length; fIndex++) {
-      var df = datafields[fIndex];
-      var dfname = df.name;
-      var dfcaption = df.caption || dfname;
+      const df = datafields[fIndex];
+      const dfname = df.name;
+      const dfcaption = df.caption || dfname;
 
       self.query[dfname] = self.query[dfcaption] = self.measureFunc(dfname);
     }
 
     if (parameters) {
-      for (var param in parameters) {
+      for (const param in parameters) {
         if (parameters.hasOwnProperty(param)) {
           self.query[param](parameters[param]);
         }
@@ -144,7 +144,7 @@ var pgridQuery = function (pgrid) {
 
   this.slice = function (field, axetype, depth) {
     self.query[field.name] = self.query[field.caption || field.name] = function (val) {
-      var f = {
+      const f = {
         name: field.name,
         val: val,
         depth: depth,
@@ -159,8 +159,8 @@ var pgridQuery = function (pgrid) {
       return (
         dim.value === filter.val &&
         (!upperDims ||
-          upperDims.some(function (upperDim) {
-            var parent = dim.parent;
+          upperDims.some(upperDim => {
+            let parent = dim.parent;
             if (parent) {
               while (parent.depth < upperDim.depth) {
                 parent = parent.parent;
@@ -174,15 +174,15 @@ var pgridQuery = function (pgrid) {
 
   this.applyFilters = function (axetype) {
     if (self.filters[axetype]) {
-      var sortedFilters = self.filters[axetype].sort(function (f1, f2) {
+      const sortedFilters = self.filters[axetype].sort((f1, f2) => {
         return f2.depth - f1.depth;
       });
 
-      var currAxe = self.source[axetype === axe.Type.ROWS ? 'rows' : 'columns'];
-      var filterIndex = 0;
-      var filtered = null;
+      const currAxe = self.source[axetype === axe.Type.ROWS ? 'rows' : 'columns'];
+      let filterIndex = 0;
+      let filtered = null;
       while (filterIndex < sortedFilters.length) {
-        var filter = sortedFilters[filterIndex];
+        const filter = sortedFilters[filterIndex];
         filtered = currAxe.dimensionsByDepth[filter.depth].filter(
           filterDimensions(filtered, filter)
         );
@@ -194,14 +194,14 @@ var pgridQuery = function (pgrid) {
   };
 
   this.compute = function (options) {
-    var rowdims = self.applyFilters(axe.Type.ROWS) || [self.source.rows.root];
-    var coldims = self.applyFilters(axe.Type.COLUMNS) || [self.source.columns.root];
+    const rowdims = self.applyFilters(axe.Type.ROWS) || [self.source.rows.root];
+    const coldims = self.applyFilters(axe.Type.COLUMNS) || [self.source.columns.root];
 
-    var aggs;
+    let aggs;
 
     if (rowdims.length === 1 && coldims.length === 1) {
       aggs = {};
-      for (var ai = 0; ai < options.fieldNames.length; ai++) {
+      for (let ai = 0; ai < options.fieldNames.length; ai++) {
         aggs[options.fieldNames[ai]] = self.source.getData(
           options.fieldNames[ai],
           rowdims[0],
@@ -210,13 +210,13 @@ var pgridQuery = function (pgrid) {
         );
       }
     } else {
-      var rowIndexes = [];
-      var colIndexes = [];
+      let rowIndexes = [];
+      let colIndexes = [];
 
-      for (var rdi = 0; rdi < rowdims.length; rdi++) {
+      for (let rdi = 0; rdi < rowdims.length; rdi++) {
         rowIndexes = rowIndexes.concat(rowdims[rdi].getRowIndexes());
       }
-      for (var cdi = 0; cdi < coldims.length; cdi++) {
+      for (let cdi = 0; cdi < coldims.length; cdi++) {
         colIndexes = colIndexes.concat(coldims[cdi].getRowIndexes());
       }
 
@@ -232,11 +232,11 @@ var pgridQuery = function (pgrid) {
   };
 };
 
-var arrayQuery = function (array) {
+const arrayQuery = function (array) {
   queryBase.call(this, array, {}, []);
 
-  var self = this;
-  var captionToName = {};
+  const self = this;
+  const captionToName = {};
 
   this.setCaptionName = function (caption, name) {
     captionToName[caption || name] = name;
@@ -247,7 +247,7 @@ var arrayQuery = function (array) {
   };
 
   this.cleanOptions = function (options, innerArgs, outerArgs) {
-    var opts = {
+    const opts = {
       fieldNames: [],
     };
 
@@ -260,7 +260,7 @@ var arrayQuery = function (array) {
         opts.multiFieldNames = innerArgs;
       }
 
-      for (var ai = 0; ai < opts.multiFieldNames.length; ai++) {
+      for (let ai = 0; ai < opts.multiFieldNames.length; ai++) {
         opts.fieldNames.push(self.getCaptionName(opts.multiFieldNames[ai]));
       }
     } else {
@@ -273,7 +273,7 @@ var arrayQuery = function (array) {
 
   this.setup = function (fieldsConfig) {
     self.query.slice = function (field, val) {
-      var f = {
+      const f = {
         name: field,
         val: val,
       };
@@ -282,12 +282,12 @@ var arrayQuery = function (array) {
     };
 
     if (fieldsConfig) {
-      var fieldNames = utils.ownProperties(fieldsConfig);
+      const fieldNames = utils.ownProperties(fieldsConfig);
 
-      for (var fi = 0; fi < fieldNames.length; fi++) {
-        var fname = fieldNames[fi];
-        var f = fieldsConfig[fname];
-        var fcaption = f.caption || f.name;
+      for (let fi = 0; fi < fieldNames.length; fi++) {
+        const fname = fieldNames[fi];
+        const f = fieldsConfig[fname];
+        const fcaption = f.caption || f.name;
         f.name = fname;
 
         self.setCaptionName(fcaption, fname);
@@ -316,13 +316,13 @@ var arrayQuery = function (array) {
   };
 
   this.applyFilters = function () {
-    var rowIndexes = [];
+    const rowIndexes = [];
 
-    for (var i = 0; i < self.source.length; i++) {
-      var row = self.source[i];
-      var include = true;
-      for (var j = 0; j < self.filters.length; j++) {
-        var filter = self.filters[j];
+    for (let i = 0; i < self.source.length; i++) {
+      const row = self.source[i];
+      let include = true;
+      for (let j = 0; j < self.filters.length; j++) {
+        const filter = self.filters[j];
         if (row[filter.name] !== filter.val) {
           include = false;
           break;
@@ -337,13 +337,13 @@ var arrayQuery = function (array) {
   };
 
   this.compute = function (options, fieldsConfig, multi) {
-    var rowIndexes = self.applyFilters();
+    const rowIndexes = self.applyFilters();
 
-    var aggs = {};
+    const aggs = {};
 
-    for (var ai = 0; ai < options.fieldNames.length; ai++) {
-      var datafield = options.fieldNames[ai];
-      var aggFunc = aggregation.toAggregateFunc(
+    for (let ai = 0; ai < options.fieldNames.length; ai++) {
+      const datafield = options.fieldNames[ai];
+      const aggFunc = aggregation.toAggregateFunc(
         multi === true
           ? options.aggregateFunc ||
               (fieldsConfig && fieldsConfig[datafield]

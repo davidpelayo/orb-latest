@@ -5,10 +5,10 @@
 
 'use strict';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+const React = require('react');
+const ReactDOM = require('react-dom');
 
-var pbid = 0;
+let pbid = 0;
 
 module.exports.PivotButton = React.createClass({
   displayName: 'PivotButton',
@@ -27,12 +27,12 @@ module.exports.PivotButton = React.createClass({
     // left mouse button only
     if (e.button !== 0) return;
 
-    var filterButton = ReactDOM.findDOMNode(this.refs.filterButton);
-    var filterButtonPos = reactUtils.getOffset(filterButton);
-    var filterContainer = document.createElement('div');
+    const filterButton = ReactDOM.findDOMNode(this.refs.filterButton);
+    const filterButtonPos = reactUtils.getOffset(filterButton);
+    const filterContainer = document.createElement('div');
 
-    var filterPanelFactory = React.createFactory(comps.FilterPanel);
-    var filterPanel = filterPanelFactory({
+    const filterPanelFactory = React.createFactory(comps.FilterPanel);
+    const filterPanel = filterPanelFactory({
       field: this.props.field.name,
       pivotTableComp: this.props.pivotTableComp,
     });
@@ -76,7 +76,7 @@ module.exports.PivotButton = React.createClass({
     if (e.ctrlKey) {
       this.props.pivotTableComp.toggleFieldExpansion(this.props.axetype, this.props.field);
     } else {
-      var thispos = reactUtils.getOffset(ReactDOM.findDOMNode(this));
+      const thispos = reactUtils.getOffset(ReactDOM.findDOMNode(this));
 
       // inform mousedown, save start pos
       this.setState({
@@ -97,7 +97,7 @@ module.exports.PivotButton = React.createClass({
     e.preventDefault();
   },
   onMouseUp: function (e) {
-    var isdragged = this.state.dragging;
+    const isdragged = this.state.dragging;
 
     this.setState({
       mousedown: false,
@@ -118,14 +118,14 @@ module.exports.PivotButton = React.createClass({
     // if the mouse is not down while moving, return (no drag)
     if (!this.props.pivotTableComp.pgrid.config.canMoveFields || !this.state.mousedown) return;
 
-    var size = null;
+    let size = null;
     if (!this.state.dragging) {
       size = reactUtils.getSize(ReactDOM.findDOMNode(this));
     } else {
       size = this.state.size;
     }
 
-    var newpos = {
+    const newpos = {
       x: e.pageX + this.state.mouseoffset.x,
       y: e.pageY + this.state.mouseoffset.y,
     };
@@ -146,8 +146,8 @@ module.exports.PivotButton = React.createClass({
       this.props.pivotTableComp.pgrid.config.theme.getButtonClasses().pivotButton;
   },
   render: function () {
-    var self = this;
-    var divstyle = {
+    const self = this;
+    const divstyle = {
       left: self.state.pos.x + 'px',
       top: self.state.pos.y + 'px',
       position: self.state.dragging ? 'fixed' : '',
@@ -158,7 +158,7 @@ module.exports.PivotButton = React.createClass({
       divstyle.width = self.state.size.width + 'px';
     }
 
-    var sortDirectionClass =
+    const sortDirectionClass =
       self.props.field.sort.order === 'asc'
         ? 'sort-asc'
         : //' \u2191' :
@@ -166,12 +166,12 @@ module.exports.PivotButton = React.createClass({
           ? 'sort-desc'
           : //' \u2193' :
             '';
-    var filterClass =
+    const filterClass =
       (self.state.dragging ? '' : 'fltr-btn') +
       (this.props.pivotTableComp.pgrid.isFieldFiltered(this.props.field.name)
         ? ' fltr-btn-active'
         : '');
-    var fieldAggFunc = '';
+    let fieldAggFunc = '';
     if (self.props.axetype === axe.Type.DATA) {
       fieldAggFunc = <small>{' (' + self.props.field.aggregateFuncName + ')'}</small>;
     }

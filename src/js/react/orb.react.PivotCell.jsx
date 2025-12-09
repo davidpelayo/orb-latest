@@ -5,11 +5,11 @@
 
 'use strict';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+const React = require('react');
+const ReactDOM = require('react-dom');
 
-var _paddingLeft = null;
-var _borderLeft = null;
+let _paddingLeft = null;
+let _borderLeft = null;
 
 module.exports.PivotCell = React.createClass({
   expand: function () {
@@ -19,19 +19,19 @@ module.exports.PivotCell = React.createClass({
     this.props.pivotTableComp.collapseRow(this.props.cell);
   },
   updateCellInfos: function () {
-    var node = ReactDOM.findDOMNode(this);
-    var cell = this.props.cell;
+    const node = ReactDOM.findDOMNode(this);
+    const cell = this.props.cell;
     node.__orb = node.__orb || {};
 
     if (!cell.visible()) {
       node.__orb._visible = false;
     } else {
-      var cellContentNode = ReactDOM.findDOMNode(this.refs.cellContent);
+      const cellContentNode = ReactDOM.findDOMNode(this.refs.cellContent);
 
-      var text = node.textContent;
-      var propList = [];
-      var retPaddingLeft = _paddingLeft == null;
-      var retBorderLeft = !this.props.leftmost && _borderLeft == null;
+      const text = node.textContent;
+      const propList = [];
+      const retPaddingLeft = _paddingLeft == null;
+      const retBorderLeft = !this.props.leftmost && _borderLeft == null;
 
       if (retPaddingLeft) {
         propList.push('padding-left');
@@ -42,7 +42,7 @@ module.exports.PivotCell = React.createClass({
       }
 
       if (propList.length > 0) {
-        var nodeStyle = reactUtils.getStyle(node, propList, true);
+        const nodeStyle = reactUtils.getStyle(node, propList, true);
 
         if (retPaddingLeft) {
           _paddingLeft = parseFloat(nodeStyle[0]);
@@ -84,12 +84,12 @@ module.exports.PivotCell = React.createClass({
   },
   _latestVisibleState: false,
   render: function () {
-    var self = this;
-    var cell = this.props.cell;
-    var divcontent = [];
-    var value;
-    var cellClick;
-    var headerPushed = false;
+    const self = this;
+    const cell = this.props.cell;
+    const divcontent = [];
+    let value;
+    let cellClick;
+    let headerPushed = false;
 
     this._latestVisibleState = cell.visible();
 
@@ -144,7 +144,7 @@ module.exports.PivotCell = React.createClass({
     }
 
     if (!headerPushed) {
-      var headerClassName;
+      let headerClassName;
       switch (cell.template) {
         case 'cell-template-datavalue':
           headerClassName = 'cell-data';
@@ -178,9 +178,9 @@ module.exports.PivotCell = React.createClass({
 });
 
 function getClassname(compProps) {
-  var cell = compProps.cell;
-  var classname = cell.cssclass;
-  var isEmpty = cell.template === 'cell-template-empty';
+  const cell = compProps.cell;
+  let classname = cell.cssclass;
+  const isEmpty = cell.template === 'cell-template-empty';
 
   if (!cell.visible()) {
     classname += ' cell-hidden';

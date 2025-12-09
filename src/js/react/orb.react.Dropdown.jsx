@@ -5,13 +5,13 @@
 
 'use strict';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+const React = require('react');
+const ReactDOM = require('react-dom');
 
 module.exports.Dropdown = React.createClass({
   openOrClose: function (e) {
-    var valueNode = ReactDOM.findDOMNode(this.refs.valueElement);
-    var valuesListNode = ReactDOM.findDOMNode(this.refs.valuesList);
+    const valueNode = ReactDOM.findDOMNode(this.refs.valueElement);
+    const valuesListNode = ReactDOM.findDOMNode(this.refs.valuesList);
     if (e.target === valueNode && valuesListNode.style.display === 'none') {
       valuesListNode.style.display = 'block';
     } else {
@@ -19,7 +19,7 @@ module.exports.Dropdown = React.createClass({
     }
   },
   onMouseEnter: function () {
-    var valueNode = ReactDOM.findDOMNode(this.refs.valueElement);
+    const valueNode = ReactDOM.findDOMNode(this.refs.valueElement);
     valueNode.className = 'orb-tgl-btn-down';
     valueNode.style.backgroundPosition = 'right center';
   },
@@ -33,9 +33,9 @@ module.exports.Dropdown = React.createClass({
     document.removeEventListener('click', this.openOrClose);
   },
   selectValue: function (e) {
-    var listNode = ReactDOM.findDOMNode(this.refs.valuesList);
-    var target = e.target;
-    var isli = false;
+    const listNode = ReactDOM.findDOMNode(this.refs.valuesList);
+    let target = e.target;
+    let isli = false;
     while (!isli && target != null) {
       if (target.parentNode == listNode) {
         isli = true;
@@ -45,8 +45,8 @@ module.exports.Dropdown = React.createClass({
     }
 
     if (isli) {
-      var value = target.textContent;
-      var valueElement = ReactDOM.findDOMNode(this.refs.valueElement);
+      const value = target.textContent;
+      const valueElement = ReactDOM.findDOMNode(this.refs.valueElement);
       if (valueElement.textContent != value) {
         valueElement.textContent = value;
         if (this.props.onValueChanged) {
@@ -62,8 +62,8 @@ module.exports.Dropdown = React.createClass({
       };
     }
 
-    var values = [];
-    for (var i = 0; i < this.props.values.length; i++) {
+    const values = [];
+    for (let i = 0; i < this.props.values.length; i++) {
       values.push(
         <li key={'item' + i} dangerouslySetInnerHTML={{ __html: this.props.values[i] }}></li>
       );

@@ -8,11 +8,11 @@
 /* global module, require */
 /*jshint eqnull: true*/
 
-var axe = require('./orb.axe');
-var configuration = require('./orb.config').config;
-var filtering = require('./orb.filtering');
-var query = require('./orb.query');
-var utils = require('./orb.utils');
+const axe = require('./orb.axe');
+const configuration = require('./orb.config').config;
+const filtering = require('./orb.filtering');
+const query = require('./orb.query');
+const utils = require('./orb.utils');
 
 /**
  * Creates a new instance of pgrid
@@ -21,12 +21,12 @@ var utils = require('./orb.utils');
  * @param  {object} config - configuration object
  */
 module.exports = function (config) {
-  var defaultfield = {
+  const defaultfield = {
     name: '#undefined#',
   };
 
-  var self = this;
-  var _iCache;
+  const self = this;
+  let _iCache;
 
   this.config = new configuration(config);
   this.filters = self.config.getPreFilters();
@@ -46,16 +46,16 @@ module.exports = function (config) {
   }
 
   function refreshFilteredDataSource() {
-    var filterFields = utils.ownProperties(self.filters);
+    const filterFields = utils.ownProperties(self.filters);
     if (filterFields.length > 0) {
       self.filteredDataSource = [];
 
-      for (var i = 0; i < self.config.dataSource.length; i++) {
-        var row = self.config.dataSource[i];
-        var exclude = false;
-        for (var fi = 0; fi < filterFields.length; fi++) {
-          var fieldname = filterFields[fi];
-          var fieldFilter = self.filters[fieldname];
+      for (let i = 0; i < self.config.dataSource.length; i++) {
+        const row = self.config.dataSource[i];
+        let exclude = false;
+        for (let fi = 0; fi < filterFields.length; fi++) {
+          const fieldname = filterFields[fi];
+          const fieldFilter = self.filters[fieldname];
 
           if (fieldFilter && !fieldFilter.test(row[fieldname])) {
             exclude = true;
@@ -95,12 +95,12 @@ module.exports = function (config) {
   };
 
   this.getFieldValues = function (field, filterFunc) {
-    var values1 = [];
-    var values = [];
-    var containsBlank = false;
-    for (var i = 0; i < self.config.dataSource.length; i++) {
-      var row = self.config.dataSource[i];
-      var val = row[field];
+    const values1 = [];
+    let values = [];
+    let containsBlank = false;
+    for (let i = 0; i < self.config.dataSource.length; i++) {
+      const row = self.config.dataSource[i];
+      const val = row[field];
       if (filterFunc !== undefined) {
         if (filterFunc === true || (typeof filterFunc === 'function' && filterFunc(val))) {
           values1.push(val);
@@ -115,14 +115,14 @@ module.exports = function (config) {
     }
     if (values1.length > 1) {
       if (utils.isNumber(values1[0]) || utils.isDate(values1[0])) {
-        values1.sort(function (a, b) {
+        values1.sort((a, b) => {
           return a ? (b ? a - b : 1) : b ? -1 : 0;
         });
       } else {
         values1.sort();
       }
 
-      for (var vi = 0; vi < values1.length; vi++) {
+      for (let vi = 0; vi < values1.length; vi++) {
         if (vi === 0 || values1[vi] !== values[values.length - 1]) {
           values.push(values1[vi]);
         }
@@ -139,15 +139,15 @@ module.exports = function (config) {
   };
 
   this.isFieldFiltered = function (field) {
-    var filter = self.getFieldFilter(field);
+    const filter = self.getFieldFilter(field);
     return filter != null && !filter.isAlwaysTrue();
   };
 
   this.getData = function (field, rowdim, coldim, aggregateFunc) {
-    var value;
+    let value;
     if (rowdim && coldim) {
-      var datafieldName = field || (self.config.dataFields[0] || defaultfield).name;
-      var datafield = self.config.getDataField(datafieldName);
+      const datafieldName = field || (self.config.dataFields[0] || defaultfield).name;
+      const datafield = self.config.getDataField(datafieldName);
 
       if (!datafield || (aggregateFunc && datafield.aggregateFunc != aggregateFunc)) {
         value = self.calcAggregation(
@@ -177,10 +177,10 @@ module.exports = function (config) {
   refresh();
 
   function computeValue(rowIndexes, colIndexes, origRowIndexes, fieldNames, aggregateFunc) {
-    var res = {};
+    const res = {};
 
     if (self.config.dataFieldsCount > 0) {
-      var intersection;
+      let intersection;
 
       if (rowIndexes == null) {
         intersection = colIndexes;
@@ -188,10 +188,10 @@ module.exports = function (config) {
         intersection = rowIndexes;
       } else {
         intersection = [];
-        for (var ri = 0; ri < rowIndexes.length; ri++) {
-          var rowindex = rowIndexes[ri];
+        for (let ri = 0; ri < rowIndexes.length; ri++) {
+          const rowindex = rowIndexes[ri];
           if (rowindex >= 0) {
-            var colrowindex = colIndexes.indexOf(rowindex);
+            const colrowindex = colIndexes.indexOf(rowindex);
             if (colrowindex >= 0) {
               rowIndexes[ri] = 0 - (rowindex + 2);
               intersection.push(rowindex);
@@ -200,13 +200,13 @@ module.exports = function (config) {
         }
       }
 
-      var emptyIntersection = intersection && intersection.length === 0;
-      var datasource = self.filteredDataSource;
-      var datafield;
-      var datafields = [];
+      const emptyIntersection = intersection && intersection.length === 0;
+      const datasource = self.filteredDataSource;
+      let datafield;
+      const datafields = [];
 
       if (fieldNames) {
-        for (var fieldnameIndex = 0; fieldnameIndex < fieldNames.length; fieldnameIndex++) {
+        for (let fieldnameIndex = 0; fieldnameIndex < fieldNames.length; fieldnameIndex++) {
           datafield = self.config.getDataField(fieldNames[fieldnameIndex]);
           if (!aggregateFunc) {
             if (!datafield) {
@@ -227,7 +227,7 @@ module.exports = function (config) {
         }
       } else {
         for (
-          var datafieldIndex = 0;
+          let datafieldIndex = 0;
           datafieldIndex < self.config.dataFieldsCount;
           datafieldIndex++
         ) {
@@ -241,7 +241,7 @@ module.exports = function (config) {
         }
       }
 
-      for (var dfi = 0; dfi < datafields.length; dfi++) {
+      for (let dfi = 0; dfi < datafields.length; dfi++) {
         datafield = datafields[dfi];
         // no data
         if (emptyIntersection) {
@@ -263,8 +263,8 @@ module.exports = function (config) {
 
   function computeRowValues(rowDim) {
     if (rowDim) {
-      var data = {};
-      var rid = 'r' + rowDim.id;
+      const data = {};
+      const rid = 'r' + rowDim.id;
 
       // set cached row indexes for current row dimension
       if (_iCache[rid] === undefined) {
@@ -275,20 +275,20 @@ module.exports = function (config) {
       data[self.columns.root.id] = computeValue(rowDim.isRoot ? null : _iCache[rid].slice(0), null);
 
       if (self.columns.dimensionsCount > 0) {
-        var p = 0;
-        var parents = [self.columns.root];
+        let p = 0;
+        const parents = [self.columns.root];
 
         while (p < parents.length) {
-          var parent = parents[p];
-          var rowindexes = rowDim.isRoot
+          const parent = parents[p];
+          const rowindexes = rowDim.isRoot
             ? null
             : parent.isRoot
               ? _iCache[rid].slice(0)
               : _iCache['c' + parent.id].slice(0);
 
-          for (var i = 0; i < parent.values.length; i++) {
-            var subdim = parent.subdimvals[parent.values[i]];
-            var cid = 'c' + subdim.id;
+          for (let i = 0; i < parent.values.length; i++) {
+            const subdim = parent.subdimvals[parent.values[i]];
+            const cid = 'c' + subdim.id;
 
             // set cached row indexes for this column leaf dimension
             if (_iCache[cid] === undefined) {
@@ -305,8 +305,8 @@ module.exports = function (config) {
               parents.push(subdim);
               if (rowindexes) {
                 _iCache[cid] = [];
-                for (var ur = 0; ur < rowindexes.length; ur++) {
-                  var vr = rowindexes[ur];
+                for (let ur = 0; ur < rowindexes.length; ur++) {
+                  const vr = rowindexes[ur];
                   if (vr != -1 && vr < 0) {
                     _iCache[cid].push(0 - (vr + 2));
                     rowindexes[ur] = -1;
@@ -332,14 +332,14 @@ module.exports = function (config) {
     self.dataMatrix[self.rows.root.id] = computeRowValues(self.rows.root);
 
     if (self.rows.dimensionsCount > 0) {
-      var parents = [self.rows.root];
-      var p = 0;
-      var parent;
+      const parents = [self.rows.root];
+      let p = 0;
+      let parent;
       while (p < parents.length) {
         parent = parents[p];
         // calc children rows
-        for (var i = 0; i < parent.values.length; i++) {
-          var subdim = parent.subdimvals[parent.values[i]];
+        for (let i = 0; i < parent.values.length; i++) {
+          const subdim = parent.subdimvals[parent.values[i]];
           // calc child row
           self.dataMatrix[subdim.id] = computeRowValues(subdim);
           // if row is not a leaf, add it to parents array to process its children

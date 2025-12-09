@@ -4,11 +4,11 @@
 
 'use strict';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+const React = require('react');
+const ReactDOM = require('react-dom');
 
 function createOverlay() {
-  var overlayElement = document.createElement('div');
+  const overlayElement = document.createElement('div');
   overlayElement.className = 'orb-overlay orb-overlay-hidden';
   document.body.appendChild(overlayElement);
   return overlayElement;
@@ -17,8 +17,8 @@ function createOverlay() {
 var Dialog = (module.exports.Dialog = React.createClass({
   statics: {
     create: function () {
-      var dialogFactory = React.createFactory(Dialog);
-      var overlay = createOverlay();
+      const dialogFactory = React.createFactory(Dialog);
+      const overlay = createOverlay();
 
       return {
         show: function (props) {
@@ -36,15 +36,15 @@ var Dialog = (module.exports.Dialog = React.createClass({
     this.setOverlayClass(true);
     this.overlayElement.addEventListener('click', this.close);
 
-    var dialogElement = this.overlayElement.children[0];
-    var dialogBodyElement = dialogElement.children[0].children[1];
+    const dialogElement = this.overlayElement.children[0];
+    const dialogBodyElement = dialogElement.children[0].children[1];
 
-    var screenWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    var screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    var maxHeight = (2 * screenHeight) / 3;
+    const screenWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    let maxHeight = (2 * screenHeight) / 3;
     maxHeight = maxHeight < 301 ? 301 : maxHeight;
-    var dWidth = dialogElement.offsetWidth + (dialogElement.offsetHeight > maxHeight ? 11 : 0);
-    var dHeight = dialogElement.offsetHeight > maxHeight ? maxHeight : dialogElement.offsetHeight;
+    const dWidth = dialogElement.offsetWidth + (dialogElement.offsetHeight > maxHeight ? 11 : 0);
+    const dHeight = dialogElement.offsetHeight > maxHeight ? maxHeight : dialogElement.offsetHeight;
 
     dialogElement.style.top = (screenHeight > dHeight ? (screenHeight - dHeight) / 2 : 0) + 'px';
     dialogElement.style.left = (screenWidth > dWidth ? (screenWidth - dWidth) / 2 : 0) + 'px';
@@ -61,8 +61,8 @@ var Dialog = (module.exports.Dialog = React.createClass({
   },
   render: function () {
     if (this.props.comp) {
-      var comp = React.createElement(this.props.comp.type, this.props.comp.props);
-      var classes = this.props.theme.getDialogClasses();
+      const comp = React.createElement(this.props.comp.type, this.props.comp.props);
+      const classes = this.props.theme.getDialogClasses();
 
       return (
         <div className={classes.dialog} style={this.props.style || {}}>

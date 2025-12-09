@@ -4,26 +4,26 @@
 
 'use strict';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+const React = require('react');
+const ReactDOM = require('react-dom');
 
 module.exports.PivotRow = React.createClass({
   render: function () {
-    var self = this;
-    var PivotCell = comps.PivotCell;
+    const self = this;
+    const PivotCell = comps.PivotCell;
 
-    var lastCellIndex = this.props.row.length - 1;
-    var cell0 = this.props.row[0];
-    var leftmostCellFound = false;
-    var layoutInfos = self.props.layoutInfos;
-    var cells;
+    const lastCellIndex = this.props.row.length - 1;
+    const cell0 = this.props.row[0];
+    let leftmostCellFound = false;
+    const layoutInfos = self.props.layoutInfos;
+    let cells;
 
-    var rowstyle = {};
+    const rowstyle = {};
 
-    var istopmost = false;
+    let istopmost = false;
 
-    cells = this.props.row.map(function (cell, index) {
-      var isleftmost = false;
+    cells = this.props.row.map((cell, index) => {
+      let isleftmost = false;
 
       // If current cells are column/data headers and left most cell is not found yet
       // and last row left most cell does not span vertically over the current one and current one is visible

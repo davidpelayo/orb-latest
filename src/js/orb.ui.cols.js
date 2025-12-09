@@ -8,9 +8,9 @@
 /* global module, require */
 /*jshint eqnull: true*/
 
-var axe = require('./orb.axe');
-var axeUi = require('./orb.ui.axe');
-var uiheaders = require('./orb.ui.header');
+const axe = require('./orb.axe');
+const axeUi = require('./orb.ui.axe');
+const uiheaders = require('./orb.ui.header');
 
 /**
  * Creates a new instance of columns ui properties.
@@ -19,7 +19,7 @@ var uiheaders = require('./orb.ui.header');
  * @param  {orb.axe} columnsAxe - axe containing all columns dimensions.
  */
 module.exports = function (columnsAxe) {
-  var self = this;
+  const self = this;
 
   axeUi.call(self, columnsAxe);
 
@@ -31,7 +31,7 @@ module.exports = function (columnsAxe) {
     if (self.axe != null) {
       // Fill columns layout infos
       if (self.axe.root.values.length > 0 || self.axe.pgrid.config.grandTotal.columnsvisible) {
-        for (var depth = self.axe.root.depth; depth > 1; depth--) {
+        for (let depth = self.axe.root.depth; depth > 1; depth--) {
           self.headers.push([]);
           getUiInfo(depth, self.headers);
         }
@@ -68,7 +68,7 @@ module.exports = function (columnsAxe) {
   };
 
   function generateLeafsHeaders() {
-    var leafsHeaders = [];
+    const leafsHeaders = [];
 
     function pushsubtotal(pheader) {
       if (pheader && pheader.dim.field.subTotal.visible) {
@@ -78,14 +78,14 @@ module.exports = function (columnsAxe) {
 
     if (self.headers.length > 0) {
       // last headers row
-      var infos = self.headers[self.headers.length - 1];
-      var header = infos[0];
+      const infos = self.headers[self.headers.length - 1];
+      let header = infos[0];
 
       if (header) {
-        var currparent,
+        let currparent,
           prevpar = header.parent;
 
-        for (var i = 0; i < infos.length; i++) {
+        for (let i = 0; i < infos.length; i++) {
           header = infos[i];
           currparent = header.parent;
           // if current header parent is different than previous header parent,
@@ -95,8 +95,8 @@ module.exports = function (columnsAxe) {
             if (currparent != null) {
               // walk up parent hierarchy and add grand parents if different
               // than current header grand parents
-              var grandpar = currparent.parent;
-              var prevgrandpar = prevpar ? prevpar.parent : null;
+              let grandpar = currparent.parent;
+              let prevgrandpar = prevpar ? prevpar.parent : null;
               while (grandpar != prevgrandpar && prevgrandpar != null) {
                 pushsubtotal(prevgrandpar);
                 grandpar = grandpar ? grandpar.parent : null;
@@ -128,8 +128,8 @@ module.exports = function (columnsAxe) {
     // add data headers if more than 1 data field and they willbe the leaf headers
     if (self.isMultiDataFields()) {
       self.leafsHeaders = [];
-      for (var leafIndex = 0; leafIndex < leafsHeaders.length; leafIndex++) {
-        for (var datafieldindex = 0; datafieldindex < self.dataFieldsCount(); datafieldindex++) {
+      for (let leafIndex = 0; leafIndex < leafsHeaders.length; leafIndex++) {
+        for (let datafieldindex = 0; datafieldindex < self.dataFieldsCount(); datafieldindex++) {
           self.leafsHeaders.push(
             new uiheaders.dataHeader(
               self.axe.pgrid.config.dataFields[datafieldindex],
@@ -153,21 +153,21 @@ module.exports = function (columnsAxe) {
    * @param  {object}  infos - array to fill with ui dimension info
    */
   function getUiInfo(depth, headers) {
-    var infos = headers[headers.length - 1];
-    var parents =
+    const infos = headers[headers.length - 1];
+    const parents =
       self.axe.root.depth === depth
         ? [null]
-        : headers[self.axe.root.depth - depth - 1].filter(function (p) {
+        : headers[self.axe.root.depth - depth - 1].filter(p => {
             return p.type !== uiheaders.HeaderType.SUB_TOTAL;
           });
 
-    for (var pi = 0; pi < parents.length; pi++) {
-      var parent = parents[pi];
-      var parentDim = parent == null ? self.axe.root : parent.dim;
+    for (let pi = 0; pi < parents.length; pi++) {
+      const parent = parents[pi];
+      const parentDim = parent == null ? self.axe.root : parent.dim;
 
-      for (var di = 0; di < parentDim.values.length; di++) {
-        var subvalue = parentDim.values[di];
-        var subdim = parentDim.subdimvals[subvalue];
+      for (let di = 0; di < parentDim.values.length; di++) {
+        const subvalue = parentDim.values[di];
+        const subdim = parentDim.subdimvals[subvalue];
 
         var subtotalHeader;
         if (!subdim.isLeaf && subdim.field.subTotal.visible) {
@@ -182,7 +182,7 @@ module.exports = function (columnsAxe) {
           subtotalHeader = null;
         }
 
-        var header = new uiheaders.header(
+        const header = new uiheaders.header(
           axe.Type.COLUMNS,
           null,
           subdim,

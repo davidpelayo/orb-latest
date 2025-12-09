@@ -4,22 +4,22 @@
 
 'use strict';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+const React = require('react');
+const ReactDOM = require('react-dom');
 
 module.exports.PivotTableColumnHeaders = React.createClass({
   render: function () {
-    var self = this;
-    var PivotRow = comps.PivotRow;
-    var pgridwidget = this.props.pivotTableComp.pgridwidget;
-    var cntrClass = pgridwidget.columns.headers.length === 0 ? '' : ' columns-cntr';
+    const self = this;
+    const PivotRow = comps.PivotRow;
+    const pgridwidget = this.props.pivotTableComp.pgridwidget;
+    const cntrClass = pgridwidget.columns.headers.length === 0 ? '' : ' columns-cntr';
 
-    var layoutInfos = {
+    const layoutInfos = {
       lastLeftMostCellVSpan: 0,
       topMostCells: {},
     };
 
-    var columnHeaders = pgridwidget.columns.headers.map(function (headerRow, index) {
+    const columnHeaders = pgridwidget.columns.headers.map((headerRow, index) => {
       return (
         <PivotRow
           key={index}

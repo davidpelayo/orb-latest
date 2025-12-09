@@ -8,16 +8,16 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var react = typeof window === 'undefined' ? require('react') : window.React;
-var reactDOM = typeof window === 'undefined' ? require('react-dom') : window.ReactDOM;
-var utils = require('../orb.utils');
-var axe = require('../orb.axe');
-var uiheaders = require('../orb.ui.header');
-var filtering = require('../orb.filtering');
-var reactUtils = require('./orb.react.utils');
+const react = typeof window === 'undefined' ? require('react') : window.React;
+const reactDOM = typeof window === 'undefined' ? require('react-dom') : window.ReactDOM;
+const utils = require('../orb.utils');
+const axe = require('../orb.axe');
+const uiheaders = require('../orb.ui.header');
+const filtering = require('../orb.filtering');
+const reactUtils = require('./orb.react.utils');
 
-var extraCol = 0;
-var comps = module.exports;
+const extraCol = 0;
+const comps = module.exports;
 
 /** @jsx React.DOM */
 
@@ -28,8 +28,8 @@ var comps = module.exports;
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var pivotId = 1;
-var themeChangeCallbacks = {};
+let pivotId = 1;
+const themeChangeCallbacks = {};
 
 module.exports.PivotTable = React.createClass({
   displayName: 'PivotTable',
@@ -111,7 +111,7 @@ module.exports.PivotTable = React.createClass({
     }
   },
   unregisterThemeChanged: function (compCallback) {
-    var i;
+    let i;
     if (compCallback && (i = themeChangeCallbacks[this.id].indexOf(compCallback)) >= 0) {
       themeChangeCallbacks[this.id].splice(i, 1);
     }
@@ -119,14 +119,14 @@ module.exports.PivotTable = React.createClass({
   changeTheme: function (newTheme) {
     if (this.pgridwidget.pgrid.config.setTheme(newTheme)) {
       // notify self/sub-components of the theme change
-      for (var i = 0; i < themeChangeCallbacks[this.id].length; i++) {
+      for (let i = 0; i < themeChangeCallbacks[this.id].length; i++) {
         themeChangeCallbacks[this.id][i]();
       }
     }
   },
   updateClasses: function () {
-    var thisnode = ReactDOM.findDOMNode(this);
-    var classes = this.pgridwidget.pgrid.config.theme.getPivotClasses();
+    const thisnode = ReactDOM.findDOMNode(this);
+    const classes = this.pgridwidget.pgrid.config.theme.getPivotClasses();
     thisnode.className = classes.container;
     thisnode.children[1].className = classes.table;
   },
@@ -134,13 +134,13 @@ module.exports.PivotTable = React.createClass({
     this.synchronizeCompsWidths();
   },
   componentDidMount: function () {
-    var dataCellsContainerNode = ReactDOM.findDOMNode(this.refs.dataCellsContainer);
-    var dataCellsTableNode = ReactDOM.findDOMNode(this.refs.dataCellsTable);
-    var colHeadersContainerNode = ReactDOM.findDOMNode(this.refs.colHeadersContainer);
-    var rowHeadersContainerNode = ReactDOM.findDOMNode(this.refs.rowHeadersContainer);
+    const dataCellsContainerNode = ReactDOM.findDOMNode(this.refs.dataCellsContainer);
+    const dataCellsTableNode = ReactDOM.findDOMNode(this.refs.dataCellsTable);
+    const colHeadersContainerNode = ReactDOM.findDOMNode(this.refs.colHeadersContainer);
+    const rowHeadersContainerNode = ReactDOM.findDOMNode(this.refs.rowHeadersContainer);
 
-    this.refs.horizontalScrollBar.setScrollClient(dataCellsContainerNode, function (scrollPercent) {
-      var scrollAmount = Math.ceil(
+    this.refs.horizontalScrollBar.setScrollClient(dataCellsContainerNode, scrollPercent => {
+      const scrollAmount = Math.ceil(
         scrollPercent *
           (reactUtils.getSize(dataCellsTableNode).width -
             reactUtils.getSize(dataCellsContainerNode).width)
@@ -149,8 +149,8 @@ module.exports.PivotTable = React.createClass({
       dataCellsContainerNode.scrollLeft = scrollAmount;
     });
 
-    this.refs.verticalScrollBar.setScrollClient(dataCellsContainerNode, function (scrollPercent) {
-      var scrollAmount = Math.ceil(
+    this.refs.verticalScrollBar.setScrollClient(dataCellsContainerNode, scrollPercent => {
+      const scrollAmount = Math.ceil(
         scrollPercent *
           (reactUtils.getSize(dataCellsTableNode).height -
             reactUtils.getSize(dataCellsContainerNode).height)
@@ -162,9 +162,9 @@ module.exports.PivotTable = React.createClass({
     this.synchronizeCompsWidths();
   },
   onWheel: function (e) {
-    var elem;
-    var scrollbar;
-    var amount;
+    let elem;
+    let scrollbar;
+    let amount;
 
     if (e.currentTarget == (elem = ReactDOM.findDOMNode(this.refs.colHeadersContainer))) {
       scrollbar = this.refs.horizontalScrollBar;
@@ -183,12 +183,12 @@ module.exports.PivotTable = React.createClass({
     }
   },
   synchronizeCompsWidths: function () {
-    var self = this;
+    const self = this;
 
-    var pivotWrapperTable = ReactDOM.findDOMNode(self.refs.pivotWrapperTable);
+    const pivotWrapperTable = ReactDOM.findDOMNode(self.refs.pivotWrapperTable);
 
-    var nodes = (function () {
-      var nds = {};
+    const nodes = (function () {
+      const nds = {};
       [
         'pivotContainer',
         'dataCellsContainer',
@@ -202,7 +202,7 @@ module.exports.PivotTable = React.createClass({
         'toolbar',
         'horizontalScrollBar',
         'verticalScrollBar',
-      ].forEach(function (refname) {
+      ].forEach(refname => {
         if (self.refs[refname]) {
           nds[refname] = {
             node: ReactDOM.findDOMNode(self.refs[refname]),
@@ -226,7 +226,7 @@ module.exports.PivotTable = React.createClass({
     nodes.rowHeadersTable.size = reactUtils.getSize(nodes.rowHeadersTable.node);
 
     // get row buttons container width
-    var rowButtonsContainerWidth = reactUtils.getSize(
+    const rowButtonsContainerWidth = reactUtils.getSize(
       nodes.rowButtonsContainer.node.children[0]
     ).width;
 
@@ -238,11 +238,11 @@ module.exports.PivotTable = React.createClass({
     getAllColumnsWidth(nodes.rowHeadersTable);
 
     // get the array of max widths between dataCellsTable and colHeadersTable
-    var dataCellsTableMaxWidthArray = [];
-    var dataCellsTableMaxWidth = 0;
+    const dataCellsTableMaxWidthArray = [];
+    let dataCellsTableMaxWidth = 0;
 
-    for (var i = 0; i < nodes.dataCellsTable.widthArray.length; i++) {
-      var mxwidth = Math.max(
+    for (let i = 0; i < nodes.dataCellsTable.widthArray.length; i++) {
+      const mxwidth = Math.max(
         nodes.dataCellsTable.widthArray[i],
         nodes.colHeadersTable.widthArray[i]
       );
@@ -250,12 +250,12 @@ module.exports.PivotTable = React.createClass({
       dataCellsTableMaxWidth += mxwidth;
     }
 
-    var rowHeadersTableWidth = Math.max(
+    const rowHeadersTableWidth = Math.max(
       nodes.rowHeadersTable.size.width,
       rowButtonsContainerWidth,
       67
     );
-    var rowDiff = rowHeadersTableWidth - nodes.rowHeadersTable.size.width;
+    const rowDiff = rowHeadersTableWidth - nodes.rowHeadersTable.size.width;
     if (rowDiff > 0) {
       nodes.rowHeadersTable.size.width += rowDiff;
       nodes.rowHeadersTable.widthArray[nodes.rowHeadersTable.widthArray.length - 1] += rowDiff;
@@ -274,7 +274,7 @@ module.exports.PivotTable = React.createClass({
     nodes.colHeadersTable.node.style.width = dataCellsTableMaxWidth + 'px';
     nodes.rowHeadersTable.node.style.width = rowHeadersTableWidth + 'px';
 
-    var dataCellsContainerWidth = Math.min(
+    const dataCellsContainerWidth = Math.min(
       dataCellsTableMaxWidth + 1,
       nodes.pivotContainer.size.width - rowHeadersTableWidth - nodes.verticalScrollBar.size.width
     );
@@ -283,11 +283,11 @@ module.exports.PivotTable = React.createClass({
     nodes.dataCellsContainer.node.style.width = dataCellsContainerWidth + 'px';
     nodes.colHeadersContainer.node.style.width = dataCellsContainerWidth + 'px';
 
-    var pivotContainerHeight = this.pgridwidget.pgrid.config.height;
+    const pivotContainerHeight = this.pgridwidget.pgrid.config.height;
 
     if (pivotContainerHeight) {
       // Adjust data cells container height
-      var dataCellsTableHeight = Math.ceil(
+      const dataCellsTableHeight = Math.ceil(
         Math.min(
           pivotContainerHeight -
             (nodes.toolbar ? nodes.toolbar.size.height + 17 : 0) -
@@ -318,22 +318,22 @@ module.exports.PivotTable = React.createClass({
     this.refs.verticalScrollBar.refresh();
   },
   render: function () {
-    var self = this;
+    const self = this;
 
-    var config = this.pgridwidget.pgrid.config;
-    var Toolbar = comps.Toolbar;
-    var PivotTableUpperButtons = comps.PivotTableUpperButtons;
-    var PivotTableColumnButtons = comps.PivotTableColumnButtons;
-    var PivotTableRowButtons = comps.PivotTableRowButtons;
-    var PivotTableRowHeaders = comps.PivotTableRowHeaders;
-    var PivotTableColumnHeaders = comps.PivotTableColumnHeaders;
-    var PivotTableDataCells = comps.PivotTableDataCells;
-    var HorizontalScrollBar = comps.HorizontalScrollBar;
-    var VerticalScrollBar = comps.VerticalScrollBar;
+    const config = this.pgridwidget.pgrid.config;
+    const Toolbar = comps.Toolbar;
+    const PivotTableUpperButtons = comps.PivotTableUpperButtons;
+    const PivotTableColumnButtons = comps.PivotTableColumnButtons;
+    const PivotTableRowButtons = comps.PivotTableRowButtons;
+    const PivotTableRowHeaders = comps.PivotTableRowHeaders;
+    const PivotTableColumnHeaders = comps.PivotTableColumnHeaders;
+    const PivotTableDataCells = comps.PivotTableDataCells;
+    const HorizontalScrollBar = comps.HorizontalScrollBar;
+    const VerticalScrollBar = comps.VerticalScrollBar;
 
-    var classes = config.theme.getPivotClasses();
+    const classes = config.theme.getPivotClasses();
 
-    var tblStyle = {};
+    const tblStyle = {};
     if (config.width) {
       tblStyle.width = config.width;
     }
@@ -524,25 +524,25 @@ module.exports.PivotTable = React.createClass({
  */
 function getAllColumnsWidth(tblObject) {
   if (tblObject && tblObject.node) {
-    var tbl = tblObject.node;
-    var widthArray = [];
+    const tbl = tblObject.node;
+    const widthArray = [];
 
-    for (var rowIndex = 0; rowIndex < tbl.rows.length; rowIndex++) {
+    for (let rowIndex = 0; rowIndex < tbl.rows.length; rowIndex++) {
       // current row
-      var currRow = tbl.rows[rowIndex];
+      const currRow = tbl.rows[rowIndex];
       // reset widthArray index
-      var arrayIndex = 0;
-      var currWidth = null;
+      let arrayIndex = 0;
+      let currWidth = null;
 
       // get the width of each cell within current row
-      for (var cellIndex = 0; cellIndex < currRow.cells.length; cellIndex++) {
+      for (let cellIndex = 0; cellIndex < currRow.cells.length; cellIndex++) {
         // current cell
-        var currCell = currRow.cells[cellIndex];
+        const currCell = currRow.cells[cellIndex];
 
         if (currCell.__orb._visible) {
           // cell width
           //var cellwidth = Math.ceil(reactUtils.getSize(currCell.children[0]).width/currCell.colSpan);
-          var cellwidth = Math.ceil(
+          const cellwidth = Math.ceil(
             currCell.__orb._textWidth / currCell.__orb._colSpan +
               currCell.__orb._paddingLeft +
               currCell.__orb._paddingRight +
@@ -550,11 +550,11 @@ function getAllColumnsWidth(tblObject) {
               currCell.__orb._borderRightWidth
           );
           // whether current cell spans vertically to the last row
-          var rowsSpan =
+          const rowsSpan =
             currCell.__orb._rowSpan > 1 && currCell.__orb._rowSpan >= tbl.rows.length - rowIndex;
 
           // if current cell spans over more than one column, add its width (its) 'colSpan' number of times
-          for (var cspan = 0; cspan < currCell.__orb._colSpan; cspan++) {
+          for (let cspan = 0; cspan < currCell.__orb._colSpan; cspan++) {
             // If cell span over more than 1 row: insert its width into widthArray at arrayIndex
             // Else: either expand widthArray if necessary or replace the width if its smaller than current cell width
 
@@ -595,7 +595,7 @@ function getAllColumnsWidth(tblObject) {
 
     // set widthArray to the tblObject
     tblObject.size.width = 0;
-    tblObject.widthArray = widthArray.map(function (item, index) {
+    tblObject.widthArray = widthArray.map((item, index) => {
       tblObject.size.width += item.width;
       return item.width;
     });
@@ -614,29 +614,29 @@ function setTableWidths(tblObject, newWidthArray) {
     // reset table width
     (tblObject.size = tblObject.size || {}).width = 0;
 
-    var tbl = tblObject.node;
+    const tbl = tblObject.node;
 
     // for each row, set its cells width
-    for (var rowIndex = 0; rowIndex < tbl.rows.length; rowIndex++) {
+    for (let rowIndex = 0; rowIndex < tbl.rows.length; rowIndex++) {
       // current row
-      var currRow = tbl.rows[rowIndex];
+      const currRow = tbl.rows[rowIndex];
       // index in newWidthArray
-      var arrayIndex = 0;
-      var currWidth = null;
+      let arrayIndex = 0;
+      let currWidth = null;
 
       // set width of each cell
-      for (var cellIndex = 0; cellIndex < currRow.cells.length; cellIndex++) {
+      for (let cellIndex = 0; cellIndex < currRow.cells.length; cellIndex++) {
         // current cell
-        var currCell = currRow.cells[cellIndex];
+        const currCell = currRow.cells[cellIndex];
         if (currCell.__orb._visible) {
           // cell width
-          var newCellWidth = 0;
+          let newCellWidth = 0;
           // whether current cell spans vertically more than 1 row
-          var rowsSpan = currCell.__orb._rowSpan > 1 && rowIndex < tbl.rows.length - 1;
+          const rowsSpan = currCell.__orb._rowSpan > 1 && rowIndex < tbl.rows.length - 1;
 
           // current cell width is the sum of (its) "colspan" items in newWidthArray starting at 'arrayIndex'
           // 'arrayIndex' should be incremented by an amount equal to current cell 'colspan' but should also skip 'inhibited' cells
-          for (var cspan = 0; cspan < currCell.__orb._colSpan; cspan++) {
+          for (let cspan = 0; cspan < currCell.__orb._colSpan; cspan++) {
             currWidth = newWidthArray[arrayIndex];
             // skip inhibited widths (width that belongs to an upper cell than spans vertically to current row)
             while (currWidth && currWidth.inhibit > 0) {
@@ -662,7 +662,7 @@ function setTableWidths(tblObject, newWidthArray) {
 
           // set table width (only in first iteration)
           if (rowIndex === 0) {
-            var outerCellWidth = 0;
+            let outerCellWidth = 0;
             if (currCell.__orb) {
               outerCellWidth =
                 currCell.__orb._colSpan *
@@ -693,9 +693,9 @@ function setTableWidths(tblObject, newWidthArray) {
 
 function clearTableWidths(tbl) {
   if (tbl) {
-    for (var rowIndex = 0; rowIndex < tbl.rows.length; rowIndex++) {
-      var row = tbl.rows[rowIndex];
-      for (var cellIndex = 0; cellIndex < row.cells.length; cellIndex++) {
+    for (let rowIndex = 0; rowIndex < tbl.rows.length; rowIndex++) {
+      const row = tbl.rows[rowIndex];
+      for (let cellIndex = 0; cellIndex < row.cells.length; cellIndex++) {
         row.cells[cellIndex].children[0].style.width = '';
       }
     }
@@ -715,21 +715,21 @@ var ReactDOM = require('react-dom');
 module.exports.PivotRow = React.createClass({
   displayName: 'PivotRow',
   render: function () {
-    var self = this;
-    var PivotCell = comps.PivotCell;
+    const self = this;
+    const PivotCell = comps.PivotCell;
 
-    var lastCellIndex = this.props.row.length - 1;
-    var cell0 = this.props.row[0];
-    var leftmostCellFound = false;
-    var layoutInfos = self.props.layoutInfos;
-    var cells;
+    const lastCellIndex = this.props.row.length - 1;
+    const cell0 = this.props.row[0];
+    let leftmostCellFound = false;
+    const layoutInfos = self.props.layoutInfos;
+    let cells;
 
-    var rowstyle = {};
+    const rowstyle = {};
 
-    var istopmost = false;
+    let istopmost = false;
 
-    cells = this.props.row.map(function (cell, index) {
-      var isleftmost = false;
+    cells = this.props.row.map((cell, index) => {
+      let isleftmost = false;
 
       // If current cells are column/data headers and left most cell is not found yet
       // and last row left most cell does not span vertically over the current one and current one is visible
@@ -794,8 +794,8 @@ module.exports.PivotRow = React.createClass({
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var _paddingLeft = null;
-var _borderLeft = null;
+let _paddingLeft = null;
+let _borderLeft = null;
 
 module.exports.PivotCell = React.createClass({
   displayName: 'PivotCell',
@@ -806,19 +806,19 @@ module.exports.PivotCell = React.createClass({
     this.props.pivotTableComp.collapseRow(this.props.cell);
   },
   updateCellInfos: function () {
-    var node = ReactDOM.findDOMNode(this);
-    var cell = this.props.cell;
+    const node = ReactDOM.findDOMNode(this);
+    const cell = this.props.cell;
     node.__orb = node.__orb || {};
 
     if (!cell.visible()) {
       node.__orb._visible = false;
     } else {
-      var cellContentNode = ReactDOM.findDOMNode(this.refs.cellContent);
+      const cellContentNode = ReactDOM.findDOMNode(this.refs.cellContent);
 
-      var text = node.textContent;
-      var propList = [];
-      var retPaddingLeft = _paddingLeft == null;
-      var retBorderLeft = !this.props.leftmost && _borderLeft == null;
+      const text = node.textContent;
+      const propList = [];
+      const retPaddingLeft = _paddingLeft == null;
+      const retBorderLeft = !this.props.leftmost && _borderLeft == null;
 
       if (retPaddingLeft) {
         propList.push('padding-left');
@@ -829,7 +829,7 @@ module.exports.PivotCell = React.createClass({
       }
 
       if (propList.length > 0) {
-        var nodeStyle = reactUtils.getStyle(node, propList, true);
+        const nodeStyle = reactUtils.getStyle(node, propList, true);
 
         if (retPaddingLeft) {
           _paddingLeft = parseFloat(nodeStyle[0]);
@@ -871,12 +871,12 @@ module.exports.PivotCell = React.createClass({
   },
   _latestVisibleState: false,
   render: function () {
-    var self = this;
-    var cell = this.props.cell;
-    var divcontent = [];
-    var value;
-    var cellClick;
-    var headerPushed = false;
+    const self = this;
+    const cell = this.props.cell;
+    const divcontent = [];
+    let value;
+    let cellClick;
+    let headerPushed = false;
 
     this._latestVisibleState = cell.visible();
 
@@ -952,7 +952,7 @@ module.exports.PivotCell = React.createClass({
     }
 
     if (!headerPushed) {
-      var headerClassName;
+      let headerClassName;
       switch (cell.template) {
         case 'cell-template-datavalue':
           headerClassName = 'cell-data';
@@ -996,9 +996,9 @@ module.exports.PivotCell = React.createClass({
 });
 
 function getClassname(compProps) {
-  var cell = compProps.cell;
-  var classname = cell.cssclass;
-  var isEmpty = cell.template === 'cell-template-empty';
+  const cell = compProps.cell;
+  let classname = cell.cssclass;
+  const isEmpty = cell.template === 'cell-template-empty';
 
   if (!cell.visible()) {
     classname += ' cell-hidden';
@@ -1036,16 +1036,16 @@ function getClassname(compProps) {
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var dragManager = (module.exports.DragManager = (function () {
-  var _pivotComp = null;
+const dragManager = (module.exports.DragManager = (function () {
+  let _pivotComp = null;
 
-  var _currDragElement = null;
-  var _currDropTarget = null;
-  var _currDropIndicator = null;
+  let _currDragElement = null;
+  let _currDropTarget = null;
+  let _currDropIndicator = null;
 
-  var _dragNode = null;
-  var _dropTargets = [];
-  var _dropIndicators = [];
+  let _dragNode = null;
+  const _dropTargets = [];
+  const _dropIndicators = [];
 
   function doElementsOverlap(elem1Rect, elem2Rect) {
     return !(
@@ -1058,7 +1058,7 @@ var dragManager = (module.exports.DragManager = (function () {
 
   function setCurrDropTarget(dropTarget, callback) {
     if (_currDropTarget) {
-      signalDragEnd(_currDropTarget, function () {
+      signalDragEnd(_currDropTarget, () => {
         _currDropTarget = dropTarget;
         signalDragOver(dropTarget, callback);
       });
@@ -1070,7 +1070,7 @@ var dragManager = (module.exports.DragManager = (function () {
 
   function setCurrDropIndicator(dropIndicator) {
     if (_currDropIndicator) {
-      signalDragEnd(_currDropIndicator, function () {
+      signalDragEnd(_currDropIndicator, () => {
         _currDropIndicator = dropIndicator;
         signalDragOver(dropIndicator);
       });
@@ -1099,7 +1099,7 @@ var dragManager = (module.exports.DragManager = (function () {
   function getDropTarget() {
     return reactUtils.forEach(
       _dropTargets,
-      function (target) {
+      target => {
         if (target.component.state.isover) {
           return target;
         }
@@ -1111,7 +1111,7 @@ var dragManager = (module.exports.DragManager = (function () {
   function getDropIndicator() {
     return reactUtils.forEach(
       _dropIndicators,
-      function (indicator) {
+      indicator => {
         if (indicator.component.state.isover) {
           return indicator;
         }
@@ -1120,7 +1120,7 @@ var dragManager = (module.exports.DragManager = (function () {
     );
   }
 
-  var _initialized = false;
+  let _initialized = false;
 
   return {
     init: function (pivotComp) {
@@ -1128,12 +1128,12 @@ var dragManager = (module.exports.DragManager = (function () {
       _pivotComp = pivotComp;
     },
     setDragElement: function (elem) {
-      var prevDragElement = _currDragElement;
+      const prevDragElement = _currDragElement;
       _currDragElement = elem;
       if (_currDragElement != prevDragElement) {
         if (elem == null) {
           if (_currDropTarget) {
-            var position = _currDropIndicator != null ? _currDropIndicator.position : null;
+            const position = _currDropIndicator != null ? _currDropIndicator.position : null;
             _pivotComp.moveButton(
               prevDragElement,
               _currDropTarget.component.props.axetype,
@@ -1158,8 +1158,8 @@ var dragManager = (module.exports.DragManager = (function () {
       });
     },
     unregisterTarget: function (target) {
-      var tindex;
-      for (var i = 0; i < _dropTargets.length; i++) {
+      let tindex;
+      for (let i = 0; i < _dropTargets.length; i++) {
         if (_dropTargets[i].component == target) {
           tindex = i;
           break;
@@ -1179,8 +1179,8 @@ var dragManager = (module.exports.DragManager = (function () {
       });
     },
     unregisterIndicator: function (indicator) {
-      var iindex;
-      for (var i = 0; i < _dropIndicators.length; i++) {
+      let iindex;
+      for (let i = 0; i < _dropIndicators.length; i++) {
         if (_dropIndicators[i].component == indicator) {
           iindex = i;
           break;
@@ -1192,15 +1192,15 @@ var dragManager = (module.exports.DragManager = (function () {
     },
     elementMoved: function () {
       if (_currDragElement != null) {
-        var dragNodeRect = _dragNode.getBoundingClientRect();
-        var foundTarget;
+        const dragNodeRect = _dragNode.getBoundingClientRect();
+        let foundTarget;
 
         reactUtils.forEach(
           _dropTargets,
-          function (target) {
+          target => {
             if (!foundTarget) {
-              var tnodeRect = ReactDOM.findDOMNode(target.component).getBoundingClientRect();
-              var isOverlap = doElementsOverlap(dragNodeRect, tnodeRect);
+              const tnodeRect = ReactDOM.findDOMNode(target.component).getBoundingClientRect();
+              const isOverlap = doElementsOverlap(dragNodeRect, tnodeRect);
               if (isOverlap) {
                 foundTarget = target;
                 return;
@@ -1211,20 +1211,22 @@ var dragManager = (module.exports.DragManager = (function () {
         );
 
         if (foundTarget) {
-          setCurrDropTarget(foundTarget, function () {
-            var foundIndicator = null;
+          setCurrDropTarget(foundTarget, () => {
+            let foundIndicator = null;
 
-            reactUtils.forEach(_dropIndicators, function (indicator, index) {
+            reactUtils.forEach(_dropIndicators, (indicator, index) => {
               if (!foundIndicator) {
-                var elementOwnIndicator =
+                const elementOwnIndicator =
                   indicator.component.props.axetype === _currDragElement.props.axetype &&
                   indicator.component.props.position === _currDragElement.props.position;
 
-                var targetIndicator =
+                const targetIndicator =
                   indicator.component.props.axetype === foundTarget.component.props.axetype;
                 if (targetIndicator && !elementOwnIndicator) {
-                  var tnodeRect = ReactDOM.findDOMNode(indicator.component).getBoundingClientRect();
-                  var isOverlap = doElementsOverlap(dragNodeRect, tnodeRect);
+                  const tnodeRect = ReactDOM.findDOMNode(
+                    indicator.component
+                  ).getBoundingClientRect();
+                  const isOverlap = doElementsOverlap(dragNodeRect, tnodeRect);
                   if (isOverlap) {
                     foundIndicator = indicator;
                     return;
@@ -1234,7 +1236,7 @@ var dragManager = (module.exports.DragManager = (function () {
             });
 
             if (!foundIndicator) {
-              var axeIndicators = _dropIndicators.filter(function (indicator) {
+              const axeIndicators = _dropIndicators.filter(indicator => {
                 return indicator.component.props.axetype === foundTarget.component.props.axetype;
               });
               if (axeIndicators.length > 0) {
@@ -1301,7 +1303,7 @@ module.exports.DropIndicator = React.createClass({
     }
   },
   render: function () {
-    var classname = 'drp-indic';
+    let classname = 'drp-indic';
 
     if (this.props.isFirst) {
       classname += ' drp-indic-first';
@@ -1311,7 +1313,7 @@ module.exports.DropIndicator = React.createClass({
       classname += ' drp-indic-last';
     }
 
-    var style = {};
+    const style = {};
     if (this.state.isover) {
       classname += ' drp-indic-over';
     }
@@ -1333,7 +1335,7 @@ module.exports.DropIndicator = React.createClass({
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var dtid = 0;
+let dtid = 0;
 
 module.exports.DropTarget = React.createClass({
   displayName: 'DropTarget',
@@ -1374,10 +1376,10 @@ module.exports.DropTarget = React.createClass({
     }
   },
   render: function () {
-    var self = this;
-    var DropIndicator = module.exports.DropIndicator;
+    const self = this;
+    const DropIndicator = module.exports.DropIndicator;
 
-    var buttons = this.props.buttons.map(function (button, index) {
+    const buttons = this.props.buttons.map((button, index) => {
       if (index < self.props.buttons.length - 1) {
         return [
           React.createElement(
@@ -1416,7 +1418,7 @@ module.exports.DropTarget = React.createClass({
       }
     });
 
-    var style =
+    const style =
       self.props.axetype === axe.Type.ROWS
         ? {
             position: 'absolute',
@@ -1453,7 +1455,7 @@ module.exports.DropTarget = React.createClass({
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var pbid = 0;
+let pbid = 0;
 
 module.exports.PivotButton = React.createClass({
   displayName: 'PivotButton',
@@ -1478,12 +1480,12 @@ module.exports.PivotButton = React.createClass({
     // left mouse button only
     if (e.button !== 0) return;
 
-    var filterButton = ReactDOM.findDOMNode(this.refs.filterButton);
-    var filterButtonPos = reactUtils.getOffset(filterButton);
-    var filterContainer = document.createElement('div');
+    const filterButton = ReactDOM.findDOMNode(this.refs.filterButton);
+    const filterButtonPos = reactUtils.getOffset(filterButton);
+    const filterContainer = document.createElement('div');
 
-    var filterPanelFactory = React.createFactory(comps.FilterPanel);
-    var filterPanel = filterPanelFactory({
+    const filterPanelFactory = React.createFactory(comps.FilterPanel);
+    const filterPanel = filterPanelFactory({
       field: this.props.field.name,
       pivotTableComp: this.props.pivotTableComp,
     });
@@ -1527,7 +1529,7 @@ module.exports.PivotButton = React.createClass({
     if (e.ctrlKey) {
       this.props.pivotTableComp.toggleFieldExpansion(this.props.axetype, this.props.field);
     } else {
-      var thispos = reactUtils.getOffset(ReactDOM.findDOMNode(this));
+      const thispos = reactUtils.getOffset(ReactDOM.findDOMNode(this));
 
       // inform mousedown, save start pos
       this.setState({
@@ -1548,7 +1550,7 @@ module.exports.PivotButton = React.createClass({
     e.preventDefault();
   },
   onMouseUp: function (e) {
-    var isdragged = this.state.dragging;
+    const isdragged = this.state.dragging;
 
     this.setState({
       mousedown: false,
@@ -1569,14 +1571,14 @@ module.exports.PivotButton = React.createClass({
     // if the mouse is not down while moving, return (no drag)
     if (!this.props.pivotTableComp.pgrid.config.canMoveFields || !this.state.mousedown) return;
 
-    var size = null;
+    let size = null;
     if (!this.state.dragging) {
       size = reactUtils.getSize(ReactDOM.findDOMNode(this));
     } else {
       size = this.state.size;
     }
 
-    var newpos = {
+    const newpos = {
       x: e.pageX + this.state.mouseoffset.x,
       y: e.pageY + this.state.mouseoffset.y,
     };
@@ -1597,8 +1599,8 @@ module.exports.PivotButton = React.createClass({
       this.props.pivotTableComp.pgrid.config.theme.getButtonClasses().pivotButton;
   },
   render: function () {
-    var self = this;
-    var divstyle = {
+    const self = this;
+    const divstyle = {
       left: self.state.pos.x + 'px',
       top: self.state.pos.y + 'px',
       position: self.state.dragging ? 'fixed' : '',
@@ -1609,7 +1611,7 @@ module.exports.PivotButton = React.createClass({
       divstyle.width = self.state.size.width + 'px';
     }
 
-    var sortDirectionClass =
+    const sortDirectionClass =
       self.props.field.sort.order === 'asc'
         ? 'sort-asc'
         : //' \u2191' :
@@ -1617,12 +1619,12 @@ module.exports.PivotButton = React.createClass({
           ? 'sort-desc'
           : //' \u2193' :
             '';
-    var filterClass =
+    const filterClass =
       (self.state.dragging ? '' : 'fltr-btn') +
       (this.props.pivotTableComp.pgrid.isFieldFiltered(this.props.field.name)
         ? ' fltr-btn-active'
         : '');
-    var fieldAggFunc = '';
+    let fieldAggFunc = '';
     if (self.props.axetype === axe.Type.DATA) {
       fieldAggFunc = React.createElement(
         'small',
@@ -1694,15 +1696,15 @@ var ReactDOM = require('react-dom');
 module.exports.PivotTableUpperButtons = React.createClass({
   displayName: 'PivotTableUpperButtons',
   render: function () {
-    var self = this;
-    var PivotButton = comps.PivotButton;
-    var DropTarget = comps.DropTarget;
+    const self = this;
+    const PivotButton = comps.PivotButton;
+    const DropTarget = comps.DropTarget;
 
-    var config = this.props.pivotTableComp.pgridwidget.pgrid.config;
+    const config = this.props.pivotTableComp.pgridwidget.pgrid.config;
 
-    var fieldsDropTarget;
+    let fieldsDropTarget;
     if (config.canMoveFields) {
-      var fieldsButtons = config.availablefields().map(function (field, index) {
+      const fieldsButtons = config.availablefields().map((field, index) => {
         return React.createElement(PivotButton, {
           key: field.name,
           field: field,
@@ -1736,7 +1738,7 @@ module.exports.PivotTableUpperButtons = React.createClass({
       fieldsDropTarget = null;
     }
 
-    var dataButtons = config.dataFields.map(function (field, index) {
+    const dataButtons = config.dataFields.map((field, index) => {
       return React.createElement(PivotButton, {
         key: field.name,
         field: field,
@@ -1746,7 +1748,7 @@ module.exports.PivotTableUpperButtons = React.createClass({
       });
     });
 
-    var dataDropTarget = React.createElement(
+    const dataDropTarget = React.createElement(
       'tr',
       null,
       React.createElement(
@@ -1790,13 +1792,13 @@ var ReactDOM = require('react-dom');
 module.exports.PivotTableColumnButtons = React.createClass({
   displayName: 'PivotTableColumnButtons',
   render: function () {
-    var self = this;
-    var PivotButton = comps.PivotButton;
-    var DropTarget = comps.DropTarget;
+    const self = this;
+    const PivotButton = comps.PivotButton;
+    const DropTarget = comps.DropTarget;
 
-    var config = this.props.pivotTableComp.pgridwidget.pgrid.config;
+    const config = this.props.pivotTableComp.pgridwidget.pgrid.config;
 
-    var columnButtons = config.columnFields.map(function (field, index) {
+    const columnButtons = config.columnFields.map((field, index) => {
       return React.createElement(PivotButton, {
         key: field.name,
         field: field,
@@ -1825,13 +1827,13 @@ var ReactDOM = require('react-dom');
 module.exports.PivotTableRowButtons = React.createClass({
   displayName: 'PivotTableRowButtons',
   render: function () {
-    var self = this;
-    var PivotButton = comps.PivotButton;
-    var DropTarget = comps.DropTarget;
+    const self = this;
+    const PivotButton = comps.PivotButton;
+    const DropTarget = comps.DropTarget;
 
-    var config = this.props.pivotTableComp.pgridwidget.pgrid.config;
+    const config = this.props.pivotTableComp.pgridwidget.pgrid.config;
 
-    var rowButtons = config.rowFields.map(function (field, index) {
+    const rowButtons = config.rowFields.map((field, index) => {
       return React.createElement(PivotButton, {
         key: field.name,
         field: field,
@@ -1860,17 +1862,17 @@ var ReactDOM = require('react-dom');
 module.exports.PivotTableColumnHeaders = React.createClass({
   displayName: 'PivotTableColumnHeaders',
   render: function () {
-    var self = this;
-    var PivotRow = comps.PivotRow;
-    var pgridwidget = this.props.pivotTableComp.pgridwidget;
-    var cntrClass = pgridwidget.columns.headers.length === 0 ? '' : ' columns-cntr';
+    const self = this;
+    const PivotRow = comps.PivotRow;
+    const pgridwidget = this.props.pivotTableComp.pgridwidget;
+    const cntrClass = pgridwidget.columns.headers.length === 0 ? '' : ' columns-cntr';
 
-    var layoutInfos = {
+    const layoutInfos = {
       lastLeftMostCellVSpan: 0,
       topMostCells: {},
     };
 
-    var columnHeaders = pgridwidget.columns.headers.map(function (headerRow, index) {
+    const columnHeaders = pgridwidget.columns.headers.map((headerRow, index) => {
       return React.createElement(PivotRow, {
         key: index,
         row: headerRow,
@@ -1911,30 +1913,30 @@ var ReactDOM = require('react-dom');
 module.exports.PivotTableRowHeaders = React.createClass({
   displayName: 'PivotTableRowHeaders',
   setColGroup: function (widths) {
-    var node = ReactDOM.findDOMNode(this);
-    var colGroupNode = ReactDOM.findDOMNode(this.refs.colgroup);
+    const node = ReactDOM.findDOMNode(this);
+    const colGroupNode = ReactDOM.findDOMNode(this.refs.colgroup);
     node.style.tableLayout = 'auto';
 
     colGroupNode.innerHTML = '';
-    for (var i = 0; i < widths.length; i++) {
-      var col = document.createElement('col');
+    for (let i = 0; i < widths.length; i++) {
+      const col = document.createElement('col');
       col.style.width = widths[i] + 8 + 'px';
       colGroupNode.appendChild(col);
     }
     node.style.tableLayout = 'fixed';
   },
   render: function () {
-    var self = this;
-    var PivotRow = comps.PivotRow;
-    var pgridwidget = this.props.pivotTableComp.pgridwidget;
-    var cntrClass = pgridwidget.rows.headers.length === 0 ? '' : ' rows-cntr';
+    const self = this;
+    const PivotRow = comps.PivotRow;
+    const pgridwidget = this.props.pivotTableComp.pgridwidget;
+    const cntrClass = pgridwidget.rows.headers.length === 0 ? '' : ' rows-cntr';
 
-    var layoutInfos = {
+    const layoutInfos = {
       lastLeftMostCellVSpan: 0,
       topMostCells: {},
     };
 
-    var rowHeaders = pgridwidget.rows.headers.map(function (headerRow, index) {
+    const rowHeaders = pgridwidget.rows.headers.map((headerRow, index) => {
       return React.createElement(PivotRow, {
         key: index,
         row: headerRow,
@@ -1977,16 +1979,16 @@ var ReactDOM = require('react-dom');
 module.exports.PivotTableDataCells = React.createClass({
   displayName: 'PivotTableDataCells',
   render: function () {
-    var self = this;
-    var PivotRow = comps.PivotRow;
+    const self = this;
+    const PivotRow = comps.PivotRow;
 
-    var pgridwidget = this.props.pivotTableComp.pgridwidget;
-    var layoutInfos = {
+    const pgridwidget = this.props.pivotTableComp.pgridwidget;
+    const layoutInfos = {
       lastLeftMostCellVSpan: 0,
       topMostCells: {},
     };
 
-    var dataCells = pgridwidget.dataRows.map(function (dataRow, index) {
+    const dataCells = pgridwidget.dataRows.map((dataRow, index) => {
       return React.createElement(PivotRow, {
         key: index,
         row: dataRow,
@@ -2017,7 +2019,7 @@ module.exports.PivotTableDataCells = React.createClass({
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var scrollBarMixin = {
+const scrollBarMixin = {
   scrollEvent: null,
   scrollClient: null,
   getInitialState: function () {
@@ -2050,8 +2052,8 @@ var scrollBarMixin = {
     // drag with left mouse button
     if (e.button !== 0) return;
 
-    var thumbElem = ReactDOM.findDOMNode(this.refs.scrollThumb);
-    var thumbposInParent = reactUtils.getParentOffset(thumbElem);
+    const thumbElem = ReactDOM.findDOMNode(this.refs.scrollThumb);
+    const thumbposInParent = reactUtils.getParentOffset(thumbElem);
 
     reactUtils.addClass(thumbElem, 'orb-scrollthumb-hover');
 
@@ -2068,7 +2070,7 @@ var scrollBarMixin = {
   },
   onMouseUp: function () {
     if (this.state.mousedown) {
-      var thumbElem = ReactDOM.findDOMNode(this.refs.scrollThumb);
+      const thumbElem = ReactDOM.findDOMNode(this.refs.scrollThumb);
       reactUtils.removeClass(thumbElem, 'orb-scrollthumb-hover');
     }
 
@@ -2083,7 +2085,7 @@ var scrollBarMixin = {
     e.stopPropagation();
     e.preventDefault();
 
-    var amount = e[this.mousePosProp] - this.state.mouseoffset;
+    const amount = e[this.mousePosProp] - this.state.mouseoffset;
     this.state.mouseoffset = e[this.mousePosProp];
 
     this.scroll(amount);
@@ -2100,18 +2102,18 @@ var scrollBarMixin = {
     this.scrollEvent.callback = scrollCallback;
   },
   getScrollPercent: function () {
-    var maxOffset = this.getScrollSize() - this.state.size;
+    const maxOffset = this.getScrollSize() - this.state.size;
     return maxOffset <= 0 ? 0 : this.state.thumbOffset / maxOffset;
   },
   refresh: function () {
     if (this.scrollClient) {
-      var scrolledElement = this.scrollClient.children[0];
+      const scrolledElement = this.scrollClient.children[0];
 
-      var clientSize = reactUtils.getSize(this.scrollClient);
-      var elementSize = reactUtils.getSize(scrolledElement);
+      const clientSize = reactUtils.getSize(this.scrollClient);
+      const elementSize = reactUtils.getSize(scrolledElement);
 
-      var scrollBarContainerSize = this.getScrollSize();
-      var newSize =
+      const scrollBarContainerSize = this.getScrollSize();
+      const newSize =
         clientSize[this.sizeProp] >= elementSize[this.sizeProp]
           ? 0
           : (clientSize[this.sizeProp] / elementSize[this.sizeProp]) * scrollBarContainerSize;
@@ -2130,8 +2132,8 @@ var scrollBarMixin = {
     if (this.state.size > 0) {
       if (mode == 1) amount *= 8;
 
-      var maxOffset = this.getScrollSize() - this.state.size;
-      var newOffset = this.state.thumbOffset + amount;
+      const maxOffset = this.getScrollSize() - this.state.size;
+      let newOffset = this.state.thumbOffset + amount;
       if (newOffset < 0) newOffset = 0;
       if (newOffset > maxOffset) newOffset = maxOffset;
 
@@ -2151,22 +2153,22 @@ var scrollBarMixin = {
     e.preventDefault();
   },
   render: function () {
-    var self = this;
+    const self = this;
 
-    var thumbStyle = {
+    const thumbStyle = {
       padding: 0,
     };
     thumbStyle[this.sizeProp] = this.state.size;
     thumbStyle[this.offsetCssProp] = this.state.thumbOffset;
 
-    var thisStyle = {};
+    const thisStyle = {};
     thisStyle[this.sizeProp] = this.state.containerSize;
 
-    var thumbClass =
+    const thumbClass =
       'orb-scrollthumb ' +
       this.props.pivotTableComp.pgrid.config.theme.getButtonClasses().scrollBar;
 
-    var scrollThumb =
+    const scrollThumb =
       this.state.size <= 0
         ? null
         : React.createElement('div', {
@@ -2189,7 +2191,7 @@ var scrollBarMixin = {
 };
 
 function ScrollEvent(scrollBarComp) {
-  var self = this;
+  const self = this;
   this.scrollBarComp = scrollBarComp;
   this.callback = null;
   this.raise = function () {
@@ -2239,7 +2241,7 @@ module.exports.FilterPanel = React.createClass({
     return {};
   },
   destroy: function () {
-    var container = ReactDOM.findDOMNode(this).parentNode;
+    const container = ReactDOM.findDOMNode(this).parentNode;
     ReactDOM.unmountComponentAtNode(container);
     container.parentNode.removeChild(container);
   },
@@ -2254,8 +2256,8 @@ module.exports.FilterPanel = React.createClass({
     this.destroy();
   },
   onMouseDown: function (e) {
-    var container = ReactDOM.findDOMNode(this).parentNode;
-    var target = e.target;
+    const container = ReactDOM.findDOMNode(this).parentNode;
+    let target = e.target;
     while (target != null) {
       if (target == container) {
         return true;
@@ -2266,8 +2268,8 @@ module.exports.FilterPanel = React.createClass({
     this.destroy();
   },
   onMouseWheel: function (e) {
-    var valuesTable = ReactDOM.findDOMNode(this.refs.valuesTable);
-    var target = e.target;
+    const valuesTable = ReactDOM.findDOMNode(this.refs.valuesTable);
+    let target = e.target;
     while (target != null) {
       if (target == valuesTable) {
         if (valuesTable.scrollHeight <= valuesTable.clientHeight) {
@@ -2295,8 +2297,8 @@ module.exports.FilterPanel = React.createClass({
     window.removeEventListener('resize', this.destroy);
   },
   render: function () {
-    var Dropdown = comps.Dropdown;
-    var checkboxes = [];
+    const Dropdown = comps.Dropdown;
+    const checkboxes = [];
 
     this.filterManager = new FilterManager(
       this,
@@ -2339,18 +2341,21 @@ module.exports.FilterPanel = React.createClass({
       addCheckboxRow(filtering.BLANK, '(Blank)');
     }
 
-    for (var i = 0; i < this.values.length; i++) {
+    for (let i = 0; i < this.values.length; i++) {
       addCheckboxRow(this.values[i]);
     }
 
-    var buttonClass = this.props.pivotTableComp.pgrid.config.theme.getButtonClasses().orbButton;
-    var pivotStyle = window.getComputedStyle(ReactDOM.findDOMNode(this.props.pivotTableComp), null);
-    var style = {
+    const buttonClass = this.props.pivotTableComp.pgrid.config.theme.getButtonClasses().orbButton;
+    const pivotStyle = window.getComputedStyle(
+      ReactDOM.findDOMNode(this.props.pivotTableComp),
+      null
+    );
+    const style = {
       fontFamily: pivotStyle.getPropertyValue('font-family'),
       fontSize: pivotStyle.getPropertyValue('font-size'),
     };
 
-    var currentFilter = this.pgridwidget.pgrid.getFieldFilter(this.props.field);
+    const currentFilter = this.pgridwidget.pgrid.getFieldFilter(this.props.field);
 
     return React.createElement(
       'table',
@@ -2499,16 +2504,16 @@ module.exports.FilterPanel = React.createClass({
 });
 
 function FilterManager(reactComp, initialFilterObject) {
-  var self = this;
-  var INDETERMINATE = 'indeterminate';
+  const self = this;
+  const INDETERMINATE = 'indeterminate';
 
-  var savedCheckedValues;
-  var isSearchMode = false;
-  var isRegexMode = false;
-  var operator = filtering.Operators.MATCH;
-  var lastSearchTerm = '';
+  let savedCheckedValues;
+  let isSearchMode = false;
+  let isRegexMode = false;
+  let operator = filtering.Operators.MATCH;
+  let lastSearchTerm = '';
 
-  var elems = {
+  const elems = {
     filterContainer: null,
     checkboxes: {},
     searchBox: null,
@@ -2522,7 +2527,7 @@ function FilterManager(reactComp, initialFilterObject) {
     resizeGrip: null,
   };
 
-  var resizeManager;
+  let resizeManager;
 
   this.init = function (filterContainerElement) {
     elems.filterContainer = filterContainerElement;
@@ -2536,9 +2541,9 @@ function FilterManager(reactComp, initialFilterObject) {
     elems.cancelButton = elems.filterContainer.rows[2].cells[0].children[1];
     elems.resizeGrip = elems.filterContainer.rows[2].cells[1].children[0];
 
-    var rows = elems.filterContainer.rows[1].cells[0].children[0].rows;
-    for (var i = 0; i < rows.length; i++) {
-      var checkbox = rows[i].cells[0].children[0];
+    const rows = elems.filterContainer.rows[1].cells[0].children[0].rows;
+    for (let i = 0; i < rows.length; i++) {
+      const checkbox = rows[i].cells[0].children[0];
       elems.checkboxes[checkbox.value] = checkbox;
     }
 
@@ -2574,7 +2579,7 @@ function FilterManager(reactComp, initialFilterObject) {
 
   function applyInitialFilterObject() {
     if (initialFilterObject) {
-      var staticInfos = {
+      const staticInfos = {
         values: initialFilterObject.staticValue,
         toExclude: initialFilterObject.excludeStatic,
       };
@@ -2613,8 +2618,8 @@ function FilterManager(reactComp, initialFilterObject) {
 
     elems.clearSearchButton.addEventListener('click', self.clearSearchBox);
 
-    elems.okButton.addEventListener('click', function () {
-      var checkedObj = self.getCheckedValues();
+    elems.okButton.addEventListener('click', () => {
+      const checkedObj = self.getCheckedValues();
       reactComp.onFilter(
         operator.name,
         operator.regexpSupported && isSearchMode && isRegexMode
@@ -2624,20 +2629,20 @@ function FilterManager(reactComp, initialFilterObject) {
         checkedObj.toExclude
       );
     });
-    elems.cancelButton.addEventListener('click', function () {
+    elems.cancelButton.addEventListener('click', () => {
       reactComp.destroy();
     });
   }
 
   function ResizeManager(outerContainerElem, valuesTableElem, resizeGripElem) {
-    var minContainerWidth = 301;
-    var minContainerHeight = 223;
+    const minContainerWidth = 301;
+    const minContainerHeight = 223;
 
-    var mousedownpos = {
+    const mousedownpos = {
       x: 0,
       y: 0,
     };
-    var isMouseDown = false;
+    let isMouseDown = false;
 
     this.resizeMouseDown = function (e) {
       // drag/sort with left mouse button
@@ -2664,14 +2669,14 @@ function FilterManager(reactComp, initialFilterObject) {
       // if the mouse is not down while moving, return (no drag)
       if (!isMouseDown) return;
 
-      var resizeGripSize = resizeGripElem.getBoundingClientRect();
-      var outerContainerSize = outerContainerElem.getBoundingClientRect();
-      var valuesTableSize = valuesTableElem.getBoundingClientRect();
+      const resizeGripSize = resizeGripElem.getBoundingClientRect();
+      const outerContainerSize = outerContainerElem.getBoundingClientRect();
+      const valuesTableSize = valuesTableElem.getBoundingClientRect();
 
-      var outerContainerWidth = outerContainerSize.right - outerContainerSize.left;
-      var outerContainerHeight = outerContainerSize.bottom - outerContainerSize.top;
+      const outerContainerWidth = outerContainerSize.right - outerContainerSize.left;
+      const outerContainerHeight = outerContainerSize.bottom - outerContainerSize.top;
 
-      var offset = {
+      const offset = {
         x:
           outerContainerWidth <= minContainerWidth && e.pageX < resizeGripSize.left
             ? 0
@@ -2682,8 +2687,8 @@ function FilterManager(reactComp, initialFilterObject) {
             : e.pageY - mousedownpos.y,
       };
 
-      var newContainerWidth = outerContainerWidth + offset.x;
-      var newContainerHeight = outerContainerHeight + offset.y;
+      const newContainerWidth = outerContainerWidth + offset.x;
+      const newContainerHeight = outerContainerHeight + offset.y;
 
       mousedownpos.x = e.pageX;
       mousedownpos.y = e.pageY;
@@ -2741,7 +2746,7 @@ function FilterManager(reactComp, initialFilterObject) {
   };
 
   this.valueChecked = function (e) {
-    var target = e.target;
+    const target = e.target;
     if (target && target.type && target.type === 'checkbox') {
       if (target == elems.allCheckbox) {
         self.updateCheckboxes({
@@ -2754,25 +2759,25 @@ function FilterManager(reactComp, initialFilterObject) {
   };
 
   this.applyFilterTerm = function (operator, term) {
-    var defaultVisible = term ? false : true;
-    var opterm =
+    const defaultVisible = term ? false : true;
+    const opterm =
       operator.regexpSupported && isSearchMode
         ? isRegexMode
           ? term
           : utils.escapeRegex(term)
         : term;
     checkboxVisible(elems.allCheckbox, defaultVisible);
-    for (var i = 0; i < reactComp.values.length; i++) {
-      var val = reactComp.values[i];
-      var checkbox = elems.checkboxes[val];
-      var visible = !isSearchMode || operator.func(val, opterm);
+    for (let i = 0; i < reactComp.values.length; i++) {
+      const val = reactComp.values[i];
+      const checkbox = elems.checkboxes[val];
+      const visible = !isSearchMode || operator.func(val, opterm);
       checkboxVisible(checkbox, visible);
       checkbox.checked = visible;
     }
   };
 
   this.searchChanged = function (e) {
-    var search = (elems.searchBox.value || '').trim();
+    const search = (elems.searchBox.value || '').trim();
     if (
       e === 'operatorChanged' ||
       (e === 'regexModeChanged' && search) ||
@@ -2780,7 +2785,7 @@ function FilterManager(reactComp, initialFilterObject) {
     ) {
       lastSearchTerm = search;
 
-      var previousIsSearchMode = isSearchMode;
+      const previousIsSearchMode = isSearchMode;
       isSearchMode = search !== '';
 
       if (isSearchMode && !previousIsSearchMode) {
@@ -2807,9 +2812,9 @@ function FilterManager(reactComp, initialFilterObject) {
         toExclude: false,
       };
     } else {
-      var staticValue;
-      var i, val, checkbox;
-      var valuesCount = 0,
+      let staticValue;
+      let i, val, checkbox;
+      let valuesCount = 0,
         checkedCount = 0;
 
       for (i = 0; i < reactComp.values.length; i++) {
@@ -2823,7 +2828,7 @@ function FilterManager(reactComp, initialFilterObject) {
         }
       }
 
-      var excludeUnchecked = false;
+      let excludeUnchecked = false;
 
       if (checkedCount === 0) {
         staticValue = filtering.NONE;
@@ -2854,22 +2859,22 @@ function FilterManager(reactComp, initialFilterObject) {
   };
 
   this.updateCheckboxes = function (checkedList) {
-    var values = checkedList ? checkedList.values : null;
-    var allchecked = utils.isArray(values)
+    const values = checkedList ? checkedList.values : null;
+    const allchecked = utils.isArray(values)
       ? null
       : values == null || values === filtering.ALL
         ? true
         : values === filtering.NONE
           ? false
           : !!values;
-    for (var i = 0; i < reactComp.values.length; i++) {
-      var val = reactComp.values[i];
-      var checkbox = elems.checkboxes[val];
+    for (let i = 0; i < reactComp.values.length; i++) {
+      const val = reactComp.values[i];
+      const checkbox = elems.checkboxes[val];
       if (checkboxVisible(checkbox)) {
         if (allchecked != null) {
           checkbox.checked = allchecked;
         } else {
-          var valInList = values.indexOf(val) >= 0;
+          const valInList = values.indexOf(val) >= 0;
           checkbox.checked = checkedList.toExclude ? !valInList : valInList;
         }
       }
@@ -2878,9 +2883,9 @@ function FilterManager(reactComp, initialFilterObject) {
 
   this.updateAllCheckbox = function () {
     if (!isSearchMode) {
-      var allchecked = null;
-      for (var i = 0; i < reactComp.values.length; i++) {
-        var checkbox = elems.checkboxes[reactComp.values[i]];
+      let allchecked = null;
+      for (let i = 0; i < reactComp.values.length; i++) {
+        const checkbox = elems.checkboxes[reactComp.values[i]];
         if (allchecked == null) {
           allchecked = checkbox.checked;
         } else {
@@ -2915,8 +2920,8 @@ var ReactDOM = require('react-dom');
 module.exports.Dropdown = React.createClass({
   displayName: 'Dropdown',
   openOrClose: function (e) {
-    var valueNode = ReactDOM.findDOMNode(this.refs.valueElement);
-    var valuesListNode = ReactDOM.findDOMNode(this.refs.valuesList);
+    const valueNode = ReactDOM.findDOMNode(this.refs.valueElement);
+    const valuesListNode = ReactDOM.findDOMNode(this.refs.valuesList);
     if (e.target === valueNode && valuesListNode.style.display === 'none') {
       valuesListNode.style.display = 'block';
     } else {
@@ -2924,7 +2929,7 @@ module.exports.Dropdown = React.createClass({
     }
   },
   onMouseEnter: function () {
-    var valueNode = ReactDOM.findDOMNode(this.refs.valueElement);
+    const valueNode = ReactDOM.findDOMNode(this.refs.valueElement);
     valueNode.className = 'orb-tgl-btn-down';
     valueNode.style.backgroundPosition = 'right center';
   },
@@ -2938,9 +2943,9 @@ module.exports.Dropdown = React.createClass({
     document.removeEventListener('click', this.openOrClose);
   },
   selectValue: function (e) {
-    var listNode = ReactDOM.findDOMNode(this.refs.valuesList);
-    var target = e.target;
-    var isli = false;
+    const listNode = ReactDOM.findDOMNode(this.refs.valuesList);
+    let target = e.target;
+    let isli = false;
     while (!isli && target != null) {
       if (target.parentNode == listNode) {
         isli = true;
@@ -2950,8 +2955,8 @@ module.exports.Dropdown = React.createClass({
     }
 
     if (isli) {
-      var value = target.textContent;
-      var valueElement = ReactDOM.findDOMNode(this.refs.valueElement);
+      const value = target.textContent;
+      const valueElement = ReactDOM.findDOMNode(this.refs.valueElement);
       if (valueElement.textContent != value) {
         valueElement.textContent = value;
         if (this.props.onValueChanged) {
@@ -2967,8 +2972,8 @@ module.exports.Dropdown = React.createClass({
       };
     }
 
-    var values = [];
-    for (var i = 0; i < this.props.values.length; i++) {
+    const values = [];
+    for (let i = 0; i < this.props.values.length; i++) {
       values.push(
         React.createElement('li', {
           key: 'item' + i,
@@ -3019,15 +3024,15 @@ var ReactDOM = require('react-dom');
 module.exports.Grid = React.createClass({
   displayName: 'Grid',
   render: function () {
-    var data = this.props.data;
-    var headers = this.props.headers;
-    var tableClasses = this.props.theme.getGridClasses();
+    const data = this.props.data;
+    const headers = this.props.headers;
+    const tableClasses = this.props.theme.getGridClasses();
 
-    var rows = [];
+    const rows = [];
 
     if (headers && headers.length > 0) {
-      var headerRow = [];
-      for (var h = 0; h < headers.length; h++) {
+      const headerRow = [];
+      for (let h = 0; h < headers.length; h++) {
         headerRow.push(
           React.createElement(
             'th',
@@ -3050,10 +3055,10 @@ module.exports.Grid = React.createClass({
     }
 
     if (data && data.length > 0) {
-      for (var i = 0; i < data.length; i++) {
-        var row = [];
+      for (let i = 0; i < data.length; i++) {
+        const row = [];
         if (utils.isArray(data[i])) {
-          for (var j = 0; j < data[i].length; j++) {
+          for (let j = 0; j < data[i].length; j++) {
             row.push(
               React.createElement(
                 'td',
@@ -3065,7 +3070,7 @@ module.exports.Grid = React.createClass({
             );
           }
         } else {
-          for (var prop in data[i]) {
+          for (const prop in data[i]) {
             if (data[i].hasOwnProperty(prop)) {
               row.push(
                 React.createElement(
@@ -3111,7 +3116,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 
 function createOverlay() {
-  var overlayElement = document.createElement('div');
+  const overlayElement = document.createElement('div');
   overlayElement.className = 'orb-overlay orb-overlay-hidden';
   document.body.appendChild(overlayElement);
   return overlayElement;
@@ -3121,8 +3126,8 @@ var Dialog = (module.exports.Dialog = React.createClass({
   displayName: 'Dialog',
   statics: {
     create: function () {
-      var dialogFactory = React.createFactory(Dialog);
-      var overlay = createOverlay();
+      const dialogFactory = React.createFactory(Dialog);
+      const overlay = createOverlay();
 
       return {
         show: function (props) {
@@ -3140,15 +3145,15 @@ var Dialog = (module.exports.Dialog = React.createClass({
     this.setOverlayClass(true);
     this.overlayElement.addEventListener('click', this.close);
 
-    var dialogElement = this.overlayElement.children[0];
-    var dialogBodyElement = dialogElement.children[0].children[1];
+    const dialogElement = this.overlayElement.children[0];
+    const dialogBodyElement = dialogElement.children[0].children[1];
 
-    var screenWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    var screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    var maxHeight = (2 * screenHeight) / 3;
+    const screenWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    let maxHeight = (2 * screenHeight) / 3;
     maxHeight = maxHeight < 301 ? 301 : maxHeight;
-    var dWidth = dialogElement.offsetWidth + (dialogElement.offsetHeight > maxHeight ? 11 : 0);
-    var dHeight = dialogElement.offsetHeight > maxHeight ? maxHeight : dialogElement.offsetHeight;
+    const dWidth = dialogElement.offsetWidth + (dialogElement.offsetHeight > maxHeight ? 11 : 0);
+    const dHeight = dialogElement.offsetHeight > maxHeight ? maxHeight : dialogElement.offsetHeight;
 
     dialogElement.style.top = (screenHeight > dHeight ? (screenHeight - dHeight) / 2 : 0) + 'px';
     dialogElement.style.left = (screenWidth > dWidth ? (screenWidth - dWidth) / 2 : 0) + 'px';
@@ -3165,8 +3170,8 @@ var Dialog = (module.exports.Dialog = React.createClass({
   },
   render: function () {
     if (this.props.comp) {
-      var comp = React.createElement(this.props.comp.type, this.props.comp.props);
-      var classes = this.props.theme.getDialogClasses();
+      const comp = React.createElement(this.props.comp.type, this.props.comp.props);
+      const classes = this.props.theme.getDialogClasses();
 
       return React.createElement(
         'div',
@@ -3223,20 +3228,20 @@ module.exports.Toolbar = React.createClass({
   displayName: 'Toolbar',
   _toInit: [],
   componentDidMount: function () {
-    for (var i = 0; i < this._toInit.length; i++) {
-      var btn = this._toInit[i];
+    for (let i = 0; i < this._toInit.length; i++) {
+      const btn = this._toInit[i];
       btn.init(this.props.pivotTableComp, ReactDOM.findDOMNode(this.refs[btn.ref]));
     }
   },
   componentDidUpdate: function () {
-    for (var i = 0; i < this._toInit.length; i++) {
-      var btn = this._toInit[i];
+    for (let i = 0; i < this._toInit.length; i++) {
+      const btn = this._toInit[i];
       btn.init(this.props.pivotTableComp, ReactDOM.findDOMNode(this.refs[btn.ref]));
     }
   },
   createCallback: function (action) {
     if (action != null) {
-      var pgridComponent = this.props.pivotTableComp;
+      const pgridComponent = this.props.pivotTableComp;
       return function (e) {
         action(pgridComponent, e.target);
       };
@@ -3244,17 +3249,17 @@ module.exports.Toolbar = React.createClass({
     return null;
   },
   render: function () {
-    var config = this.props.pivotTableComp.pgridwidget.pgrid.config;
+    const config = this.props.pivotTableComp.pgridwidget.pgrid.config;
 
     if (config.toolbar && config.toolbar.visible) {
-      var configButtons = config.toolbar.buttons
+      const configButtons = config.toolbar.buttons
         ? defaultToolbarConfig.buttons.concat(config.toolbar.buttons)
         : defaultToolbarConfig.buttons;
 
-      var buttons = [];
-      for (var i = 0; i < configButtons.length; i++) {
-        var btnConfig = configButtons[i];
-        var refName = 'btn' + i;
+      const buttons = [];
+      for (let i = 0; i < configButtons.length; i++) {
+        const btnConfig = configButtons[i];
+        const refName = 'btn' + i;
 
         if (btnConfig.type == 'separator') {
           buttons.push(
@@ -3300,11 +3305,11 @@ module.exports.Toolbar = React.createClass({
   },
 });
 
-var excelExport = require('../orb.export.excel');
+const excelExport = require('../orb.export.excel');
 
 var defaultToolbarConfig = {
   exportToExcel: function (pgridComponent, button) {
-    var a = document.createElement('a');
+    const a = document.createElement('a');
     a.download = 'orbpivotgrid.xls';
     a.href = excelExport(pgridComponent.props.pgridwidget);
     document.body.appendChild(a);
@@ -3324,11 +3329,11 @@ var defaultToolbarConfig = {
     pgridComponent.toggleFieldExpansion(axe.Type.COLUMNS, null, false);
   },
   updateSubtotalsButton: function (axetype, pgridComponent, button) {
-    var subTotalsState = pgridComponent.pgridwidget.areSubtotalsVisible(axetype);
+    const subTotalsState = pgridComponent.pgridwidget.areSubtotalsVisible(axetype);
     button.style.display = subTotalsState === null ? 'none' : '';
 
-    var classToAdd = '';
-    var classToRemove = '';
+    let classToAdd = '';
+    let classToRemove = '';
     if (subTotalsState) {
       classToAdd = 'subtotals-visible';
       classToRemove = 'subtotals-hidden';
@@ -3341,24 +3346,24 @@ var defaultToolbarConfig = {
     reactUtils.addClass(button, classToAdd);
   },
   initSubtotals: function (axetype) {
-    var self = this;
+    const self = this;
     return function (pgridComponent, button) {
       self.updateSubtotalsButton(axetype, pgridComponent, button);
     };
   },
   toggleSubtotals: function (axetype) {
-    var self = this;
+    const self = this;
     return function (pgridComponent, button) {
       pgridComponent.toggleSubtotals(axetype);
       self.updateSubtotalsButton(axetype, pgridComponent, button);
     };
   },
   updateGrandtotalButton: function (axetype, pgridComponent, button) {
-    var subTotalsState = pgridComponent.pgridwidget.isGrandtotalVisible(axetype);
+    const subTotalsState = pgridComponent.pgridwidget.isGrandtotalVisible(axetype);
     button.style.display = subTotalsState === null ? 'none' : '';
 
-    var classToAdd = '';
-    var classToRemove = '';
+    let classToAdd = '';
+    let classToRemove = '';
     if (subTotalsState) {
       classToAdd = 'grndtotal-visible';
       classToRemove = 'grndtotal-hidden';
@@ -3371,13 +3376,13 @@ var defaultToolbarConfig = {
     reactUtils.addClass(button, classToAdd);
   },
   initGrandtotal: function (axetype) {
-    var self = this;
+    const self = this;
     return function (pgridComponent, button) {
       self.updateGrandtotalButton(axetype, pgridComponent, button);
     };
   },
   toggleGrandtotal: function (axetype) {
-    var self = this;
+    const self = this;
     return function (pgridComponent, button) {
       pgridComponent.toggleGrandtotal(axetype);
       self.updateGrandtotalButton(axetype, pgridComponent, button);

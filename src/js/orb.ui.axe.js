@@ -8,8 +8,8 @@
 /* global module, require */
 /*jshint eqnull: true*/
 
-var axe = require('./orb.axe');
-var uiheaders = require('./orb.ui.header');
+const axe = require('./orb.axe');
+const uiheaders = require('./orb.ui.header');
 
 /**
  * Creates a new instance of rows/columns ui properties.
@@ -18,7 +18,7 @@ var uiheaders = require('./orb.ui.header');
  * @param  {orb.axe} axe - axe containing all dimensions.
  */
 module.exports = function (axeModel) {
-  var self = this;
+  const self = this;
 
   /**
    * Dimensions axe
@@ -45,13 +45,13 @@ module.exports = function (axeModel) {
   };
 
   this.toggleFieldExpansion = function (field, newState) {
-    var toToggle = [];
-    var allExpanded = true;
-    var hIndex;
+    const toToggle = [];
+    let allExpanded = true;
+    let hIndex;
 
-    for (var i = 0; i < this.headers.length; i++) {
+    for (let i = 0; i < this.headers.length; i++) {
       for (hIndex = 0; hIndex < this.headers[i].length; hIndex++) {
-        var header = this.headers[i][hIndex];
+        const header = this.headers[i][hIndex];
         if (
           header.type === uiheaders.HeaderType.SUB_TOTAL &&
           (field == null || header.dim.field.name == field.name)

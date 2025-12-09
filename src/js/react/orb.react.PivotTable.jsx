@@ -4,11 +4,11 @@
 
 'use strict';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+const React = require('react');
+const ReactDOM = require('react-dom');
 
-var pivotId = 1;
-var themeChangeCallbacks = {};
+let pivotId = 1;
+const themeChangeCallbacks = {};
 
 module.exports.PivotTable = React.createClass({
   id: pivotId++,
@@ -73,7 +73,7 @@ module.exports.PivotTable = React.createClass({
     }
   },
   unregisterThemeChanged: function (compCallback) {
-    var i;
+    let i;
     if (compCallback && (i = themeChangeCallbacks[this.id].indexOf(compCallback)) >= 0) {
       themeChangeCallbacks[this.id].splice(i, 1);
     }
@@ -81,14 +81,14 @@ module.exports.PivotTable = React.createClass({
   changeTheme: function (newTheme) {
     if (this.pgridwidget.pgrid.config.setTheme(newTheme)) {
       // notify self/sub-components of the theme change
-      for (var i = 0; i < themeChangeCallbacks[this.id].length; i++) {
+      for (let i = 0; i < themeChangeCallbacks[this.id].length; i++) {
         themeChangeCallbacks[this.id][i]();
       }
     }
   },
   updateClasses: function () {
-    var thisnode = ReactDOM.findDOMNode(this);
-    var classes = this.pgridwidget.pgrid.config.theme.getPivotClasses();
+    const thisnode = ReactDOM.findDOMNode(this);
+    const classes = this.pgridwidget.pgrid.config.theme.getPivotClasses();
     thisnode.className = classes.container;
     thisnode.children[1].className = classes.table;
   },
@@ -96,13 +96,13 @@ module.exports.PivotTable = React.createClass({
     this.synchronizeCompsWidths();
   },
   componentDidMount: function () {
-    var dataCellsContainerNode = ReactDOM.findDOMNode(this.refs.dataCellsContainer);
-    var dataCellsTableNode = ReactDOM.findDOMNode(this.refs.dataCellsTable);
-    var colHeadersContainerNode = ReactDOM.findDOMNode(this.refs.colHeadersContainer);
-    var rowHeadersContainerNode = ReactDOM.findDOMNode(this.refs.rowHeadersContainer);
+    const dataCellsContainerNode = ReactDOM.findDOMNode(this.refs.dataCellsContainer);
+    const dataCellsTableNode = ReactDOM.findDOMNode(this.refs.dataCellsTable);
+    const colHeadersContainerNode = ReactDOM.findDOMNode(this.refs.colHeadersContainer);
+    const rowHeadersContainerNode = ReactDOM.findDOMNode(this.refs.rowHeadersContainer);
 
-    this.refs.horizontalScrollBar.setScrollClient(dataCellsContainerNode, function (scrollPercent) {
-      var scrollAmount = Math.ceil(
+    this.refs.horizontalScrollBar.setScrollClient(dataCellsContainerNode, scrollPercent => {
+      const scrollAmount = Math.ceil(
         scrollPercent *
           (reactUtils.getSize(dataCellsTableNode).width -
             reactUtils.getSize(dataCellsContainerNode).width)
@@ -111,8 +111,8 @@ module.exports.PivotTable = React.createClass({
       dataCellsContainerNode.scrollLeft = scrollAmount;
     });
 
-    this.refs.verticalScrollBar.setScrollClient(dataCellsContainerNode, function (scrollPercent) {
-      var scrollAmount = Math.ceil(
+    this.refs.verticalScrollBar.setScrollClient(dataCellsContainerNode, scrollPercent => {
+      const scrollAmount = Math.ceil(
         scrollPercent *
           (reactUtils.getSize(dataCellsTableNode).height -
             reactUtils.getSize(dataCellsContainerNode).height)
@@ -124,9 +124,9 @@ module.exports.PivotTable = React.createClass({
     this.synchronizeCompsWidths();
   },
   onWheel: function (e) {
-    var elem;
-    var scrollbar;
-    var amount;
+    let elem;
+    let scrollbar;
+    let amount;
 
     if (e.currentTarget == (elem = ReactDOM.findDOMNode(this.refs.colHeadersContainer))) {
       scrollbar = this.refs.horizontalScrollBar;
@@ -145,12 +145,12 @@ module.exports.PivotTable = React.createClass({
     }
   },
   synchronizeCompsWidths: function () {
-    var self = this;
+    const self = this;
 
-    var pivotWrapperTable = ReactDOM.findDOMNode(self.refs.pivotWrapperTable);
+    const pivotWrapperTable = ReactDOM.findDOMNode(self.refs.pivotWrapperTable);
 
-    var nodes = (function () {
-      var nds = {};
+    const nodes = (function () {
+      const nds = {};
       [
         'pivotContainer',
         'dataCellsContainer',
@@ -163,7 +163,7 @@ module.exports.PivotTable = React.createClass({
         'toolbar',
         'horizontalScrollBar',
         'verticalScrollBar',
-      ].forEach(function (refname) {
+      ].forEach(refname => {
         if (self.refs[refname]) {
           nds[refname] = {
             node: ReactDOM.findDOMNode(self.refs[refname]),
@@ -187,7 +187,7 @@ module.exports.PivotTable = React.createClass({
     nodes.rowHeadersTable.size = reactUtils.getSize(nodes.rowHeadersTable.node);
 
     // get row buttons container width
-    var rowButtonsContainerWidth = reactUtils.getSize(
+    const rowButtonsContainerWidth = reactUtils.getSize(
       nodes.rowButtonsContainer.node.children[0]
     ).width;
 
@@ -199,11 +199,11 @@ module.exports.PivotTable = React.createClass({
     getAllColumnsWidth(nodes.rowHeadersTable);
 
     // get the array of max widths between dataCellsTable and colHeadersTable
-    var dataCellsTableMaxWidthArray = [];
-    var dataCellsTableMaxWidth = 0;
+    const dataCellsTableMaxWidthArray = [];
+    let dataCellsTableMaxWidth = 0;
 
-    for (var i = 0; i < nodes.dataCellsTable.widthArray.length; i++) {
-      var mxwidth = Math.max(
+    for (let i = 0; i < nodes.dataCellsTable.widthArray.length; i++) {
+      const mxwidth = Math.max(
         nodes.dataCellsTable.widthArray[i],
         nodes.colHeadersTable.widthArray[i]
       );
@@ -211,12 +211,12 @@ module.exports.PivotTable = React.createClass({
       dataCellsTableMaxWidth += mxwidth;
     }
 
-    var rowHeadersTableWidth = Math.max(
+    const rowHeadersTableWidth = Math.max(
       nodes.rowHeadersTable.size.width,
       rowButtonsContainerWidth,
       67
     );
-    var rowDiff = rowHeadersTableWidth - nodes.rowHeadersTable.size.width;
+    const rowDiff = rowHeadersTableWidth - nodes.rowHeadersTable.size.width;
     if (rowDiff > 0) {
       nodes.rowHeadersTable.size.width += rowDiff;
       nodes.rowHeadersTable.widthArray[nodes.rowHeadersTable.widthArray.length - 1] += rowDiff;
@@ -235,7 +235,7 @@ module.exports.PivotTable = React.createClass({
     nodes.colHeadersTable.node.style.width = dataCellsTableMaxWidth + 'px';
     nodes.rowHeadersTable.node.style.width = rowHeadersTableWidth + 'px';
 
-    var dataCellsContainerWidth = Math.min(
+    const dataCellsContainerWidth = Math.min(
       dataCellsTableMaxWidth + 1,
       nodes.pivotContainer.size.width - rowHeadersTableWidth - nodes.verticalScrollBar.size.width
     );
@@ -244,11 +244,11 @@ module.exports.PivotTable = React.createClass({
     nodes.dataCellsContainer.node.style.width = dataCellsContainerWidth + 'px';
     nodes.colHeadersContainer.node.style.width = dataCellsContainerWidth + 'px';
 
-    var pivotContainerHeight = this.pgridwidget.pgrid.config.height;
+    const pivotContainerHeight = this.pgridwidget.pgrid.config.height;
 
     if (pivotContainerHeight) {
       // Adjust data cells container height
-      var dataCellsTableHeight = Math.ceil(
+      const dataCellsTableHeight = Math.ceil(
         Math.min(
           pivotContainerHeight -
             (nodes.toolbar ? nodes.toolbar.size.height + 17 : 0) -
@@ -279,22 +279,22 @@ module.exports.PivotTable = React.createClass({
     this.refs.verticalScrollBar.refresh();
   },
   render: function () {
-    var self = this;
+    const self = this;
 
-    var config = this.pgridwidget.pgrid.config;
-    var Toolbar = comps.Toolbar;
-    var PivotTableUpperButtons = comps.PivotTableUpperButtons;
-    var PivotTableColumnButtons = comps.PivotTableColumnButtons;
-    var PivotTableRowButtons = comps.PivotTableRowButtons;
-    var PivotTableRowHeaders = comps.PivotTableRowHeaders;
-    var PivotTableColumnHeaders = comps.PivotTableColumnHeaders;
-    var PivotTableDataCells = comps.PivotTableDataCells;
-    var HorizontalScrollBar = comps.HorizontalScrollBar;
-    var VerticalScrollBar = comps.VerticalScrollBar;
+    const config = this.pgridwidget.pgrid.config;
+    const Toolbar = comps.Toolbar;
+    const PivotTableUpperButtons = comps.PivotTableUpperButtons;
+    const PivotTableColumnButtons = comps.PivotTableColumnButtons;
+    const PivotTableRowButtons = comps.PivotTableRowButtons;
+    const PivotTableRowHeaders = comps.PivotTableRowHeaders;
+    const PivotTableColumnHeaders = comps.PivotTableColumnHeaders;
+    const PivotTableDataCells = comps.PivotTableDataCells;
+    const HorizontalScrollBar = comps.HorizontalScrollBar;
+    const VerticalScrollBar = comps.VerticalScrollBar;
 
-    var classes = config.theme.getPivotClasses();
+    const classes = config.theme.getPivotClasses();
 
-    var tblStyle = {};
+    const tblStyle = {};
     if (config.width) {
       tblStyle.width = config.width;
     }
@@ -403,25 +403,25 @@ module.exports.PivotTable = React.createClass({
  */
 function getAllColumnsWidth(tblObject) {
   if (tblObject && tblObject.node) {
-    var tbl = tblObject.node;
-    var widthArray = [];
+    const tbl = tblObject.node;
+    const widthArray = [];
 
-    for (var rowIndex = 0; rowIndex < tbl.rows.length; rowIndex++) {
+    for (let rowIndex = 0; rowIndex < tbl.rows.length; rowIndex++) {
       // current row
-      var currRow = tbl.rows[rowIndex];
+      const currRow = tbl.rows[rowIndex];
       // reset widthArray index
-      var arrayIndex = 0;
-      var currWidth = null;
+      let arrayIndex = 0;
+      let currWidth = null;
 
       // get the width of each cell within current row
-      for (var cellIndex = 0; cellIndex < currRow.cells.length; cellIndex++) {
+      for (let cellIndex = 0; cellIndex < currRow.cells.length; cellIndex++) {
         // current cell
-        var currCell = currRow.cells[cellIndex];
+        const currCell = currRow.cells[cellIndex];
 
         if (currCell.__orb._visible) {
           // cell width
           //var cellwidth = Math.ceil(reactUtils.getSize(currCell.children[0]).width/currCell.colSpan);
-          var cellwidth = Math.ceil(
+          const cellwidth = Math.ceil(
             currCell.__orb._textWidth / currCell.__orb._colSpan +
               currCell.__orb._paddingLeft +
               currCell.__orb._paddingRight +
@@ -429,11 +429,11 @@ function getAllColumnsWidth(tblObject) {
               currCell.__orb._borderRightWidth
           );
           // whether current cell spans vertically to the last row
-          var rowsSpan =
+          const rowsSpan =
             currCell.__orb._rowSpan > 1 && currCell.__orb._rowSpan >= tbl.rows.length - rowIndex;
 
           // if current cell spans over more than one column, add its width (its) 'colSpan' number of times
-          for (var cspan = 0; cspan < currCell.__orb._colSpan; cspan++) {
+          for (let cspan = 0; cspan < currCell.__orb._colSpan; cspan++) {
             // If cell span over more than 1 row: insert its width into widthArray at arrayIndex
             // Else: either expand widthArray if necessary or replace the width if its smaller than current cell width
 
@@ -474,7 +474,7 @@ function getAllColumnsWidth(tblObject) {
 
     // set widthArray to the tblObject
     tblObject.size.width = 0;
-    tblObject.widthArray = widthArray.map(function (item, index) {
+    tblObject.widthArray = widthArray.map((item, index) => {
       tblObject.size.width += item.width;
       return item.width;
     });
@@ -493,29 +493,29 @@ function setTableWidths(tblObject, newWidthArray) {
     // reset table width
     (tblObject.size = tblObject.size || {}).width = 0;
 
-    var tbl = tblObject.node;
+    const tbl = tblObject.node;
 
     // for each row, set its cells width
-    for (var rowIndex = 0; rowIndex < tbl.rows.length; rowIndex++) {
+    for (let rowIndex = 0; rowIndex < tbl.rows.length; rowIndex++) {
       // current row
-      var currRow = tbl.rows[rowIndex];
+      const currRow = tbl.rows[rowIndex];
       // index in newWidthArray
-      var arrayIndex = 0;
-      var currWidth = null;
+      let arrayIndex = 0;
+      let currWidth = null;
 
       // set width of each cell
-      for (var cellIndex = 0; cellIndex < currRow.cells.length; cellIndex++) {
+      for (let cellIndex = 0; cellIndex < currRow.cells.length; cellIndex++) {
         // current cell
-        var currCell = currRow.cells[cellIndex];
+        const currCell = currRow.cells[cellIndex];
         if (currCell.__orb._visible) {
           // cell width
-          var newCellWidth = 0;
+          let newCellWidth = 0;
           // whether current cell spans vertically more than 1 row
-          var rowsSpan = currCell.__orb._rowSpan > 1 && rowIndex < tbl.rows.length - 1;
+          const rowsSpan = currCell.__orb._rowSpan > 1 && rowIndex < tbl.rows.length - 1;
 
           // current cell width is the sum of (its) "colspan" items in newWidthArray starting at 'arrayIndex'
           // 'arrayIndex' should be incremented by an amount equal to current cell 'colspan' but should also skip 'inhibited' cells
-          for (var cspan = 0; cspan < currCell.__orb._colSpan; cspan++) {
+          for (let cspan = 0; cspan < currCell.__orb._colSpan; cspan++) {
             currWidth = newWidthArray[arrayIndex];
             // skip inhibited widths (width that belongs to an upper cell than spans vertically to current row)
             while (currWidth && currWidth.inhibit > 0) {
@@ -541,7 +541,7 @@ function setTableWidths(tblObject, newWidthArray) {
 
           // set table width (only in first iteration)
           if (rowIndex === 0) {
-            var outerCellWidth = 0;
+            let outerCellWidth = 0;
             if (currCell.__orb) {
               outerCellWidth =
                 currCell.__orb._colSpan *
@@ -572,9 +572,9 @@ function setTableWidths(tblObject, newWidthArray) {
 
 function clearTableWidths(tbl) {
   if (tbl) {
-    for (var rowIndex = 0; rowIndex < tbl.rows.length; rowIndex++) {
-      var row = tbl.rows[rowIndex];
-      for (var cellIndex = 0; cellIndex < row.cells.length; cellIndex++) {
+    for (let rowIndex = 0; rowIndex < tbl.rows.length; rowIndex++) {
+      const row = tbl.rows[rowIndex];
+      for (let cellIndex = 0; cellIndex < row.cells.length; cellIndex++) {
         row.cells[cellIndex].children[0].style.width = '';
       }
     }

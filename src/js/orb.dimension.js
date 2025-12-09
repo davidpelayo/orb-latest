@@ -18,8 +18,8 @@
  * @param  {int} fieldindex - index of this dimension field in fields array
  * @param  {Boolean} isRoot - whether or not this is the root dimension for a given axe (row/column)
  */
-module.exports = function (id, parent, value, field, depth, isRoot, isLeaf) {
-  var self = this;
+module.exports = (id, parent, value, field, depth, isRoot, isLeaf) => {
+  const self = this;
   /**
    * unique id within parent orb.axe instance.
    * @type {Number}
@@ -68,15 +68,15 @@ module.exports = function (id, parent, value, field, depth, isRoot, isLeaf) {
 
   this.rowIndexes = null;
 
-  this.getRowIndexes = function (result) {
+  this.getRowIndexes = result => {
     if (self.rowIndexes == null) {
       self.rowIndexes = [];
-      for (var i = 0; i < self.values.length; i++) {
+      for (let i = 0; i < self.values.length; i++) {
         self.subdimvals[self.values[i]].getRowIndexes(self.rowIndexes);
       }
     }
     if (result != null) {
-      for (var j = 0; j < self.rowIndexes.length; j++) {
+      for (let j = 0; j < self.rowIndexes.length; j++) {
         result.push(self.rowIndexes[j]);
       }
       return result;

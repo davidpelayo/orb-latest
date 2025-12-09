@@ -8,16 +8,16 @@
 /* global module, require */
 /*jshint eqnull: true*/
 
-var utils = require('./orb.utils');
+const utils = require('./orb.utils');
 
-var filtering = (module.exports = {
+const filtering = (module.exports = {
   ALL: '#All#',
   NONE: '#None#',
   BLANK: '#Blank#"',
 });
 
 filtering.expressionFilter = function (operator, term, staticValue, excludeStatic) {
-  var self = this;
+  const self = this;
 
   this.operator = ops.get(operator);
   this.regexpMode = false;
@@ -36,7 +36,7 @@ filtering.expressionFilter = function (operator, term, staticValue, excludeStati
 
   this.test = function (value) {
     if (utils.isArray(self.staticValue)) {
-      var found = self.staticValue.indexOf(value) >= 0;
+      const found = self.staticValue.indexOf(value) >= 0;
       return (self.excludeStatic && !found) || (!self.excludeStatic && found);
     } else if (self.term) {
       return self.operator.func(value, self.term);

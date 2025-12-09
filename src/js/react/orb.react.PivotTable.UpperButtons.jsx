@@ -4,20 +4,20 @@
 
 'use strict';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+const React = require('react');
+const ReactDOM = require('react-dom');
 
 module.exports.PivotTableUpperButtons = React.createClass({
   render: function () {
-    var self = this;
-    var PivotButton = comps.PivotButton;
-    var DropTarget = comps.DropTarget;
+    const self = this;
+    const PivotButton = comps.PivotButton;
+    const DropTarget = comps.DropTarget;
 
-    var config = this.props.pivotTableComp.pgridwidget.pgrid.config;
+    const config = this.props.pivotTableComp.pgridwidget.pgrid.config;
 
-    var fieldsDropTarget;
+    let fieldsDropTarget;
     if (config.canMoveFields) {
-      var fieldsButtons = config.availablefields().map(function (field, index) {
+      const fieldsButtons = config.availablefields().map((field, index) => {
         return (
           <PivotButton
             key={field.name}
@@ -42,7 +42,7 @@ module.exports.PivotTableUpperButtons = React.createClass({
       fieldsDropTarget = null;
     }
 
-    var dataButtons = config.dataFields.map(function (field, index) {
+    const dataButtons = config.dataFields.map((field, index) => {
       return (
         <PivotButton
           key={field.name}
@@ -54,7 +54,7 @@ module.exports.PivotTableUpperButtons = React.createClass({
       );
     });
 
-    var dataDropTarget = (
+    const dataDropTarget = (
       <tr>
         <td className="flds-grp-cap text-muted">
           <div>Data</div>

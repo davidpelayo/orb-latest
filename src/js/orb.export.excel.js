@@ -8,12 +8,12 @@
 /* global module, require */
 /*jshint eqnull: true*/
 
-var utils = require('./orb.utils');
-var uiheaders = require('./orb.ui.header');
-var themeManager = require('./orb.themes');
+const utils = require('./orb.utils');
+const uiheaders = require('./orb.ui.header');
+const themeManager = require('./orb.themes');
 
-var uriHeader = 'data:application/vnd.ms-excel;base64,';
-var docHeader =
+const uriHeader = 'data:application/vnd.ms-excel;base64,';
+const docHeader =
   '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">' +
   '<head>' +
   '<meta http-equiv=Content-Type content="text/html; charset=UTF-8">' +
@@ -35,7 +35,7 @@ var docHeader =
   '</xml><![endif]-->' +
   '</head>' +
   '<body>';
-var docFooter = '</body></html>';
+const docFooter = '</body></html>';
 
 /**
  * Creates a new instance of rows ui properties.
@@ -44,17 +44,17 @@ var docFooter = '</body></html>';
  * @param  {orb.axe} rowsAxe - axe containing all rows dimensions.
  */
 module.exports = function (pgridwidget) {
-  var config = pgridwidget.pgrid.config;
+  const config = pgridwidget.pgrid.config;
 
-  var currTheme = themeManager.current();
+  let currTheme = themeManager.current();
   currTheme = currTheme === 'bootstrap' ? 'white' : currTheme;
-  var override = currTheme === 'white';
+  const override = currTheme === 'white';
 
-  var buttonTextColor = override ? 'black' : 'white';
-  var themeColor = themeManager.themes[currTheme];
-  var themeFadeout = themeManager.utils.fadeoutColor(themeColor, 0.1);
+  const buttonTextColor = override ? 'black' : 'white';
+  const themeColor = themeManager.themes[currTheme];
+  const themeFadeout = themeManager.utils.fadeoutColor(themeColor, 0.1);
 
-  var buttonStyle =
+  const buttonStyle =
     'style="font-weight: bold; color: ' +
     buttonTextColor +
     '; background-color: ' +
@@ -62,7 +62,7 @@ module.exports = function (pgridwidget) {
     ';" bgcolor="' +
     themeColor +
     '"';
-  var headerStyle =
+  const headerStyle =
     'style="background-color: ' + themeFadeout + ';" bgcolor="' + themeFadeout + '"';
 
   function createButtonCell(caption) {
@@ -72,13 +72,13 @@ module.exports = function (pgridwidget) {
   }
 
   function createButtons(buttons, cellsCountBefore, cellsCountAfter, prefix) {
-    var i;
-    var str = prefix || '<tr>';
+    let i;
+    let str = prefix || '<tr>';
     for (i = 0; i < cellsCountBefore; i++) {
       str += '<td></td>';
     }
 
-    str += buttons.reduce(function (tr, field) {
+    str += buttons.reduce((tr, field) => {
       return (tr += createButtonCell(field.caption));
     }, '');
 
@@ -88,44 +88,44 @@ module.exports = function (pgridwidget) {
     return str + '</tr>';
   }
 
-  var cellsHorizontalCount = Math.max(
+  const cellsHorizontalCount = Math.max(
     config.dataFields.length + 1,
     pgridwidget.layout.pivotTable.width
   );
 
-  var dataFields = createButtons(
+  const dataFields = createButtons(
     config.dataFields,
     0,
     cellsHorizontalCount - config.dataFields.length,
     '<tr><td><font color="#ccc">Data</font></td>'
   );
 
-  var sep = '<tr><td style="height: 22px;" colspan="' + cellsHorizontalCount + '"></td></tr>';
+  const sep = '<tr><td style="height: 22px;" colspan="' + cellsHorizontalCount + '"></td></tr>';
 
-  var columnFields = createButtons(
+  const columnFields = createButtons(
     config.columnFields,
     pgridwidget.layout.rowHeaders.width,
     cellsHorizontalCount - (pgridwidget.layout.rowHeaders.width + config.columnFields.length)
   );
 
-  var columnHeaders = (function () {
-    var str = '';
-    var j;
-    for (var i = 0; i < pgridwidget.columns.headers.length; i++) {
-      var currRow = pgridwidget.columns.headers[i];
-      var rowStr = '<tr>';
+  const columnHeaders = (function () {
+    let str = '';
+    let j;
+    for (let i = 0; i < pgridwidget.columns.headers.length; i++) {
+      const currRow = pgridwidget.columns.headers[i];
+      let rowStr = '<tr>';
       if (i < pgridwidget.columns.headers.length - 1) {
         for (j = 0; j < pgridwidget.layout.rowHeaders.width; j++) {
           rowStr += '<td></td>';
         }
       } else {
-        rowStr += config.rowFields.reduce(function (tr, field) {
+        rowStr += config.rowFields.reduce((tr, field) => {
           return (tr += createButtonCell(field.caption));
         }, '');
       }
 
-      rowStr += currRow.reduce(function (tr, header) {
-        var value =
+      rowStr += currRow.reduce((tr, header) => {
+        const value =
           header.type === uiheaders.HeaderType.DATA_HEADER ? header.value.caption : header.value;
         return (tr +=
           '<td ' +
@@ -143,13 +143,13 @@ module.exports = function (pgridwidget) {
     return str;
   })();
 
-  var rowHeadersAndDataCells = (function () {
-    var str = '';
-    var j;
-    for (var i = 0; i < pgridwidget.rows.headers.length; i++) {
-      var currRow = pgridwidget.rows.headers[i];
-      var rowStr = '<tr>';
-      rowStr += currRow.reduce(function (tr, header) {
+  const rowHeadersAndDataCells = (function () {
+    let str = '';
+    let j;
+    for (let i = 0; i < pgridwidget.rows.headers.length; i++) {
+      const currRow = pgridwidget.rows.headers[i];
+      let rowStr = '<tr>';
+      rowStr += currRow.reduce((tr, header) => {
         return (tr +=
           '<td ' +
           headerStyle +
@@ -161,10 +161,10 @@ module.exports = function (pgridwidget) {
           header.value +
           '</td>');
       }, '');
-      var dataRow = pgridwidget.dataRows[i];
-      rowStr += dataRow.reduce(function (tr, dataCell, index) {
-        var formatFunc = config.dataFields[(index = index % config.dataFields.length)].formatFunc;
-        var value =
+      const dataRow = pgridwidget.dataRows[i];
+      rowStr += dataRow.reduce((tr, dataCell, index) => {
+        const formatFunc = config.dataFields[(index = index % config.dataFields.length)].formatFunc;
+        const value =
           dataCell.value == null ? '' : formatFunc ? formatFunc()(dataCell.value) : dataCell.value;
         return (tr += '<td>' + value + '</td>');
       }, '');

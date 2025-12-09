@@ -8,8 +8,8 @@
 /* global module, require */
 /*jshint eqnull: true*/
 
-var axe = require('./orb.axe');
-var state = new (require('./orb.state'))();
+const axe = require('./orb.axe');
+const state = new (require('./orb.state'))();
 
 var HeaderType = (module.exports.HeaderType = {
   EMPTY: 1,
@@ -21,7 +21,7 @@ var HeaderType = (module.exports.HeaderType = {
   SUB_TOTAL: 7,
   GRAND_TOTAL: 8,
   getHeaderClass: function (headerType, axetype) {
-    var cssclass =
+    let cssclass =
       axetype === axe.Type.ROWS ? 'header-row' : axetype === axe.Type.COLUMNS ? 'header-col' : '';
     switch (headerType) {
       case HeaderType.EMPTY:
@@ -45,7 +45,7 @@ var HeaderType = (module.exports.HeaderType = {
     return cssclass;
   },
   getCellClass: function (rowHeaderType, colHeaderType) {
-    var cssclass = '';
+    let cssclass = '';
     switch (rowHeaderType) {
       case HeaderType.GRAND_TOTAL:
         cssclass = 'cell-gt';
@@ -155,13 +155,13 @@ module.exports.header = function (
   datafieldscount,
   subtotalHeader
 ) {
-  var self = this;
+  const self = this;
 
-  var hspan;
-  var vspan;
-  var value;
+  let hspan;
+  let vspan;
+  let value;
 
-  var isRowsAxe = axetype === axe.Type.ROWS;
+  const isRowsAxe = axetype === axe.Type.ROWS;
   headerType = headerType || (dim.depth === 1 ? HeaderType.INNER : HeaderType.WRAPPER);
 
   switch (headerType) {
@@ -230,7 +230,7 @@ module.exports.header = function (
 
   function isParentExpanded() {
     if (self.type === HeaderType.SUB_TOTAL) {
-      var hparent = self.parent;
+      let hparent = self.parent;
       while (hparent != null) {
         if (hparent.subtotalHeader && !hparent.subtotalHeader.expanded) {
           return false;
@@ -239,7 +239,7 @@ module.exports.header = function (
       }
       return true;
     } else {
-      var isexpanded =
+      const isexpanded =
         self.dim.isRoot ||
         self.dim.isLeaf ||
         !self.dim.field.subTotal.visible ||
@@ -248,7 +248,7 @@ module.exports.header = function (
         return false;
       }
 
-      var par = self.parent;
+      let par = self.parent;
       while (
         par != null &&
         (!par.dim.field.subTotal.visible ||
@@ -261,16 +261,16 @@ module.exports.header = function (
   }
 
   function calcSpan(ignoreVisibility) {
-    var tspan = 0;
-    var subSpan;
-    var addone = false;
+    let tspan = 0;
+    let subSpan;
+    let addone = false;
 
     if (isRowsAxe || ignoreVisibility || self.visible()) {
       if (!self.dim.isLeaf) {
         // subdimvals 'own' properties are the set of values for this dimension
         if (self.subheaders.length > 0) {
-          for (var i = 0; i < self.subheaders.length; i++) {
-            var subheader = self.subheaders[i];
+          for (let i = 0; i < self.subheaders.length; i++) {
+            const subheader = self.subheaders[i];
             // if its not an array
             if (!subheader.dim.isLeaf) {
               subSpan = isRowsAxe ? subheader.vspan() : subheader.hspan();

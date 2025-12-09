@@ -5,16 +5,16 @@
 
 'use strict';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+const React = require('react');
+const ReactDOM = require('react-dom');
 
-var react = typeof window === 'undefined' ? require('react') : window.React;
-var reactDOM = typeof window === 'undefined' ? require('react-dom') : window.ReactDOM;
-var utils = require('../orb.utils');
-var axe = require('../orb.axe');
-var uiheaders = require('../orb.ui.header');
-var filtering = require('../orb.filtering');
-var reactUtils = require('./orb.react.utils');
+const react = typeof window === 'undefined' ? require('react') : window.React;
+const reactDOM = typeof window === 'undefined' ? require('react-dom') : window.ReactDOM;
+const utils = require('../orb.utils');
+const axe = require('../orb.axe');
+const uiheaders = require('../orb.ui.header');
+const filtering = require('../orb.filtering');
+const reactUtils = require('./orb.react.utils');
 
-var extraCol = 0;
-var comps = module.exports;
+const extraCol = 0;
+const comps = module.exports;

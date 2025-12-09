@@ -5,10 +5,10 @@
 
 'use strict';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+const React = require('react');
+const ReactDOM = require('react-dom');
 
-var dtid = 0;
+let dtid = 0;
 
 module.exports.DropTarget = React.createClass({
   getInitialState: function () {
@@ -48,10 +48,10 @@ module.exports.DropTarget = React.createClass({
     }
   },
   render: function () {
-    var self = this;
-    var DropIndicator = module.exports.DropIndicator;
+    const self = this;
+    const DropIndicator = module.exports.DropIndicator;
 
-    var buttons = this.props.buttons.map(function (button, index) {
+    const buttons = this.props.buttons.map((button, index) => {
       if (index < self.props.buttons.length - 1) {
         return [
           <td>
@@ -84,7 +84,7 @@ module.exports.DropTarget = React.createClass({
       }
     });
 
-    var style =
+    const style =
       self.props.axetype === axe.Type.ROWS ? { position: 'absolute', left: 0, bottom: 11 } : null;
 
     return (

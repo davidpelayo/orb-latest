@@ -4,8 +4,8 @@
 'use strict';
 
 module.exports = (function () {
-  var currentTheme = 'blue';
-  var themeManager = {};
+  let currentTheme = 'blue';
+  const themeManager = {};
 
   function isBootstrap() {
     return currentTheme === 'bootstrap';
@@ -67,7 +67,7 @@ module.exports = (function () {
   };
 
   themeManager.getDialogClasses = function (visible) {
-    var classes = {
+    const classes = {
       overlay:
         'orb-overlay orb-overlay-' + (visible ? 'visible' : 'hidden') + ' orb-' + currentTheme,
       dialog: 'orb-dialog',
@@ -90,7 +90,7 @@ module.exports = (function () {
 
   var utils = (themeManager.utils = {
     hexToRgb: function (hex) {
-      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
       return result
         ? {
             r: parseInt(result[1], 16),
@@ -100,9 +100,9 @@ module.exports = (function () {
         : null;
     },
     rgbaToHex: function (rgba) {
-      var matches = rgba.match(/rgba\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+(?:\.\d+)?)\s*\)/);
+      const matches = rgba.match(/rgba\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+(?:\.\d+)?)\s*\)/);
       if (matches) {
-        var alpah = parseFloat(matches[4]);
+        const alpah = parseFloat(matches[4]);
         return (
           '#' +
           utils.applyAlphaAndToHex(matches[1], alpah) +

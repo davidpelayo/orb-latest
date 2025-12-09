@@ -1,8 +1,8 @@
-var themeManager = require('../js/orb.themes');
-var themecolors = themeManager.themes;
+const themeManager = require('../js/orb.themes');
+const themecolors = themeManager.themes;
 
-var exceptVars = ['@fieldbutton-color-bg-alpha', '@orb-overlay-color-bg'];
-var overrides = {
+const exceptVars = ['@fieldbutton-color-bg-alpha', '@orb-overlay-color-bg'];
+const overrides = {
   white: {
     '@bordercolor': '#d9d9d9',
     '@orb-dialog-color-header-buttonclose-bg-hover': '#d9d9d9',
@@ -18,20 +18,20 @@ var overrides = {
   },
 };
 
-var less = require('less');
+const less = require('less');
 
 module.exports = function (themeTemplate, themejson) {
-  var parsedLessVars = {
+  const parsedLessVars = {
     default: parseLessVars(themejson, ''),
   };
 
-  for (var themeoverride in overrides) {
+  for (const themeoverride in overrides) {
     if (overrides.hasOwnProperty(themeoverride)) {
       parsedLessVars[themeoverride] = parseLessVars(themejson, '', null, themeoverride);
     }
   }
-  var colors = [];
-  for (var color in themecolors) {
+  const colors = [];
+  for (const color in themecolors) {
     if (themecolors.hasOwnProperty(color)) {
       colors.push(color);
     }
@@ -39,13 +39,13 @@ module.exports = function (themeTemplate, themejson) {
 
   function parseLessVars(obj, ret, prefix, currtheme) {
     prefix = prefix || '';
-    for (var prop in obj) {
+    for (const prop in obj) {
       if (typeof obj[prop] === 'object') {
         ret = parseLessVars(obj[prop], ret, prefix + prop + '-', currtheme);
       } else {
         if (obj[prop]) {
-          var lvar = '@' + prefix + prop;
-          var lvalue = currtheme && overrides[currtheme] ? overrides[currtheme][lvar] : null;
+          const lvar = '@' + prefix + prop;
+          const lvalue = currtheme && overrides[currtheme] ? overrides[currtheme][lvar] : null;
           ret += lvar + ': ' + (lvalue || obj[prop]) + ';\n';
         }
       }
@@ -53,16 +53,16 @@ module.exports = function (themeTemplate, themejson) {
     return ret;
   }
 
-  var reLessvar = /@[^:]+/;
-  var reLessvalue = /:\s+([^;]+)/;
-  var reRemoveclass = /\/\*\s+([^\s]+)\s\*\/[\s\S]+?.c1\s\{[\s\S]+?color:\s([^;]+);[\s\S]+?\}/g;
-  var reFindRgba = /(@[^:]+)\s*:\s*(rgba\([^\)]+\))/g;
+  const reLessvar = /@[^:]+/;
+  const reLessvalue = /:\s+([^;]+)/;
+  const reRemoveclass = /\/\*\s+([^\s]+)\s\*\/[\s\S]+?.c1\s\{[\s\S]+?color:\s([^;]+);[\s\S]+?\}/g;
+  const reFindRgba = /(@[^:]+)\s*:\s*(rgba\([^\)]+\))/g;
 
   function generateTheme(colorIndex) {
     if (colorIndex < colors.length) {
-      var themecolor = colors[colorIndex];
+      const themecolor = colors[colorIndex];
 
-      var lessvarsarray = (
+      const lessvarsarray = (
         '@maincolor: ' +
         themecolors[themecolor] +
         ';\n' +
@@ -71,20 +71,20 @@ module.exports = function (themeTemplate, themejson) {
         ';\n' +
         (parsedLessVars[themecolor] || parsedLessVars.default)
       ).split('\n');
-      var lessvarsclean = '';
-      var lessclasses = '';
-      for (var i = 0; i < lessvarsarray.length; i++) {
+      let lessvarsclean = '';
+      let lessclasses = '';
+      for (let i = 0; i < lessvarsarray.length; i++) {
         if (lessvarsarray[i]) {
-          var lessvar = lessvarsarray[i].match(reLessvar)[0];
-          var lessvalue = lessvarsarray[i].match(reLessvalue)[1];
+          const lessvar = lessvarsarray[i].match(reLessvar)[0];
+          const lessvalue = lessvarsarray[i].match(reLessvalue)[1];
           lessvarsclean += lessvarsarray[i] + '\n';
           lessclasses += '/* ' + lessvar + ' */.c1 { color: ' + lessvar + '; }\n';
         }
       }
 
-      less.render(lessvarsclean + lessclasses, function (e, output) {
-        var lessoutput = output.css.replace(reRemoveclass, '$1: $2;');
-        lessoutput = lessoutput.replace(reFindRgba, function (match, varname, rgba) {
+      less.render(lessvarsclean + lessclasses, (e, output) => {
+        let lessoutput = output.css.replace(reRemoveclass, '$1: $2;');
+        lessoutput = lessoutput.replace(reFindRgba, (match, varname, rgba) => {
           if (exceptVars.indexOf(varname) < 0) {
             return varname + ': ' + themeManager.utils.rgbaToHex(rgba);
           } else {
@@ -92,7 +92,7 @@ module.exports = function (themeTemplate, themejson) {
           }
         });
 
-        less.render(lessoutput + '\n' + themeTemplate, function (err, out) {
+        less.render(lessoutput + '\n' + themeTemplate, (err, out) => {
           result += '\n/* ' + themecolor + ' */\n\n' + out.css;
         });
 

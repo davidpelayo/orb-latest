@@ -8,7 +8,7 @@
 'use strict';
 
 module.exports = function () {
-  var states = {};
+  const states = {};
 
   this.set = function (key, state) {
     states[key] = state;

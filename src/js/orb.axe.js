@@ -8,10 +8,10 @@
 
 'use strict';
 
-var utils = require('./orb.utils');
-var Dimension = require('./orb.dimension');
+const utils = require('./orb.utils');
+const Dimension = require('./orb.dimension');
 
-var AxeType = {
+const AxeType = {
   COLUMNS: 1,
   ROWS: 2,
   DATA: 3,
@@ -25,8 +25,8 @@ var AxeType = {
  * @param  {orb.axe.Type} type - Axe type (rows, columns, data)
  */
 module.exports = function (pgrid, type) {
-  var self = this;
-  var dimid = 0;
+  const self = this;
+  let dimid = 0;
 
   if (pgrid != null && pgrid.config != null) {
     /**
@@ -81,7 +81,7 @@ module.exports = function (pgrid, type) {
       self.root = new Dimension(++dimid, null, null, null, self.dimensionsCount + 1, true);
 
       self.dimensionsByDepth = {};
-      for (var depth = 1; depth <= self.dimensionsCount; depth++) {
+      for (let depth = 1; depth <= self.dimensionsCount; depth++) {
         self.dimensionsByDepth[depth] = [];
       }
 
@@ -89,8 +89,8 @@ module.exports = function (pgrid, type) {
       fill();
 
       // initial sort
-      for (var findex = 0; findex < self.fields.length; findex++) {
-        var ffield = self.fields[findex];
+      for (let findex = 0; findex < self.fields.length; findex++) {
+        const ffield = self.fields[findex];
         if (ffield.sort.order === 'asc' || ffield.sort.order === 'desc') {
           self.sort(ffield, true);
         }
@@ -107,10 +107,10 @@ module.exports = function (pgrid, type) {
           }
         }
 
-        var depth = self.dimensionsCount - getfieldindex(field);
-        var parents =
+        const depth = self.dimensionsCount - getfieldindex(field);
+        const parents =
           depth === self.dimensionsCount ? [self.root] : self.dimensionsByDepth[depth + 1];
-        for (var i = 0; i < parents.length; i++) {
+        for (let i = 0; i < parents.length; i++) {
           parents[i].values.sort();
           if (field.sort.order === 'desc') {
             parents[i].values.reverse();
@@ -121,7 +121,7 @@ module.exports = function (pgrid, type) {
   }
 
   function getfieldindex(field) {
-    for (var i = 0; i < self.fields.length; i++) {
+    for (let i = 0; i < self.fields.length; i++) {
       if (self.fields[i].name === field.name) {
         return i;
       }
@@ -134,16 +134,16 @@ module.exports = function (pgrid, type) {
    */
   function fill() {
     if (self.pgrid.filteredDataSource != null && self.dimensionsCount > 0) {
-      var datasource = self.pgrid.filteredDataSource;
+      const datasource = self.pgrid.filteredDataSource;
       if (datasource != null && utils.isArray(datasource) && datasource.length > 0) {
-        for (var rowIndex = 0, dataLength = datasource.length; rowIndex < dataLength; rowIndex++) {
-          var row = datasource[rowIndex];
-          var dim = self.root;
-          for (var findex = 0; findex < self.dimensionsCount; findex++) {
-            var depth = self.dimensionsCount - findex;
-            var subfield = self.fields[findex];
-            var subvalue = row[subfield.name];
-            var subdimvals = dim.subdimvals;
+        for (let rowIndex = 0, dataLength = datasource.length; rowIndex < dataLength; rowIndex++) {
+          const row = datasource[rowIndex];
+          let dim = self.root;
+          for (let findex = 0; findex < self.dimensionsCount; findex++) {
+            const depth = self.dimensionsCount - findex;
+            const subfield = self.fields[findex];
+            const subvalue = row[subfield.name];
+            const subdimvals = dim.subdimvals;
 
             if (subdimvals[subvalue] !== undefined) {
               dim = subdimvals[subvalue];

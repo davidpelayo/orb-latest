@@ -8,9 +8,9 @@
 /* global module, require */
 /*jshint eqnull: true*/
 
-var axe = require('./orb.axe');
-var axeUi = require('./orb.ui.axe');
-var uiheaders = require('./orb.ui.header');
+const axe = require('./orb.axe');
+const axeUi = require('./orb.ui.axe');
+const uiheaders = require('./orb.ui.header');
 
 /**
  * Creates a new instance of rows ui properties.
@@ -19,13 +19,13 @@ var uiheaders = require('./orb.ui.header');
  * @param  {orb.axe} rowsAxe - axe containing all rows dimensions.
  */
 module.exports = function (rowsAxe) {
-  var self = this;
+  const self = this;
 
   axeUi.call(self, rowsAxe);
 
   this.build = function () {
-    var headers = [];
-    var grandtotalHeader;
+    const headers = [];
+    let grandtotalHeader;
 
     if (self.axe != null) {
       if (self.axe.root.values.length > 0 || self.axe.pgrid.config.grandTotal.rowsvisible) {
@@ -35,7 +35,7 @@ module.exports = function (rowsAxe) {
         getUiInfo(headers, self.axe.root);
 
         if (self.axe.pgrid.config.grandTotal.rowsvisible) {
-          var lastrow = headers[headers.length - 1];
+          const lastrow = headers[headers.length - 1];
           grandtotalHeader = new uiheaders.header(
             axe.Type.ROWS,
             uiheaders.HeaderType.GRAND_TOTAL,
@@ -75,8 +75,8 @@ module.exports = function (rowsAxe) {
 
   function addDataHeaders(infos, parent) {
     if (self.isMultiDataFields()) {
-      var lastInfosArray = infos[infos.length - 1];
-      for (var datafieldindex = 0; datafieldindex < self.dataFieldsCount(); datafieldindex++) {
+      let lastInfosArray = infos[infos.length - 1];
+      for (let datafieldindex = 0; datafieldindex < self.dataFieldsCount(); datafieldindex++) {
         lastInfosArray.push(
           new uiheaders.dataHeader(self.axe.pgrid.config.dataFields[datafieldindex], parent)
         );
@@ -94,13 +94,13 @@ module.exports = function (rowsAxe) {
    */
   function getUiInfo(infos, dimension) {
     if (dimension.values.length > 0) {
-      var infosMaxIndex = infos.length - 1;
-      var lastInfosArray = infos[infosMaxIndex];
-      var parent = lastInfosArray.length > 0 ? lastInfosArray[lastInfosArray.length - 1] : null;
+      const infosMaxIndex = infos.length - 1;
+      let lastInfosArray = infos[infosMaxIndex];
+      const parent = lastInfosArray.length > 0 ? lastInfosArray[lastInfosArray.length - 1] : null;
 
-      for (var valIndex = 0; valIndex < dimension.values.length; valIndex++) {
-        var subvalue = dimension.values[valIndex];
-        var subdim = dimension.subdimvals[subvalue];
+      for (let valIndex = 0; valIndex < dimension.values.length; valIndex++) {
+        const subvalue = dimension.values[valIndex];
+        const subdim = dimension.subdimvals[subvalue];
 
         var subTotalHeader;
         if (!subdim.isLeaf && subdim.field.subTotal.visible) {
@@ -115,7 +115,7 @@ module.exports = function (rowsAxe) {
           subTotalHeader = null;
         }
 
-        var newHeader = new uiheaders.header(
+        const newHeader = new uiheaders.header(
           axe.Type.ROWS,
           null,
           subdim,

@@ -5,8 +5,8 @@
 
 'use strict';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+const React = require('react');
+const ReactDOM = require('react-dom');
 
 module.exports.FilterPanel = React.createClass({
   pgridwidget: null,
@@ -17,7 +17,7 @@ module.exports.FilterPanel = React.createClass({
     return {};
   },
   destroy: function () {
-    var container = ReactDOM.findDOMNode(this).parentNode;
+    const container = ReactDOM.findDOMNode(this).parentNode;
     ReactDOM.unmountComponentAtNode(container);
     container.parentNode.removeChild(container);
   },
@@ -32,8 +32,8 @@ module.exports.FilterPanel = React.createClass({
     this.destroy();
   },
   onMouseDown: function (e) {
-    var container = ReactDOM.findDOMNode(this).parentNode;
-    var target = e.target;
+    const container = ReactDOM.findDOMNode(this).parentNode;
+    let target = e.target;
     while (target != null) {
       if (target == container) {
         return true;
@@ -44,8 +44,8 @@ module.exports.FilterPanel = React.createClass({
     this.destroy();
   },
   onMouseWheel: function (e) {
-    var valuesTable = ReactDOM.findDOMNode(this.refs.valuesTable);
-    var target = e.target;
+    const valuesTable = ReactDOM.findDOMNode(this.refs.valuesTable);
+    let target = e.target;
     while (target != null) {
       if (target == valuesTable) {
         if (valuesTable.scrollHeight <= valuesTable.clientHeight) {
@@ -73,8 +73,8 @@ module.exports.FilterPanel = React.createClass({
     window.removeEventListener('resize', this.destroy);
   },
   render: function () {
-    var Dropdown = comps.Dropdown;
-    var checkboxes = [];
+    const Dropdown = comps.Dropdown;
+    const checkboxes = [];
 
     this.filterManager = new FilterManager(
       this,
@@ -100,18 +100,21 @@ module.exports.FilterPanel = React.createClass({
       addCheckboxRow(filtering.BLANK, '(Blank)');
     }
 
-    for (var i = 0; i < this.values.length; i++) {
+    for (let i = 0; i < this.values.length; i++) {
       addCheckboxRow(this.values[i]);
     }
 
-    var buttonClass = this.props.pivotTableComp.pgrid.config.theme.getButtonClasses().orbButton;
-    var pivotStyle = window.getComputedStyle(ReactDOM.findDOMNode(this.props.pivotTableComp), null);
-    var style = {
+    const buttonClass = this.props.pivotTableComp.pgrid.config.theme.getButtonClasses().orbButton;
+    const pivotStyle = window.getComputedStyle(
+      ReactDOM.findDOMNode(this.props.pivotTableComp),
+      null
+    );
+    const style = {
       fontFamily: pivotStyle.getPropertyValue('font-family'),
       fontSize: pivotStyle.getPropertyValue('font-size'),
     };
 
-    var currentFilter = this.pgridwidget.pgrid.getFieldFilter(this.props.field);
+    const currentFilter = this.pgridwidget.pgrid.getFieldFilter(this.props.field);
 
     return (
       <table className="fltr-scntnr" style={style}>
@@ -185,16 +188,16 @@ module.exports.FilterPanel = React.createClass({
 });
 
 function FilterManager(reactComp, initialFilterObject) {
-  var self = this;
-  var INDETERMINATE = 'indeterminate';
+  const self = this;
+  const INDETERMINATE = 'indeterminate';
 
-  var savedCheckedValues;
-  var isSearchMode = false;
-  var isRegexMode = false;
-  var operator = filtering.Operators.MATCH;
-  var lastSearchTerm = '';
+  let savedCheckedValues;
+  let isSearchMode = false;
+  let isRegexMode = false;
+  let operator = filtering.Operators.MATCH;
+  let lastSearchTerm = '';
 
-  var elems = {
+  const elems = {
     filterContainer: null,
     checkboxes: {},
     searchBox: null,
@@ -208,7 +211,7 @@ function FilterManager(reactComp, initialFilterObject) {
     resizeGrip: null,
   };
 
-  var resizeManager;
+  let resizeManager;
 
   this.init = function (filterContainerElement) {
     elems.filterContainer = filterContainerElement;
@@ -222,9 +225,9 @@ function FilterManager(reactComp, initialFilterObject) {
     elems.cancelButton = elems.filterContainer.rows[2].cells[0].children[1];
     elems.resizeGrip = elems.filterContainer.rows[2].cells[1].children[0];
 
-    var rows = elems.filterContainer.rows[1].cells[0].children[0].rows;
-    for (var i = 0; i < rows.length; i++) {
-      var checkbox = rows[i].cells[0].children[0];
+    const rows = elems.filterContainer.rows[1].cells[0].children[0].rows;
+    for (let i = 0; i < rows.length; i++) {
+      const checkbox = rows[i].cells[0].children[0];
       elems.checkboxes[checkbox.value] = checkbox;
     }
 
@@ -260,7 +263,7 @@ function FilterManager(reactComp, initialFilterObject) {
 
   function applyInitialFilterObject() {
     if (initialFilterObject) {
-      var staticInfos = {
+      const staticInfos = {
         values: initialFilterObject.staticValue,
         toExclude: initialFilterObject.excludeStatic,
       };
@@ -299,8 +302,8 @@ function FilterManager(reactComp, initialFilterObject) {
 
     elems.clearSearchButton.addEventListener('click', self.clearSearchBox);
 
-    elems.okButton.addEventListener('click', function () {
-      var checkedObj = self.getCheckedValues();
+    elems.okButton.addEventListener('click', () => {
+      const checkedObj = self.getCheckedValues();
       reactComp.onFilter(
         operator.name,
         operator.regexpSupported && isSearchMode && isRegexMode
@@ -310,20 +313,20 @@ function FilterManager(reactComp, initialFilterObject) {
         checkedObj.toExclude
       );
     });
-    elems.cancelButton.addEventListener('click', function () {
+    elems.cancelButton.addEventListener('click', () => {
       reactComp.destroy();
     });
   }
 
   function ResizeManager(outerContainerElem, valuesTableElem, resizeGripElem) {
-    var minContainerWidth = 301;
-    var minContainerHeight = 223;
+    const minContainerWidth = 301;
+    const minContainerHeight = 223;
 
-    var mousedownpos = {
+    const mousedownpos = {
       x: 0,
       y: 0,
     };
-    var isMouseDown = false;
+    let isMouseDown = false;
 
     this.resizeMouseDown = function (e) {
       // drag/sort with left mouse button
@@ -350,14 +353,14 @@ function FilterManager(reactComp, initialFilterObject) {
       // if the mouse is not down while moving, return (no drag)
       if (!isMouseDown) return;
 
-      var resizeGripSize = resizeGripElem.getBoundingClientRect();
-      var outerContainerSize = outerContainerElem.getBoundingClientRect();
-      var valuesTableSize = valuesTableElem.getBoundingClientRect();
+      const resizeGripSize = resizeGripElem.getBoundingClientRect();
+      const outerContainerSize = outerContainerElem.getBoundingClientRect();
+      const valuesTableSize = valuesTableElem.getBoundingClientRect();
 
-      var outerContainerWidth = outerContainerSize.right - outerContainerSize.left;
-      var outerContainerHeight = outerContainerSize.bottom - outerContainerSize.top;
+      const outerContainerWidth = outerContainerSize.right - outerContainerSize.left;
+      const outerContainerHeight = outerContainerSize.bottom - outerContainerSize.top;
 
-      var offset = {
+      const offset = {
         x:
           outerContainerWidth <= minContainerWidth && e.pageX < resizeGripSize.left
             ? 0
@@ -368,8 +371,8 @@ function FilterManager(reactComp, initialFilterObject) {
             : e.pageY - mousedownpos.y,
       };
 
-      var newContainerWidth = outerContainerWidth + offset.x;
-      var newContainerHeight = outerContainerHeight + offset.y;
+      const newContainerWidth = outerContainerWidth + offset.x;
+      const newContainerHeight = outerContainerHeight + offset.y;
 
       mousedownpos.x = e.pageX;
       mousedownpos.y = e.pageY;
@@ -427,7 +430,7 @@ function FilterManager(reactComp, initialFilterObject) {
   };
 
   this.valueChecked = function (e) {
-    var target = e.target;
+    const target = e.target;
     if (target && target.type && target.type === 'checkbox') {
       if (target == elems.allCheckbox) {
         self.updateCheckboxes({ values: elems.allCheckbox.checked });
@@ -438,25 +441,25 @@ function FilterManager(reactComp, initialFilterObject) {
   };
 
   this.applyFilterTerm = function (operator, term) {
-    var defaultVisible = term ? false : true;
-    var opterm =
+    const defaultVisible = term ? false : true;
+    const opterm =
       operator.regexpSupported && isSearchMode
         ? isRegexMode
           ? term
           : utils.escapeRegex(term)
         : term;
     checkboxVisible(elems.allCheckbox, defaultVisible);
-    for (var i = 0; i < reactComp.values.length; i++) {
-      var val = reactComp.values[i];
-      var checkbox = elems.checkboxes[val];
-      var visible = !isSearchMode || operator.func(val, opterm);
+    for (let i = 0; i < reactComp.values.length; i++) {
+      const val = reactComp.values[i];
+      const checkbox = elems.checkboxes[val];
+      const visible = !isSearchMode || operator.func(val, opterm);
       checkboxVisible(checkbox, visible);
       checkbox.checked = visible;
     }
   };
 
   this.searchChanged = function (e) {
-    var search = (elems.searchBox.value || '').trim();
+    const search = (elems.searchBox.value || '').trim();
     if (
       e === 'operatorChanged' ||
       (e === 'regexModeChanged' && search) ||
@@ -464,7 +467,7 @@ function FilterManager(reactComp, initialFilterObject) {
     ) {
       lastSearchTerm = search;
 
-      var previousIsSearchMode = isSearchMode;
+      const previousIsSearchMode = isSearchMode;
       isSearchMode = search !== '';
 
       if (isSearchMode && !previousIsSearchMode) {
@@ -491,9 +494,9 @@ function FilterManager(reactComp, initialFilterObject) {
         toExclude: false,
       };
     } else {
-      var staticValue;
-      var i, val, checkbox;
-      var valuesCount = 0,
+      let staticValue;
+      let i, val, checkbox;
+      let valuesCount = 0,
         checkedCount = 0;
 
       for (i = 0; i < reactComp.values.length; i++) {
@@ -507,7 +510,7 @@ function FilterManager(reactComp, initialFilterObject) {
         }
       }
 
-      var excludeUnchecked = false;
+      let excludeUnchecked = false;
 
       if (checkedCount === 0) {
         staticValue = filtering.NONE;
@@ -538,22 +541,22 @@ function FilterManager(reactComp, initialFilterObject) {
   };
 
   this.updateCheckboxes = function (checkedList) {
-    var values = checkedList ? checkedList.values : null;
-    var allchecked = utils.isArray(values)
+    const values = checkedList ? checkedList.values : null;
+    const allchecked = utils.isArray(values)
       ? null
       : values == null || values === filtering.ALL
         ? true
         : values === filtering.NONE
           ? false
           : !!values;
-    for (var i = 0; i < reactComp.values.length; i++) {
-      var val = reactComp.values[i];
-      var checkbox = elems.checkboxes[val];
+    for (let i = 0; i < reactComp.values.length; i++) {
+      const val = reactComp.values[i];
+      const checkbox = elems.checkboxes[val];
       if (checkboxVisible(checkbox)) {
         if (allchecked != null) {
           checkbox.checked = allchecked;
         } else {
-          var valInList = values.indexOf(val) >= 0;
+          const valInList = values.indexOf(val) >= 0;
           checkbox.checked = checkedList.toExclude ? !valInList : valInList;
         }
       }
@@ -562,9 +565,9 @@ function FilterManager(reactComp, initialFilterObject) {
 
   this.updateAllCheckbox = function () {
     if (!isSearchMode) {
-      var allchecked = null;
-      for (var i = 0; i < reactComp.values.length; i++) {
-        var checkbox = elems.checkboxes[reactComp.values[i]];
+      let allchecked = null;
+      for (let i = 0; i < reactComp.values.length; i++) {
+        const checkbox = elems.checkboxes[reactComp.values[i]];
         if (allchecked == null) {
           allchecked = checkbox.checked;
         } else {

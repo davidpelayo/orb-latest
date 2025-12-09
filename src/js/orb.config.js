@@ -8,14 +8,14 @@
 /* global module, require */
 /*jshint eqnull: true*/
 
-var utils = require('./orb.utils');
-var axe = require('./orb.axe');
-var aggregation = require('./orb.aggregation');
-var filtering = require('./orb.filtering');
-var themeManager = require('./orb.themes');
+const utils = require('./orb.utils');
+const axe = require('./orb.axe');
+const aggregation = require('./orb.aggregation');
+const filtering = require('./orb.filtering');
+const themeManager = require('./orb.themes');
 
 function getpropertyvalue(property, configs, defaultvalue) {
-  for (var i = 0; i < configs.length; i++) {
+  for (let i = 0; i < configs.length; i++) {
     if (configs[i][property] != null) {
       return configs[i][property];
     }
@@ -24,15 +24,15 @@ function getpropertyvalue(property, configs, defaultvalue) {
 }
 
 function mergefieldconfigs() {
-  var merged = {
+  const merged = {
     configs: [],
     sorts: [],
     subtotals: [],
     functions: [],
   };
 
-  for (var i = 0; i < arguments.length; i++) {
-    var nnconfig = arguments[i] || {};
+  for (let i = 0; i < arguments.length; i++) {
+    const nnconfig = arguments[i] || {};
     merged.configs.push(nnconfig);
     merged.sorts.push(nnconfig.sort || {});
     merged.subtotals.push(nnconfig.subTotal || {});
@@ -49,8 +49,8 @@ function mergefieldconfigs() {
 }
 
 function createfield(rootconfig, axetype, fieldconfig, defaultfieldconfig) {
-  var axeconfig;
-  var fieldAxeconfig;
+  let axeconfig;
+  let fieldAxeconfig;
 
   if (defaultfieldconfig) {
     switch (axetype) {
@@ -76,7 +76,7 @@ function createfield(rootconfig, axetype, fieldconfig, defaultfieldconfig) {
     fieldAxeconfig = null;
   }
 
-  var merged = mergefieldconfigs(
+  const merged = mergefieldconfigs(
     fieldconfig,
     fieldAxeconfig,
     axeconfig,
@@ -118,7 +118,7 @@ function GrandTotalConfig(options) {
 }
 
 function SubTotalConfig(options, setdefaults) {
-  var defaults = {
+  const defaults = {
     visible: setdefaults === true ? true : undefined,
     collapsible: setdefaults === true ? true : undefined,
     collapsed: setdefaults === true ? false : undefined,
@@ -151,8 +151,8 @@ var Field = (module.exports.field = function (options, createSubOptions) {
   this.subTotal = new SubTotalConfig(options.subTotal);
 
   // data settings
-  var _aggregatefunc;
-  var _formatfunc;
+  let _aggregatefunc;
+  let _formatfunc;
 
   function defaultFormatFunc(val) {
     return val != null ? val.toString() : '';
@@ -199,7 +199,7 @@ var Field = (module.exports.field = function (options, createSubOptions) {
  * @param  {object} config - configuration object
  */
 module.exports.config = function (config) {
-  var self = this;
+  const self = this;
 
   this.dataSource = config.dataSource || [];
   this.canMoveFields = config.canMoveFields !== undefined ? !!config.canMoveFields : true;
@@ -223,12 +223,12 @@ module.exports.config = function (config) {
   this.dataSourceFieldCaptions = [];
 
   this.captionToName = function (caption) {
-    var fcaptionIndex = self.dataSourceFieldCaptions.indexOf(caption);
+    const fcaptionIndex = self.dataSourceFieldCaptions.indexOf(caption);
     return fcaptionIndex >= 0 ? self.dataSourceFieldNames[fcaptionIndex] : caption;
   };
 
   this.nameToCaption = function (name) {
-    var fnameIndex = self.dataSourceFieldNames.indexOf(name);
+    const fnameIndex = self.dataSourceFieldNames.indexOf(name);
     return fnameIndex >= 0 ? self.dataSourceFieldCaptions[fnameIndex] : name;
   };
 
@@ -236,8 +236,8 @@ module.exports.config = function (config) {
     return self.theme.current() !== self.theme.current(newTheme);
   };
 
-  this.allFields = (config.fields || []).map(function (fieldconfig) {
-    var f = new Field(fieldconfig);
+  this.allFields = (config.fields || []).map(fieldconfig => {
+    const f = new Field(fieldconfig);
     // map fields names to captions
     self.dataSourceFieldNames.push(f.name);
     self.dataSourceFieldCaptions.push(f.caption);
@@ -253,7 +253,7 @@ module.exports.config = function (config) {
     return obj;
   }
 
-  this.rowFields = (config.rows || []).map(function (fieldconfig) {
+  this.rowFields = (config.rows || []).map(fieldconfig => {
     fieldconfig = ensureFieldConfig(fieldconfig);
     return createfield(
       self,
@@ -263,7 +263,7 @@ module.exports.config = function (config) {
     );
   });
 
-  this.columnFields = (config.columns || []).map(function (fieldconfig) {
+  this.columnFields = (config.columns || []).map(fieldconfig => {
     fieldconfig = ensureFieldConfig(fieldconfig);
     return createfield(
       self,
@@ -273,7 +273,7 @@ module.exports.config = function (config) {
     );
   });
 
-  this.dataFields = (config.data || []).map(function (fieldconfig) {
+  this.dataFields = (config.data || []).map(fieldconfig => {
     fieldconfig = ensureFieldConfig(fieldconfig);
     return createfield(
       self,
@@ -285,7 +285,7 @@ module.exports.config = function (config) {
 
   this.dataFieldsCount = this.dataFields ? this.dataFields.length || 1 : 1;
 
-  var runtimeVisibility = {
+  const runtimeVisibility = {
     subtotals: {
       rows:
         self.rowSettings.subTotal.visible !== undefined ? self.rowSettings.subTotal.visible : true,
@@ -297,7 +297,7 @@ module.exports.config = function (config) {
   };
 
   function getfield(axefields, fieldname) {
-    var fieldindex = getfieldindex(axefields, fieldname);
+    const fieldindex = getfieldindex(axefields, fieldname);
     if (fieldindex > -1) {
       return axefields[fieldindex];
     }
@@ -305,7 +305,7 @@ module.exports.config = function (config) {
   }
 
   function getfieldindex(axefields, fieldname) {
-    for (var fi = 0; fi < axefields.length; fi++) {
+    for (let fi = 0; fi < axefields.length; fi++) {
       if (axefields[fi].name === fieldname) {
         return fi;
       }
@@ -330,8 +330,8 @@ module.exports.config = function (config) {
   };
 
   this.availablefields = function () {
-    return self.allFields.filter(function (field) {
-      var notequalfield = function (otherfield) {
+    return self.allFields.filter(field => {
+      const notequalfield = function (otherfield) {
         return field.name !== otherfield.name;
       };
 
@@ -344,11 +344,11 @@ module.exports.config = function (config) {
   };
 
   this.getDataSourceFieldCaptions = function () {
-    var row0;
+    let row0;
     if (self.dataSource && (row0 = self.dataSource[0])) {
-      var fieldNames = utils.ownProperties(row0);
-      var headers = [];
-      for (var i = 0; i < fieldNames.length; i++) {
+      const fieldNames = utils.ownProperties(row0);
+      const headers = [];
+      for (let i = 0; i < fieldNames.length; i++) {
         headers.push(self.nameToCaption(fieldNames[i]));
       }
       return headers;
@@ -357,10 +357,10 @@ module.exports.config = function (config) {
   };
 
   this.getPreFilters = function () {
-    var prefilters = {};
+    const prefilters = {};
     if (config.preFilters) {
-      utils.ownProperties(config.preFilters).forEach(function (filteredField) {
-        var prefilterConfig = config.preFilters[filteredField];
+      utils.ownProperties(config.preFilters).forEach(filteredField => {
+        const prefilterConfig = config.preFilters[filteredField];
         if (utils.isArray(prefilterConfig)) {
           prefilters[self.captionToName(filteredField)] = new filtering.expressionFilter(
             null,
@@ -369,7 +369,7 @@ module.exports.config = function (config) {
             false
           );
         } else {
-          var opname = utils.ownProperties(prefilterConfig)[0];
+          const opname = utils.ownProperties(prefilterConfig)[0];
           if (opname) {
             prefilters[self.captionToName(filteredField)] = new filtering.expressionFilter(
               opname,
@@ -384,10 +384,10 @@ module.exports.config = function (config) {
   };
 
   this.moveField = function (fieldname, oldaxetype, newaxetype, position) {
-    var oldaxe, oldposition;
-    var newaxe;
-    var fieldConfig;
-    var defaultFieldConfig = getfield(self.allFields, fieldname);
+    let oldaxe, oldposition;
+    let newaxe;
+    let fieldConfig;
+    const defaultFieldConfig = getfield(self.allFields, fieldname);
 
     if (defaultFieldConfig) {
       switch (oldaxetype) {
@@ -422,7 +422,7 @@ module.exports.config = function (config) {
       }
 
       if (oldaxe || newaxe) {
-        var newAxeSubtotalsState = self.areSubtotalsVisible(newaxetype);
+        const newAxeSubtotalsState = self.areSubtotalsVisible(newaxetype);
 
         if (oldaxe) {
           oldposition = getfieldindex(oldaxe, fieldname);
@@ -437,7 +437,7 @@ module.exports.config = function (config) {
           oldaxe.splice(oldposition, 1);
         }
 
-        var field = createfield(self, newaxetype, fieldConfig, defaultFieldConfig);
+        const field = createfield(self, newaxetype, fieldConfig, defaultFieldConfig);
 
         if (!newAxeSubtotalsState && field.subTotal.visible !== false) {
           field.subTotal.visible = null;
@@ -460,9 +460,9 @@ module.exports.config = function (config) {
   };
 
   this.toggleSubtotals = function (axetype) {
-    var i;
-    var axeFields;
-    var newState = !self.areSubtotalsVisible(axetype);
+    let i;
+    let axeFields;
+    let newState = !self.areSubtotalsVisible(axetype);
 
     if (axetype === axe.Type.ROWS) {
       runtimeVisibility.subtotals.rows = newState;
@@ -494,7 +494,7 @@ module.exports.config = function (config) {
   };
 
   this.toggleGrandtotal = function (axetype) {
-    var newState = !self.isGrandtotalVisible(axetype);
+    const newState = !self.isGrandtotalVisible(axetype);
 
     if (axetype === axe.Type.ROWS) {
       self.grandTotal.rowsvisible = newState;

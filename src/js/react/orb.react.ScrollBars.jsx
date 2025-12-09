@@ -5,10 +5,10 @@
 
 'use strict';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+const React = require('react');
+const ReactDOM = require('react-dom');
 
-var scrollBarMixin = {
+const scrollBarMixin = {
   scrollEvent: null,
   scrollClient: null,
   getInitialState: function () {
@@ -41,8 +41,8 @@ var scrollBarMixin = {
     // drag with left mouse button
     if (e.button !== 0) return;
 
-    var thumbElem = ReactDOM.findDOMNode(this.refs.scrollThumb);
-    var thumbposInParent = reactUtils.getParentOffset(thumbElem);
+    const thumbElem = ReactDOM.findDOMNode(this.refs.scrollThumb);
+    const thumbposInParent = reactUtils.getParentOffset(thumbElem);
 
     reactUtils.addClass(thumbElem, 'orb-scrollthumb-hover');
 
@@ -59,7 +59,7 @@ var scrollBarMixin = {
   },
   onMouseUp: function () {
     if (this.state.mousedown) {
-      var thumbElem = ReactDOM.findDOMNode(this.refs.scrollThumb);
+      const thumbElem = ReactDOM.findDOMNode(this.refs.scrollThumb);
       reactUtils.removeClass(thumbElem, 'orb-scrollthumb-hover');
     }
 
@@ -74,7 +74,7 @@ var scrollBarMixin = {
     e.stopPropagation();
     e.preventDefault();
 
-    var amount = e[this.mousePosProp] - this.state.mouseoffset;
+    const amount = e[this.mousePosProp] - this.state.mouseoffset;
     this.state.mouseoffset = e[this.mousePosProp];
 
     this.scroll(amount);
@@ -91,18 +91,18 @@ var scrollBarMixin = {
     this.scrollEvent.callback = scrollCallback;
   },
   getScrollPercent: function () {
-    var maxOffset = this.getScrollSize() - this.state.size;
+    const maxOffset = this.getScrollSize() - this.state.size;
     return maxOffset <= 0 ? 0 : this.state.thumbOffset / maxOffset;
   },
   refresh: function () {
     if (this.scrollClient) {
-      var scrolledElement = this.scrollClient.children[0];
+      const scrolledElement = this.scrollClient.children[0];
 
-      var clientSize = reactUtils.getSize(this.scrollClient);
-      var elementSize = reactUtils.getSize(scrolledElement);
+      const clientSize = reactUtils.getSize(this.scrollClient);
+      const elementSize = reactUtils.getSize(scrolledElement);
 
-      var scrollBarContainerSize = this.getScrollSize();
-      var newSize =
+      const scrollBarContainerSize = this.getScrollSize();
+      const newSize =
         clientSize[this.sizeProp] >= elementSize[this.sizeProp]
           ? 0
           : (clientSize[this.sizeProp] / elementSize[this.sizeProp]) * scrollBarContainerSize;
@@ -121,8 +121,8 @@ var scrollBarMixin = {
     if (this.state.size > 0) {
       if (mode == 1) amount *= 8;
 
-      var maxOffset = this.getScrollSize() - this.state.size;
-      var newOffset = this.state.thumbOffset + amount;
+      const maxOffset = this.getScrollSize() - this.state.size;
+      let newOffset = this.state.thumbOffset + amount;
       if (newOffset < 0) newOffset = 0;
       if (newOffset > maxOffset) newOffset = maxOffset;
 
@@ -137,20 +137,20 @@ var scrollBarMixin = {
     e.preventDefault();
   },
   render: function () {
-    var self = this;
+    const self = this;
 
-    var thumbStyle = { padding: 0 };
+    const thumbStyle = { padding: 0 };
     thumbStyle[this.sizeProp] = this.state.size;
     thumbStyle[this.offsetCssProp] = this.state.thumbOffset;
 
-    var thisStyle = {};
+    const thisStyle = {};
     thisStyle[this.sizeProp] = this.state.containerSize;
 
-    var thumbClass =
+    const thumbClass =
       'orb-scrollthumb ' +
       this.props.pivotTableComp.pgrid.config.theme.getButtonClasses().scrollBar;
 
-    var scrollThumb =
+    const scrollThumb =
       this.state.size <= 0 ? null : (
         <div
           className={thumbClass}
@@ -169,7 +169,7 @@ var scrollBarMixin = {
 };
 
 function ScrollEvent(scrollBarComp) {
-  var self = this;
+  const self = this;
   this.scrollBarComp = scrollBarComp;
   this.callback = null;
   this.raise = function () {

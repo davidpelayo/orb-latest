@@ -3,19 +3,19 @@
 
 'use strict';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+const React = require('react');
+const ReactDOM = require('react-dom');
 
-var dragManager = (module.exports.DragManager = (function () {
-  var _pivotComp = null;
+const dragManager = (module.exports.DragManager = (function () {
+  let _pivotComp = null;
 
-  var _currDragElement = null;
-  var _currDropTarget = null;
-  var _currDropIndicator = null;
+  let _currDragElement = null;
+  let _currDropTarget = null;
+  let _currDropIndicator = null;
 
-  var _dragNode = null;
-  var _dropTargets = [];
-  var _dropIndicators = [];
+  let _dragNode = null;
+  const _dropTargets = [];
+  const _dropIndicators = [];
 
   function doElementsOverlap(elem1Rect, elem2Rect) {
     return !(
@@ -28,7 +28,7 @@ var dragManager = (module.exports.DragManager = (function () {
 
   function setCurrDropTarget(dropTarget, callback) {
     if (_currDropTarget) {
-      signalDragEnd(_currDropTarget, function () {
+      signalDragEnd(_currDropTarget, () => {
         _currDropTarget = dropTarget;
         signalDragOver(dropTarget, callback);
       });
@@ -40,7 +40,7 @@ var dragManager = (module.exports.DragManager = (function () {
 
   function setCurrDropIndicator(dropIndicator) {
     if (_currDropIndicator) {
-      signalDragEnd(_currDropIndicator, function () {
+      signalDragEnd(_currDropIndicator, () => {
         _currDropIndicator = dropIndicator;
         signalDragOver(dropIndicator);
       });
@@ -69,7 +69,7 @@ var dragManager = (module.exports.DragManager = (function () {
   function getDropTarget() {
     return reactUtils.forEach(
       _dropTargets,
-      function (target) {
+      target => {
         if (target.component.state.isover) {
           return target;
         }
@@ -81,7 +81,7 @@ var dragManager = (module.exports.DragManager = (function () {
   function getDropIndicator() {
     return reactUtils.forEach(
       _dropIndicators,
-      function (indicator) {
+      indicator => {
         if (indicator.component.state.isover) {
           return indicator;
         }
@@ -90,7 +90,7 @@ var dragManager = (module.exports.DragManager = (function () {
     );
   }
 
-  var _initialized = false;
+  let _initialized = false;
 
   return {
     init: function (pivotComp) {
@@ -98,12 +98,12 @@ var dragManager = (module.exports.DragManager = (function () {
       _pivotComp = pivotComp;
     },
     setDragElement: function (elem) {
-      var prevDragElement = _currDragElement;
+      const prevDragElement = _currDragElement;
       _currDragElement = elem;
       if (_currDragElement != prevDragElement) {
         if (elem == null) {
           if (_currDropTarget) {
-            var position = _currDropIndicator != null ? _currDropIndicator.position : null;
+            const position = _currDropIndicator != null ? _currDropIndicator.position : null;
             _pivotComp.moveButton(
               prevDragElement,
               _currDropTarget.component.props.axetype,
@@ -128,8 +128,8 @@ var dragManager = (module.exports.DragManager = (function () {
       });
     },
     unregisterTarget: function (target) {
-      var tindex;
-      for (var i = 0; i < _dropTargets.length; i++) {
+      let tindex;
+      for (let i = 0; i < _dropTargets.length; i++) {
         if (_dropTargets[i].component == target) {
           tindex = i;
           break;
@@ -149,8 +149,8 @@ var dragManager = (module.exports.DragManager = (function () {
       });
     },
     unregisterIndicator: function (indicator) {
-      var iindex;
-      for (var i = 0; i < _dropIndicators.length; i++) {
+      let iindex;
+      for (let i = 0; i < _dropIndicators.length; i++) {
         if (_dropIndicators[i].component == indicator) {
           iindex = i;
           break;
@@ -162,15 +162,15 @@ var dragManager = (module.exports.DragManager = (function () {
     },
     elementMoved: function () {
       if (_currDragElement != null) {
-        var dragNodeRect = _dragNode.getBoundingClientRect();
-        var foundTarget;
+        const dragNodeRect = _dragNode.getBoundingClientRect();
+        let foundTarget;
 
         reactUtils.forEach(
           _dropTargets,
-          function (target) {
+          target => {
             if (!foundTarget) {
-              var tnodeRect = ReactDOM.findDOMNode(target.component).getBoundingClientRect();
-              var isOverlap = doElementsOverlap(dragNodeRect, tnodeRect);
+              const tnodeRect = ReactDOM.findDOMNode(target.component).getBoundingClientRect();
+              const isOverlap = doElementsOverlap(dragNodeRect, tnodeRect);
               if (isOverlap) {
                 foundTarget = target;
                 return;
@@ -181,20 +181,22 @@ var dragManager = (module.exports.DragManager = (function () {
         );
 
         if (foundTarget) {
-          setCurrDropTarget(foundTarget, function () {
-            var foundIndicator = null;
+          setCurrDropTarget(foundTarget, () => {
+            let foundIndicator = null;
 
-            reactUtils.forEach(_dropIndicators, function (indicator, index) {
+            reactUtils.forEach(_dropIndicators, (indicator, index) => {
               if (!foundIndicator) {
-                var elementOwnIndicator =
+                const elementOwnIndicator =
                   indicator.component.props.axetype === _currDragElement.props.axetype &&
                   indicator.component.props.position === _currDragElement.props.position;
 
-                var targetIndicator =
+                const targetIndicator =
                   indicator.component.props.axetype === foundTarget.component.props.axetype;
                 if (targetIndicator && !elementOwnIndicator) {
-                  var tnodeRect = ReactDOM.findDOMNode(indicator.component).getBoundingClientRect();
-                  var isOverlap = doElementsOverlap(dragNodeRect, tnodeRect);
+                  const tnodeRect = ReactDOM.findDOMNode(
+                    indicator.component
+                  ).getBoundingClientRect();
+                  const isOverlap = doElementsOverlap(dragNodeRect, tnodeRect);
                   if (isOverlap) {
                     foundIndicator = indicator;
                     return;
@@ -204,7 +206,7 @@ var dragManager = (module.exports.DragManager = (function () {
             });
 
             if (!foundIndicator) {
-              var axeIndicators = _dropIndicators.filter(function (indicator) {
+              const axeIndicators = _dropIndicators.filter(indicator => {
                 return indicator.component.props.axetype === foundTarget.component.props.axetype;
               });
               if (axeIndicators.length > 0) {

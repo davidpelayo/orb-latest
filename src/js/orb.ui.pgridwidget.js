@@ -7,14 +7,14 @@
 
 /* global module, require, React, window */
 /*jshint eqnull: true*/
-var ReactDOM = require('react-dom');
-var axe = require('./orb.axe');
-var pgrid = require('./orb.pgrid');
-var uiheaders = require('./orb.ui.header');
-var uirows = require('./orb.ui.rows');
-var uicols = require('./orb.ui.cols');
+const ReactDOM = require('react-dom');
+const axe = require('./orb.axe');
+const pgrid = require('./orb.pgrid');
+const uiheaders = require('./orb.ui.header');
+const uirows = require('./orb.ui.rows');
+const uicols = require('./orb.ui.cols');
 //var React = require('react');
-var OrbReactComps = require('./react/orb.react.compiled');
+const OrbReactComps = require('./react/orb.react.compiled');
 /**
  * Creates a new instance of pivot grid control
  * @class
@@ -22,10 +22,10 @@ var OrbReactComps = require('./react/orb.react.compiled');
  * @param  {object} pgrid - pivot grid instance
  */
 module.exports = function (config) {
-  var self = this;
-  var renderElement;
-  var pivotComponent;
-  var dialog = OrbReactComps.Dialog.create();
+  const self = this;
+  let renderElement;
+  let pivotComponent;
+  const dialog = OrbReactComps.Dialog.create();
 
   /**
    * Parent pivot grid
@@ -160,8 +160,8 @@ module.exports = function (config) {
   this.render = function (element) {
     renderElement = element;
     if (renderElement) {
-      var pivotTableFactory = React.createFactory(OrbReactComps.PivotTable);
-      var pivottable = pivotTableFactory({
+      const pivotTableFactory = React.createFactory(OrbReactComps.PivotTable);
+      const pivottable = pivotTableFactory({
         pgridwidget: self,
       });
 
@@ -171,17 +171,17 @@ module.exports = function (config) {
 
   this.drilldown = function (dataCell, pivotId) {
     if (dataCell) {
-      var colIndexes = dataCell.columnDimension.getRowIndexes();
-      var data = dataCell.rowDimension
+      const colIndexes = dataCell.columnDimension.getRowIndexes();
+      const data = dataCell.rowDimension
         .getRowIndexes()
-        .filter(function (index) {
+        .filter(index => {
           return colIndexes.indexOf(index) >= 0;
         })
-        .map(function (index) {
+        .map(index => {
           return self.pgrid.filteredDataSource[index];
         });
 
-      var title;
+      let title;
       if (
         dataCell.rowType === uiheaders.HeaderType.GRAND_TOTAL &&
         dataCell.colType === uiheaders.HeaderType.GRAND_TOTAL
@@ -197,7 +197,7 @@ module.exports = function (config) {
         }
       }
 
-      var pivotStyle = window.getComputedStyle(ReactDOM.findDOMNode(pivotComponent), null);
+      const pivotStyle = window.getComputedStyle(ReactDOM.findDOMNode(pivotComponent), null);
 
       dialog.show({
         title: title,
@@ -225,8 +225,8 @@ module.exports = function (config) {
     self.rows = new uirows(self.pgrid.rows);
     self.columns = new uicols(self.pgrid.columns);
 
-    var rowsHeaders = self.rows.headers;
-    var columnsLeafHeaders = self.columns.leafsHeaders;
+    const rowsHeaders = self.rows.headers;
+    const columnsLeafHeaders = self.columns.leafsHeaders;
 
     // set control layout infos
     self.layout = {
@@ -254,8 +254,8 @@ module.exports = function (config) {
       height: self.layout.rowHeaders.height + self.layout.columnHeaders.height,
     };
 
-    var dataRows = [];
-    var arr;
+    const dataRows = [];
+    let arr;
 
     function createVisibleFunc(rowvisible, colvisible) {
       return function () {
@@ -263,14 +263,14 @@ module.exports = function (config) {
       };
     }
     if (rowsHeaders.length > 0) {
-      for (var ri = 0; ri < rowsHeaders.length; ri++) {
-        var rowHeadersRow = rowsHeaders[ri];
-        var rowLeafHeader = rowHeadersRow[rowHeadersRow.length - 1];
+      for (let ri = 0; ri < rowsHeaders.length; ri++) {
+        const rowHeadersRow = rowsHeaders[ri];
+        const rowLeafHeader = rowHeadersRow[rowHeadersRow.length - 1];
 
         arr = [];
-        for (var colHeaderIndex = 0; colHeaderIndex < columnsLeafHeaders.length; colHeaderIndex++) {
-          var columnLeafHeader = columnsLeafHeaders[colHeaderIndex];
-          var isvisible = createVisibleFunc(rowLeafHeader.visible, columnLeafHeader.visible);
+        for (let colHeaderIndex = 0; colHeaderIndex < columnsLeafHeaders.length; colHeaderIndex++) {
+          const columnLeafHeader = columnsLeafHeaders[colHeaderIndex];
+          const isvisible = createVisibleFunc(rowLeafHeader.visible, columnLeafHeader.visible);
           arr[colHeaderIndex] = new uiheaders.dataCell(
             self.pgrid,
             isvisible,
